@@ -4,10 +4,12 @@
 
 <template>
   <div>
-    test
+    <span>test</span>
   </div>
 </template>
 
 <style scoped lang="scss">
-
+div>span {
+  color: red;
+}
 </style>

@@ -1,8 +1,15 @@
 <template>
   <div>
+    loading...
   </div>
 </template>
 
 <script setup lang="ts">
-navigateTo('/login')
+
+onMounted(() => {
+  setTimeout(() => {
+    navigateTo('/login')
+  }, 3000)
+})
 </script>
+
