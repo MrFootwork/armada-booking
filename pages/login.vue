@@ -9,7 +9,15 @@
 </template>
 
 <style scoped lang="scss">
-div>span {
-  color: red;
+div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100vh;
+
+  span {
+    color: red;
+  }
 }
 </style>
