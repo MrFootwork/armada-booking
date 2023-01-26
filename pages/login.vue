@@ -3,21 +3,27 @@
 </script>
 
 <template>
-  <div>
-    <span>test</span>
+  <div class="wrapper">
+    <div class="card">
+      <span>test</span>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-div {
+div.wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
 
   height: 100vh;
 
-  span {
-    color: $font-color;
+  div.card {
+    @include cardStyle;
+
+    span {
+      color: $font-color;
+    }
   }
 }
 </style>

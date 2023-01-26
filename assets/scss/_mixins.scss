@@ -1,0 +1,6 @@
+@use "@/assets/scss/_colors.scss"as *;
+
+@mixin cardStyle() {
+  border-radius   : 10px;
+  background-color: $card-color;
+}
