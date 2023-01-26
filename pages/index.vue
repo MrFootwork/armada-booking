@@ -1,6 +1,6 @@
 <template>
   <div>
-    loading...
+    <span>loading...</span>
   </div>
 </template>
 
@@ -13,3 +13,22 @@ onMounted(() => {
 })
 </script>
 
+<style lang="scss">
+body {
+  background-color: $background-color;
+}
+</style>
+
+<style scoped lang="scss">
+div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100vh;
+
+  span {
+    color: $font-color;
+  }
+}
+</style>

@@ -17,7 +17,7 @@ div {
   height: 100vh;
 
   span {
-    color: red;
+    color: $font-color;
   }
 }
 </style>
