@@ -2,14 +2,14 @@
 @use "@/assets/scss/_variables.scss"as *;
 
 @mixin cardStyle() {
-  border-radius : $round-corner;
-  padding       : 3rem;
-  padding-bottom: 1.5rem;
+  border-radius: $round-corner;
+  padding      : 3rem;
 
   display        : flex;
   align-items    : center;
   justify-content: space-between;
   flex-flow      : column;
+  gap            : 2rem;
 
   background-color: $card-color;
   box-shadow      :

@@ -1,13 +1,15 @@
 <script setup lang="ts">
-
+function onLogin() {
+  navigateTo('/bookTimes')
+}
 </script>
 
 <template>
   <div class="wrapper">
-    <div class="card">
+    <form class="card" @submit.prevent>
       <input type="password" name="password" id="password" placeholder="Enter password here!">
-      <button>Login</button>
-    </div>
+      <button @click="onLogin">Login</button>
+    </form>
   </div>
 </template>
 
@@ -19,8 +21,9 @@ div.wrapper {
 
   height: 100vh;
 
-  div.card {
+  form.card {
     @include cardStyle;
+    outline: none;
 
     width: clamp(10rem, 50vw, 20rem);
     translate: 0 -16.5vh;
@@ -46,7 +49,6 @@ div.wrapper {
       border: none;
       padding: .5rem;
       border-radius: 5px;
-      margin-top: 3rem;
 
       width: 100%;
       cursor: pointer;
