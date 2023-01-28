@@ -55,7 +55,7 @@ export default class Calendar {
 					},
 					{
 						name: 'Hall 2',
-						spots: [
+						slots: [
 							{
 								start: new Date(
 									today_0.getFullYear(),
@@ -90,6 +90,41 @@ export default class Calendar {
 			},
 			{
 				date: today_1,
+				halls: [
+					{
+						name: 'Hall 1',
+						slots: [
+							{
+								start: new Date(
+									today_0.getFullYear(),
+									today_0.getMonth(),
+									today_0.getDate(),
+									8
+								),
+								end: new Date(
+									today_0.getFullYear(),
+									today_0.getMonth(),
+									today_0.getDate(),
+									10
+								),
+							},
+							{
+								start: new Date(
+									today_0.getFullYear(),
+									today_0.getMonth(),
+									today_0.getDate(),
+									12
+								),
+								end: new Date(
+									today_0.getFullYear(),
+									today_0.getMonth(),
+									today_0.getDate(),
+									14
+								),
+							},
+						],
+					},
+				],
 			},
 			{
 				date: today_2,

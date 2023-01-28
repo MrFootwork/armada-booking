@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Day } from '@/model/TDay.model'
-import { useDate } from '@/composables/date'
+import useDate from '@/composables/date'
 
 const props = defineProps<{
   bookingDay: Day
@@ -13,12 +13,16 @@ const props = defineProps<{
 
     <div class="header">
       <span class="weekday"> {{ useDate(bookingDay.date).weekday }}</span>
-      <h3 class="date">{{ useDate(bookingDay.date).date }}</h3>
+      <h2 class="date">{{ useDate(bookingDay.date).date }}</h2>
       <img src="icons8-rain-cloud.png" alt="weather" class="weather">
     </div>
 
+    <!-- TODO add timeline -->
     <div class="halls wrapper" v-for="hall in bookingDay.halls">
-      {{ hall.name }}
+      <h3 class="halls title"> {{ hall.name }}</h3>
+      <div class="time-slots wrapper">
+        <BookTimesSlots v-for="slot in hall.slots" :slot-time="slot" />
+      </div>
     </div>
 
   </div>
@@ -61,5 +65,15 @@ const props = defineProps<{
     width: 2rem;
     color: white;
   }
+}
+
+.halls {
+  &.wrapper {}
+
+  &.title {
+    text-align: center;
+  }
+
+  .time-slots.wrapper {}
 }
 </style>
