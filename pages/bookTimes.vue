@@ -7,8 +7,7 @@ const calendar = new Calendar()
 
 <template>
   <div class="wrapper">
-    this works 🎉
-
+    <BookTimesDay v-for="day in calendar.days" :booking-day="day" />
   </div>
 </template>
 
