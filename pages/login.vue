@@ -1,6 +1,6 @@
 <script setup lang="ts">
 function onLogin() {
-  navigateTo('/bookTimes')
+  navigateTo('/bookTimes/Mon')
 }
 </script>
 

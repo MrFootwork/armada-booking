@@ -17,7 +17,7 @@ onMounted(() => {
 
   setTimeout(() => {
     navigateTo('/login')
-  }, 4000)
+  }, 2000)
 })
 </script>
 
