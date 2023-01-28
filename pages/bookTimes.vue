@@ -6,11 +6,15 @@ const calendar = new Calendar()
 </script>
 
 <template>
-  <div class="wrapper">
+  <div>
     <BookTimesDay v-for="day in calendar.days" :booking-day="day" />
   </div>
 </template>
 
+<style lang="scss">
+@include body()
+</style>
+
 <style scoped lang="scss">
-.wrapper {}
+
 </style>

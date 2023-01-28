@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { Day } from '@/model/TDay.model'
+import { useLanguage } from '@/store/language'
 
 const props = defineProps<{
   bookingDay: Day
 }>()
 
+const language = useLanguage()
 
 console.log(props.bookingDay);
 
@@ -19,7 +21,7 @@ console.log(props.bookingDay);
     </div>
 
     <div class="halls wrapper" v-for="hall in bookingDay.halls">
-      {{ hall.name }}
+      {{ hall.name, language }}
     </div>
 
   </div>

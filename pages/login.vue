@@ -13,6 +13,10 @@ function onLogin() {
   </div>
 </template>
 
+<style lang="scss">
+@include body()
+</style>
+
 <style scoped lang="scss">
 div.wrapper {
   display: flex;
