@@ -7,9 +7,8 @@ const calendar = new Calendar()
 
 <template>
   <div class="wrapper">
-    <NuxtLayout name="weekdays">
-      <NuxtPage />
-    </NuxtLayout>
+    this works 🎉
+
   </div>
 </template>
 
