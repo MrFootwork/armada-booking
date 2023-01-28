@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import Calendar from '@/model/MCalendar.model'
+import { useLanguage } from '@/store/language'
 
+// language
+const languageStore = useLanguage()
+const { setLanguage } = languageStore
+
+onMounted(() => {
+  setLanguage('en-US')
+})
+
+// model
 const calendar = new Calendar()
 
 </script>

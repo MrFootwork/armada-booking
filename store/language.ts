@@ -3,12 +3,12 @@ import { defineStore } from 'pinia'
 
 export const useLanguage = defineStore('language', () => {
 	// state
-	const language = ref('de-DE')
+	const preferred = ref('de-DE')
 	// getters (computed())
 	// actions
-	function setLanguage() {
-		language.value = true
+	function setLanguage(newLanguage: string) {
+		preferred.value = newLanguage
 	}
 
-	return { language, setLanguage }
+	return { preferred, setLanguage }
 })
