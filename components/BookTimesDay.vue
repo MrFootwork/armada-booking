@@ -1,15 +1,10 @@
 <script setup lang="ts">
 import { Day } from '@/model/TDay.model'
-import { useLanguage } from '@/store/language'
 import { useDate } from '@/composables/date'
 
 const props = defineProps<{
   bookingDay: Day
 }>()
-
-const preferredLanguage = useLanguage().preferred
-
-console.log(props.bookingDay);
 
 </script>
 

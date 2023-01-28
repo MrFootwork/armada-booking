@@ -7,7 +7,8 @@ const languageStore = useLanguage()
 const { setLanguage } = languageStore
 
 onMounted(() => {
-  setLanguage('en-US')
+  if (languageStore.wasSet) return
+  setLanguage(navigator.language)
 })
 
 // model
