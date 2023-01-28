@@ -3,10 +3,13 @@ import { useLanguage } from '@/store/language'
 
 const languageStore = useLanguage()
 
-export function useDate(date: Date) {
-	const weekday = date.toLocaleDateString(languageStore.preferred, {
+export function useDate(objDate: Date) {
+	const weekday = objDate.toLocaleDateString(languageStore.preferred, {
 		weekday: 'short',
 	})
+	const date = objDate.toLocaleDateString(languageStore.preferred, {
+		dateStyle: 'long',
+	})
 
-	return { weekday }
+	return { weekday, date }
 }
