@@ -2,14 +2,22 @@
 import { Day } from '@/model/TDay.model'
 import useDate from '@/composables/date'
 
-defineProps<{
+const props = defineProps<{
   slotTime: Day['halls'][number]['slots'][number]
 }>()
+
+console.log(useDate(props.slotTime.start).slotPath);
+
+const basePath = useRoute().path
+const slotPath = `${basePath}/${useDate(props.slotTime.start).slotPath}`
 </script>
 
 <template>
   <div>
-    {{ useDate(slotTime.start).time }} - {{ useDate(slotTime.end).time }}
+    {{ slotPath }}
+    <NuxtLink :to="slotPath">
+      {{ useDate(slotTime.start).time }} - {{ useDate(slotTime.end).time }}
+    </NuxtLink>
   </div>
 </template>
 
