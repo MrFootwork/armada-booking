@@ -117,6 +117,10 @@ export default class Calendar {
 										name: 'Lisa',
 										active: true,
 									},
+									{
+										name: 'Michael',
+										active: true,
+									},
 								],
 							},
 							{
@@ -145,6 +149,10 @@ export default class Calendar {
 									},
 									{
 										name: 'Lisa',
+										active: true,
+									},
+									{
+										name: 'Peter',
 										active: true,
 									},
 								],

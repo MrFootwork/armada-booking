@@ -21,11 +21,11 @@ const seatsFree = props.slotTime.limit - seatsTaken
 
 <template>
   <div class="button slot" @click="navigateToSlot">
-    <label :for="hallAndSlot">
+    <label :for="hallAndSlot" class="time">
       {{ useDate(slotTime.start).time }} - {{ useDate(slotTime.end).time }}
     </label>
     <div class="divider"></div>
-    <p>{{ `${seatsFree} / ${slotTime.limit}` }}</p>
+    <p class="">{{ `${seatsFree} / ${slotTime.limit}` }}</p>
   </div>
 </template>
 
@@ -44,10 +44,11 @@ const seatsFree = props.slotTime.limit - seatsTaken
     4px 4px 5px -2px #111,
     -2px -2px 6px -4px #bbb;
 
-  label {
+  label.time {
     display: block;
     box-sizing: content-box;
     padding: 1rem;
+    font-size: 1.5rem;
   }
 
   .divider {
@@ -58,7 +59,6 @@ const seatsFree = props.slotTime.limit - seatsTaken
   p {
     margin: 0;
     padding: 1rem;
-
   }
 }
 </style>
