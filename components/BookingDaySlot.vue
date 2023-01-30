@@ -7,7 +7,8 @@ const props = defineProps<{
 }>()
 
 const basePath = useRoute().path
-const slotPath = `${basePath}/${useDate(props.slotTime.start).weekday}${props.slotTime.hall}${useDate(props.slotTime.start).time}`
+// const slotPath = `${basePath}/${useDate(props.slotTime.start).weekday}${props.slotTime.hall}${useDate(props.slotTime.start).time}`
+const slotPath = `${basePath}/slot?param1=hi`
 const hallAndSlot = props.slotTime.hall + props.slotTime.start
 
 function navigateToSlot() {

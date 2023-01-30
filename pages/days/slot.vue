@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import Calendar from '@/model/MCalendar.model'
 
-const calendar = new Calendar;
 const route = useRoute()
+
 </script>
 
 <template>
@@ -10,12 +9,12 @@ const route = useRoute()
 
     <div class="header">
       this is a slot page 🎉🎉🎉 for {{ route.path }}
-
       <!-- <span class="weekday"> {{ useDate(bookingDay.date).weekday }}</span>
-      <h2 class="date">{{ useDate(bookingDay.date).date }}</h2>
-      <img src="icons8-rain-cloud.png" alt="weather" class="weather"> -->
+        <h2 class="date">{{ useDate(bookingDay.date).date }}</h2>
+        <img src="icons8-rain-cloud.png" alt="weather" class="weather"> -->
     </div>
 
+    {{ route.query }}
     <BookingSlotPlayers />
 
   </div>
