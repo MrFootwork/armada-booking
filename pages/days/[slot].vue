@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import Calendar from '@/model/MCalendar.model'
 
-defineProps<{
-  aProp: { key: string }
-}>()
-
 const calendar = new Calendar;
 const route = useRoute()
 </script>
@@ -14,7 +10,6 @@ const route = useRoute()
 
     <div class="header">
       this is a slot page 🎉🎉🎉 for {{ route.path }}
-      {{ aProp }}
 
       <!-- <span class="weekday"> {{ useDate(bookingDay.date).weekday }}</span>
       <h2 class="date">{{ useDate(bookingDay.date).date }}</h2>
