@@ -42,7 +42,7 @@ const seatsFree = props.slotTime.limit - seatsTaken
 
   box-shadow:
     4px 4px 5px -2px #111,
-    -2px -2px 6px -4px #bbb;
+    -2px -2px 7px -4px #ccc;
 
   label.time {
     display: block;

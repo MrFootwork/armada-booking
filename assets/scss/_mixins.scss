@@ -1,6 +1,11 @@
 @use "@/assets/scss/_colors.scss"as *;
 @use "@/assets/scss/_variables.scss"as *;
 
+@mixin appWidth() {
+  width    : 90vw;
+  max-width: 600px;
+}
+
 @mixin cardStyle() {
   border-radius: $round-corner;
   padding      : 3rem;

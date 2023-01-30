@@ -128,6 +128,36 @@ export default class Calendar {
 									today_0.getFullYear(),
 									today_0.getMonth(),
 									today_0.getDate(),
+									15
+								),
+								end: new Date(
+									today_0.getFullYear(),
+									today_0.getMonth(),
+									today_0.getDate(),
+									17
+								),
+								hall: hall2,
+								limit: 4,
+								players: [
+									{
+										name: 'Jenny',
+										active: false,
+									},
+									{
+										name: 'Lisa',
+										active: true,
+									},
+									{
+										name: 'Peter',
+										active: true,
+									},
+								],
+							},
+							{
+								start: new Date(
+									today_0.getFullYear(),
+									today_0.getMonth(),
+									today_0.getDate(),
 									18
 								),
 								end: new Date(
