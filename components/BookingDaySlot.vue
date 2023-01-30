@@ -3,16 +3,17 @@ import { Day } from '@/model/TDay.model'
 import useDate from '@/composables/date'
 
 const props = defineProps<{
+  dayIndex: number,
   slotTime: Day['halls'][number]['slots'][number]
 }>()
 
 // build router path with query
 const basePath = useRoute().path
-const queryDate = `daysIndex=${props.slotTime.start}`
-const queryHall = `hall=${props.slotTime.hall}`
-const query = `${queryDate}&${queryHall}`
+const paramDayIndex = `dayIndex=${props.dayIndex}`
+const paramHall = `hallName=${props.slotTime.hall}`
+const paramSlotStart = `start=${useDate(props.slotTime.start).time}`
 
-const slotPath = `${basePath}/slot?${query}`
+const slotPath = `${basePath}/slot?${paramDayIndex}&${paramHall}&${paramSlotStart}`
 
 function navigateToSlot() {
   return navigateTo(slotPath)
@@ -20,7 +21,7 @@ function navigateToSlot() {
 
 // id and label
 const hallAndSlot = props.slotTime.hall + props.slotTime.start
-// calculate free seats in this slot
+// free seats in current slot
 const seatsTaken = props.slotTime.players.length
 const seatsFree = props.slotTime.limit - seatsTaken
 

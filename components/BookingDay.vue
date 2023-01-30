@@ -3,7 +3,8 @@ import { Day } from '@/model/TDay.model'
 import useDate from '@/composables/date'
 
 defineProps<{
-  bookingDay: Day
+  bookingDay: Day,
+  dayIndex: number
 }>()
 
 </script>
@@ -21,7 +22,7 @@ defineProps<{
     <div class="halls wrapper" v-for="hall in bookingDay.halls">
       <h3 class="halls title"> {{ hall.name }}</h3>
       <div class="time-slots wrapper">
-        <BookingDaySlot v-for="slot in hall.slots" :slot-time="slot" />
+        <BookingDaySlot v-for="slot in hall.slots" :slot-time="slot" :day-index="dayIndex" />
       </div>
     </div>
 

@@ -10,9 +10,10 @@ export default function useDate(objDate: Date) {
 	const date = objDate.toLocaleDateString(languageStore.preferred, {
 		dateStyle: 'long',
 	})
+	const dateISO = objDate.toISOString().substring(0, 10)
 	const time = objDate.toLocaleTimeString(languageStore.preferred, {
 		hour: 'numeric',
 		minute: '2-digit',
 	})
-	return { weekday, date, time }
+	return { weekday, date, time, dateISO }
 }

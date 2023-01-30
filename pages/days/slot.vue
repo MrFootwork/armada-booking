@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import Calculator from '@/model/MCalendar.model'
-import { Day } from '@/model/TDay.model'
+import Calendar from '@/model/MCalendar.model'
+import useDate from '@/composables/date'
 
-const calculator = new Calculator();
-// const currentSlot: Day['halls'][number]['slots'][number]  = calculator
-//   .days
-//   .find()
+const calendar = new Calendar();
+// const currentSlot = calculator.days.find
 
 const route = useRoute()
-const { daysIndex, hall } = route.query
+const { dayIndex, hallName, start } = route.query
+const currentSlot = calendar
+  .days[+dayIndex!]
+  .halls.find(hall => hall.name === hallName)
+  ?.slots.find(slot => useDate(slot.start).time === start)
 </script>
 
 <template>
@@ -20,8 +22,14 @@ const { daysIndex, hall } = route.query
         <h2 class="date">{{ useDate(bookingDay.date).date }}</h2>
         <img src="icons8-rain-cloud.png" alt="weather" class="weather"> -->
     </div>
-    date: {{ daysIndex.toString() }}
-    hall: {{ hall }}
+
+    <p>dayIndex: {{ dayIndex }}</p>
+    <p>hall: {{ hallName }}</p>
+    <p>start: {{ start }}</p>
+    <p>data: {{ currentSlot }}</p>
+
+    <!-- <p>data: {{ useDate(currentSlot?.slots[0].start).time === start }}</p> -->
+
     <BookingSlotPlayers />
 
   </div>
