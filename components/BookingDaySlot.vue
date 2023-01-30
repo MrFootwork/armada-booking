@@ -6,22 +6,28 @@ const props = defineProps<{
   slotTime: Day['halls'][number]['slots'][number]
 }>()
 
+// build router path with query
 const basePath = useRoute().path
-// const slotPath = `${basePath}/${useDate(props.slotTime.start).weekday}${props.slotTime.hall}${useDate(props.slotTime.start).time}`
-const slotPath = `${basePath}/slot?param1=hi`
-const hallAndSlot = props.slotTime.hall + props.slotTime.start
+const queryDate = `daysIndex=${props.slotTime.start}`
+const queryHall = `hall=${props.slotTime.hall}`
+const query = `${queryDate}&${queryHall}`
+
+const slotPath = `${basePath}/slot?${query}`
 
 function navigateToSlot() {
   return navigateTo(slotPath)
 }
 
+// id and label
+const hallAndSlot = props.slotTime.hall + props.slotTime.start
+// calculate free seats in this slot
 const seatsTaken = props.slotTime.players.length
 const seatsFree = props.slotTime.limit - seatsTaken
 
 </script>
 
 <template>
-  <div class="button slot" @click="navigateToSlot">
+  <div class="button slot" @click="navigateToSlot" :id="hallAndSlot">
     <label :for="hallAndSlot" class="time">
       {{ useDate(slotTime.start).time }} - {{ useDate(slotTime.end).time }}
     </label>

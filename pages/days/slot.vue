@@ -1,7 +1,14 @@
 <script setup lang="ts">
+import Calculator from '@/model/MCalendar.model'
+import { Day } from '@/model/TDay.model'
+
+const calculator = new Calculator();
+// const currentSlot: Day['halls'][number]['slots'][number]  = calculator
+//   .days
+//   .find()
 
 const route = useRoute()
-
+const { daysIndex, hall } = route.query
 </script>
 
 <template>
@@ -13,8 +20,8 @@ const route = useRoute()
         <h2 class="date">{{ useDate(bookingDay.date).date }}</h2>
         <img src="icons8-rain-cloud.png" alt="weather" class="weather"> -->
     </div>
-
-    {{ route.query }}
+    date: {{ daysIndex.toString() }}
+    hall: {{ hall }}
     <BookingSlotPlayers />
 
   </div>
@@ -22,6 +29,8 @@ const route = useRoute()
 
 <style scoped lang="scss">
 .slot.wrapper {
+  @include appWidth();
+
   .header {
     border-radius: calc($round-corner / 2);
 
