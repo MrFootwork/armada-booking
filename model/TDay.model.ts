@@ -6,9 +6,11 @@ export type Day = {
 		slots: {
 			start: Date
 			end: Date
+			hall: string
+			limit: number
 			players: {
 				name: string
-				withdrawn: boolean
+				active: boolean
 			}[]
 		}[]
 	}[]

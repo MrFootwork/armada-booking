@@ -21,7 +21,7 @@ const props = defineProps<{
     <div class="halls wrapper" v-for="hall in bookingDay.halls">
       <h3 class="halls title"> {{ hall.name }}</h3>
       <div class="time-slots wrapper">
-        <BookTimesSlots v-for="slot in hall.slots" :slot-time="slot" />
+        <BookingDaySlot v-for="slot in hall.slots" :slot-time="slot" />
       </div>
     </div>
 
@@ -33,6 +33,7 @@ const props = defineProps<{
   border-radius: calc($round-corner / 2);
 
   padding: 1rem;
+  margin-top: 1rem;
   width: 90vw;
   max-width: 600px;
 
@@ -44,7 +45,7 @@ const props = defineProps<{
   background-color: $card-color;
   box-shadow:
     3px 3px 10px 2px #111,
-    -1px -1px 10px -1px #666;
+    -1px -1px 6px -1px #999;
 
   .weekday {
     border-radius: calc($round-corner / 3);
@@ -74,6 +75,11 @@ const props = defineProps<{
     text-align: center;
   }
 
-  .time-slots.wrapper {}
+  .time-slots.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: wrap
+  }
 }
 </style>

@@ -16,12 +16,16 @@ export default class Calendar {
 		const today_5 = new Date(year, month, firstDay + 5)
 		const today_6 = new Date(year, month, firstDay + 6)
 
+		const hall1 = 'Antilopa'
+		const hall2 = 'Sun Plaza'
+
 		this.days = [
 			{
 				date: today_0,
 				halls: [
 					{
-						name: 'Hall 1',
+						name: hall1,
+						limit: 8,
 						slots: [
 							{
 								start: new Date(
@@ -36,6 +40,18 @@ export default class Calendar {
 									today_0.getDate(),
 									12
 								),
+								hall: hall1,
+								limit: 8,
+								players: [
+									{
+										name: 'Peter',
+										active: false,
+									},
+									{
+										name: 'Michael',
+										active: true,
+									},
+								],
 							},
 							{
 								start: new Date(
@@ -50,11 +66,28 @@ export default class Calendar {
 									today_0.getDate(),
 									19
 								),
+								hall: hall1,
+								limit: 8,
+								players: [
+									{
+										name: 'Peter',
+										active: true,
+									},
+									{
+										name: 'Michael',
+										active: true,
+									},
+									{
+										name: 'Lisa',
+										active: true,
+									},
+								],
 							},
 						],
 					},
 					{
-						name: 'Hall 2',
+						name: hall2,
+						limit: 4,
 						slots: [
 							{
 								start: new Date(
@@ -69,6 +102,22 @@ export default class Calendar {
 									today_0.getDate(),
 									13
 								),
+								hall: hall2,
+								limit: 4,
+								players: [
+									{
+										name: 'Peter',
+										active: true,
+									},
+									{
+										name: 'Jenny',
+										active: true,
+									},
+									{
+										name: 'Lisa',
+										active: true,
+									},
+								],
 							},
 							{
 								start: new Date(
@@ -83,6 +132,22 @@ export default class Calendar {
 									today_0.getDate(),
 									20
 								),
+								hall: hall2,
+								limit: 4,
+								players: [
+									{
+										name: 'Michael',
+										active: true,
+									},
+									{
+										name: 'Jenny',
+										active: false,
+									},
+									{
+										name: 'Lisa',
+										active: true,
+									},
+								],
 							},
 						],
 					},
@@ -92,35 +157,68 @@ export default class Calendar {
 				date: today_1,
 				halls: [
 					{
-						name: 'Hall 1',
+						name: hall1,
+						limit: 8,
 						slots: [
 							{
 								start: new Date(
 									today_0.getFullYear(),
 									today_0.getMonth(),
-									today_0.getDate(),
+									today_0.getDate() + 1,
 									8
 								),
 								end: new Date(
 									today_0.getFullYear(),
 									today_0.getMonth(),
-									today_0.getDate(),
+									today_0.getDate() + 1,
 									10
 								),
+								hall: hall1,
+								limit: 8,
+								players: [
+									{
+										name: 'Peter',
+										active: true,
+									},
+									{
+										name: 'Michael',
+										active: true,
+									},
+									{
+										name: 'Jenny',
+										active: true,
+									},
+								],
 							},
 							{
 								start: new Date(
 									today_0.getFullYear(),
 									today_0.getMonth(),
-									today_0.getDate(),
+									today_0.getDate() + 1,
 									12
 								),
 								end: new Date(
 									today_0.getFullYear(),
 									today_0.getMonth(),
-									today_0.getDate(),
+									today_0.getDate() + 1,
 									14
 								),
+								hall: hall1,
+								limit: 8,
+								players: [
+									{
+										name: 'Peter',
+										active: true,
+									},
+									{
+										name: 'Jenny',
+										active: true,
+									},
+									{
+										name: 'Lisa',
+										active: true,
+									},
+								],
 							},
 						],
 					},

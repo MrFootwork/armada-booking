@@ -14,7 +14,7 @@
   background-color: $card-color;
   box-shadow      :
     10px 10px 10px -5px #111,
-    -5px -5px 7px -3px #444;
+    -2px -2px 7px -3px #777;
 }
 
 @mixin body() {
@@ -27,8 +27,5 @@
     display        : flex;
     align-items    : center;
     justify-content: center;
-
-    height: 100vh;
-
   }
 }

@@ -1,9 +1,3 @@
-<template>
-  <div>
-    <span>{{ loadingText }}</span>
-  </div>
-</template>
-
 <script setup lang="ts">
 
 const loadingText = ref('loading')
@@ -21,6 +15,12 @@ onMounted(() => {
 })
 </script>
 
+<template>
+  <div>
+    <span>{{ loadingText }}</span>
+  </div>
+</template>
+
 <style lang="scss">
 @include body()
 </style>
@@ -28,6 +28,11 @@ onMounted(() => {
 <style scoped lang="scss">
 div {
   width: 5rem;
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   span {
     color: $font-color;

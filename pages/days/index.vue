@@ -9,7 +9,7 @@ const { setLanguage } = languageStore
 onMounted(() => {
   if (languageStore.wasSet) return
   // setLanguage(navigator.language)
-  setLanguage('zh-tw')
+  setLanguage('de-de')
 })
 
 // model
@@ -18,8 +18,8 @@ const calendar = new Calendar()
 </script>
 
 <template>
-  <div>
-    <BookTimesDay v-for="day in calendar.days" :booking-day="day" />
+  <div class="wrapper">
+    <BookingDay v-for="day in calendar.days" :booking-day="day" />
   </div>
 </template>
 
@@ -28,5 +28,5 @@ const calendar = new Calendar()
 </style>
 
 <style scoped lang="scss">
-
+.wrapper {}
 </style>

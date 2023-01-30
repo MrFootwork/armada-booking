@@ -14,6 +14,5 @@ export default function useDate(objDate: Date) {
 		hour: 'numeric',
 		minute: '2-digit',
 	})
-	const slotPath = weekday + time
-	return { weekday, date, time, slotPath }
+	return { weekday, date, time }
 }
