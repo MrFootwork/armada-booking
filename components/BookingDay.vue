@@ -15,6 +15,8 @@ defineProps<{
     <div class="header">
       <span class="weekday"> {{ useDate(bookingDay.date).weekday }}</span>
       <h2 class="date">{{ useDate(bookingDay.date).date }}</h2>
+      <!-- TODO add dynamic weather icon -->
+      <!-- https://openweathermap.org/guide -->
       <img src="icons8-rain-cloud.png" alt="weather" class="weather">
     </div>
 

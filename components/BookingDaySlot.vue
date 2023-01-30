@@ -16,6 +16,7 @@ const paramSlotStart = `start=${useDate(props.slotTime.start).time}`
 const slotPath = `${basePath}/slot?${paramDayIndex}&${paramHall}&${paramSlotStart}`
 
 function navigateToSlot() {
+  console.log(slotPath);
   return navigateTo(slotPath)
 }
 

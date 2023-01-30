@@ -11,7 +11,8 @@ export default function useDate(objDate: Date) {
 		dateStyle: 'long',
 	})
 	const dateISO = objDate.toISOString().substring(0, 10)
-	const time = objDate.toLocaleTimeString(languageStore.preferred, {
+	// routing to slot page requires normal time
+	const time = objDate.toLocaleTimeString('ro-ro', {
 		hour: 'numeric',
 		minute: '2-digit',
 	})
