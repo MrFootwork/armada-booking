@@ -14,11 +14,12 @@ const currentSlot = calendar
   .halls.find(hall => hall.name === hallName)
   ?.slots.find(slot => useDate(slot.start).time === start)
 
+// calculate free seats
+const freeSeats = useSlot(currentSlot!).seatsFree
 const freeSeatCaption = computed(() => {
-  const freeSeats = useSlot(currentSlot!).seatsFree
-  if (freeSeats === 0) return 'This slot is full.'
+  if (freeSeats === 0) return 'booked out'
   if (freeSeats === 1) return 'One spot left'
-  return `${freeSeats} seats free`
+  return `${freeSeats} free seats`
 })
 
 </script>
@@ -49,7 +50,7 @@ const freeSeatCaption = computed(() => {
           <h3 class=" hall-name">{{ currentSlot?.hall }}</h3>
         </div>
         <div class="sub-header-item">
-          <span class="hall-limit">{{ freeSeatCaption }}</span>
+          <span class="hall-limit" :class="{ full: freeSeats === 0 }">{{ freeSeatCaption }}</span>
         </div>
       </div>
 
@@ -156,7 +157,14 @@ const freeSeatCaption = computed(() => {
         margin: 0;
       }
 
-      .hall-limit {}
+      .hall-limit {
+        color: greenyellow;
+
+        &.full {
+          color: hsl(0, 100%, 45%);
+          font-weight: bold;
+        }
+      }
     }
   }
 
