@@ -12,4 +12,13 @@ export default defineNuxtConfig({
 	},
 	css: ['normalize.css/normalize.css'],
 	modules: ['@pinia/nuxt'],
+	// preset for deploying
+	// https://v3.nuxtjs.org/guide/deploy/presets/
+	nitro: {
+		preset: 'node-server',
+	},
+	// https://render.com/docs/deploy-nuxtjs
+	server: {
+		host: '0.0.0.0',
+	},
 })
