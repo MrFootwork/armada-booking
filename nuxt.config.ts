@@ -1,5 +1,22 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+	app: {
+		head: {
+			charset: 'utf-8',
+			viewport: 'width=device-width, initial-scale=1',
+			title: 'Armada App',
+			meta: [
+				// <meta name="description" content="My amazing site">
+				{ name: 'description', content: 'Booking App for Armada Badminton.' },
+			],
+			link: [
+				{
+					rel: 'stylesheet',
+					href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0',
+				},
+			],
+		},
+	},
 	vite: {
 		css: {
 			preprocessorOptions: {

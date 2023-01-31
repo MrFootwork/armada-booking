@@ -12,13 +12,12 @@ const currentSlot = calendar
   .halls.find(hall => hall.name === hallName)
   ?.slots.find(slot => useDate(slot.start).time === start)
 
-useHead({
-  title: `${hallName} ${useDate(currentSlot!.start).weekday}`,
-  link: [{
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0'
-  }]
-})
+// useHead({
+//   link: [{
+//     rel: 'stylesheet',
+//     href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0'
+//   }]
+// })
 </script>
 
 <template>
@@ -30,7 +29,7 @@ useHead({
       </span>
       <span class="weekday"> {{ useDate(currentSlot!.start).weekday }}</span>
       <h2 class="date">{{ useDate(currentSlot!.start).date }}</h2>
-      <img :src="'/icons8-rain-cloud.png'" alt="weather" class="weather">
+      <img :src="'/icons8-rain-cloud.png'" alt="" class="weather">
     </div>
 
     <p>dayIndex: {{ dayIndex }}</p>
