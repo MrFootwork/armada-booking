@@ -12,12 +12,6 @@ const currentSlot = calendar
   .halls.find(hall => hall.name === hallName)
   ?.slots.find(slot => useDate(slot.start).time === start)
 
-// useHead({
-//   link: [{
-//     rel: 'stylesheet',
-//     href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0'
-//   }]
-// })
 </script>
 
 <template>
@@ -29,7 +23,9 @@ const currentSlot = calendar
       </span>
       <span class="weekday"> {{ useDate(currentSlot!.start).weekday }}</span>
       <h2 class="date">{{ useDate(currentSlot!.start).date }}</h2>
-      <img :src="'/icons8-rain-cloud.png'" alt="" class="weather">
+      <div class="weather wrapper">
+        <img :src="'/icons8-rain-cloud.png'" alt="" class="weather">
+      </div>
     </div>
 
     <p>dayIndex: {{ dayIndex }}</p>
@@ -50,22 +46,11 @@ const currentSlot = calendar
   align-items: center;
   justify-content: space-between;
   flex-flow: column;
+
   @include appWidth();
 
   .header {
-    border-radius: calc($round-corner / 2);
-
-    padding: 1rem;
-    margin-top: 1rem;
-    @include appWidth();
-
-    display: grid;
-    grid-template-columns: 2.1rem 4.5rem 1fr 4rem;
-
-    background-color: $card-color;
-    box-shadow:
-      3px 3px 10px 2px #111,
-      -1px -1px 6px -1px #999;
+    @include headerStyle();
 
     .material-symbols-outlined {
       cursor: pointer;
@@ -98,15 +83,20 @@ const currentSlot = calendar
       margin: 0;
       text-align: center;
       line-height: -10px;
-
     }
 
-    .weather {
-      margin: 0;
-      width: 2rem;
-      color: white;
-      text-align: right;
+    .weather.wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+
+      .weather {
+        margin: 0;
+        width: 2rem;
+        color: white;
+      }
     }
+
   }
 }
 </style>

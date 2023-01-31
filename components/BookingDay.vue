@@ -13,11 +13,14 @@ defineProps<{
   <div class="wrapper day">
 
     <div class="header">
+      <div></div>
       <span class="weekday"> {{ useDate(bookingDay.date).weekday }}</span>
       <h2 class="date">{{ useDate(bookingDay.date).date }}</h2>
       <!-- TODO add dynamic weather icon -->
       <!-- https://openweathermap.org/guide -->
-      <img :src="'/icons8-rain-cloud.png'" alt="weather" class="weather">
+      <div class="weather wrapper">
+        <img :src="'/icons8-rain-cloud.png'" alt="weather" class="weather">
+      </div>
     </div>
 
     <!-- TODO add timeline -->
@@ -39,26 +42,13 @@ defineProps<{
   flex-flow: column;
 
   .header {
-    border-radius: calc($round-corner / 2);
-
-    padding: 1rem;
-    margin-top: 1rem;
-    @include appWidth();
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-flow: row;
-
-    background-color: $card-color;
-    box-shadow:
-      3px 3px 10px 2px #111,
-      -1px -1px 6px -1px #999;
+    @include headerStyle();
 
     .weekday {
       border-radius: calc($round-corner / 3);
       padding: .3rem;
       width: 2.5rem;
+      margin: auto;
 
       text-align: center;
 
@@ -70,12 +60,20 @@ defineProps<{
 
     .date {
       margin: 0;
+      text-align: center;
+      line-height: -10px;
     }
 
-    .weather {
-      margin: 0;
-      width: 2rem;
-      color: white;
+    .weather.wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+
+      .weather {
+        margin: 0;
+        width: 2rem;
+        color: white;
+      }
     }
   }
 

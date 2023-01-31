@@ -2,7 +2,7 @@
 @use "@/assets/scss/_variables.scss"as *;
 
 @mixin appWidth() {
-  width    : 90vw;
+  width    : 95vw;
   max-width: 600px;
 }
 
@@ -33,4 +33,23 @@
     align-items    : center;
     justify-content: center;
   }
+}
+
+// header Day and Slot component
+@mixin headerStyle() {
+  border-radius: calc($round-corner / 2);
+  box-sizing   : border-box;
+
+  padding     : 1rem;
+  padding-left: .1rem;
+  margin-top  : 1rem;
+  @include appWidth();
+
+  display              : grid;
+  grid-template-columns: 1fr 2fr 7fr 3fr;
+
+  background-color: $card-color;
+  box-shadow      :
+    3px 3px 10px 2px #111,
+    -1px -1px 6px -1px #999;
 }
