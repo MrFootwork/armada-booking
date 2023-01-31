@@ -17,7 +17,6 @@ const paramSlotStart = `start=${useDate(props.slotTime.start).time}`
 const slotPath = `${basePath}/slot?${paramDayIndex}&${paramHall}&${paramSlotStart}`
 
 function navigateToSlot() {
-  console.log(slotPath);
   return navigateTo(slotPath)
 }
 
@@ -36,7 +35,7 @@ const seatsFree = props.slotTime.limit - seatsTaken
       {{ useDate(slotTime.start).time }} - {{ useDate(slotTime.end).time }}
     </label>
     <div class="divider"></div>
-    <p class="">{{ `${seatsFree} / ${slotTime.limit}` }}</p>
+    <p class="">{{ `${seatsFree} of ${slotTime.limit}` }}</p>
   </div>
 </template>
 
@@ -64,7 +63,6 @@ const seatsFree = props.slotTime.limit - seatsTaken
 
   .divider {
     border: .125rem solid $card-color;
-
   }
 
   p {
