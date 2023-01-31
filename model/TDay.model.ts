@@ -11,6 +11,10 @@ export type Day = {
 			players: {
 				name: string
 				active: boolean
+				friends: {
+					name: string
+					active: boolean
+				}[]
 			}[]
 		}[]
 	}[]

@@ -80,6 +80,16 @@ export default class Calendar {
 									{
 										name: 'Lisa',
 										active: true,
+										friends: [
+											{
+												name: 'Kevin',
+												active: true,
+											},
+											{
+												name: 'Anne',
+												active: true,
+											},
+										],
 									},
 								],
 							},

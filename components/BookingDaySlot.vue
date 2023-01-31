@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Day } from '@/model/TDay.model'
 import useDate from '@/composables/date'
+import useSlot from '@/composables/slot'
 
 const props = defineProps<{
   dayIndex: number,
@@ -22,8 +23,9 @@ function navigateToSlot() {
 
 // id and label
 const hallAndSlot = props.slotTime.hall + props.slotTime.start
+// seats in current slot taken
+const seatsTaken = useSlot(props.slotTime).seatsTaken
 // free seats in current slot
-const seatsTaken = props.slotTime.players.length
 const seatsFree = props.slotTime.limit - seatsTaken
 
 </script>

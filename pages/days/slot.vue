@@ -1,41 +1,61 @@
 <script setup lang="ts">
 import Calendar from '@/model/MCalendar.model'
 import useDate from '@/composables/date'
+import useSlot from '@/composables/slot'
 
+// data
 const calendar = new Calendar();
-// const currentSlot = calculator.days.find
-
+// route params
 const route = useRoute()
 const { dayIndex, hallName, start } = route.query
+
 const currentSlot = calendar
   .days[+dayIndex!]
   .halls.find(hall => hall.name === hallName)
   ?.slots.find(slot => useDate(slot.start).time === start)
+
+const freeSeatCaption = computed(() => {
+  const freeSeats = useSlot(currentSlot!).seatsFree
+  if (freeSeats === 0) return 'This slot is full.'
+  if (freeSeats === 1) return 'One spot left'
+  return `${freeSeats} seats free`
+})
 
 </script>
 
 <template>
   <div class="slot wrapper">
 
-    <div class="header">
-      <span class="material-symbols-outlined" @click="navigateTo('/days')">
-        arrow_back_ios_new
-      </span>
-      <span class="weekday"> {{ useDate(currentSlot!.start).weekday }}</span>
-      <h2 class="date">{{ useDate(currentSlot!.start).date }}</h2>
-      <div class="weather wrapper">
-        <img :src="'/icons8-rain-cloud.png'" alt="" class="weather">
+    <div class="header wrapper">
+
+      <div class="header">
+        <span class="material-symbols-outlined" @click="navigateTo('/days')">
+          arrow_back_ios_new
+        </span>
+        <span class="weekday"> {{ useDate(currentSlot!.start).weekday }}</span>
+        <h2 class="date">{{ useDate(currentSlot!.start).date }}</h2>
+        <div class="weather wrapper">
+          <img :src="'/icons8-rain-cloud.png'" alt="" class="weather">
+        </div>
       </div>
+
+      <div class="sub-header">
+        <div class="sub-header-item ">
+          <span class=" slot-time">{{
+          `${useDate(currentSlot!.start).time}-${useDate(currentSlot!.end).time}`}}
+          </span>
+        </div>
+        <div class="sub-header-item">
+          <h3 class=" hall-name">{{ currentSlot?.hall }}</h3>
+        </div>
+        <div class="sub-header-item">
+          <span class="hall-limit">{{ freeSeatCaption }}</span>
+        </div>
+      </div>
+
     </div>
 
-    <p>dayIndex: {{ dayIndex }}</p>
-    <p>hall: {{ hallName }}</p>
-    <p>start: {{ start }}</p>
-    <p>data: {{ currentSlot }}</p>
-
-    <!-- <p>data: {{ useDate(currentSlot?.slots[0].start).time === start }}</p> -->
-
-    <BookingSlotPlayers />
+    <BookingSlotPlayers :slot="currentSlot!" />
 
   </div>
 </template>
@@ -49,54 +69,96 @@ const currentSlot = calendar
 
   @include appWidth();
 
-  .header {
-    @include headerStyle();
+  .header.wrapper {
+    margin-bottom: 1rem;
 
-    .material-symbols-outlined {
-      cursor: pointer;
-      font-variation-settings:
-        'FILL' 0,
-        'wght' 400,
-        'GRAD' 0,
-        'opsz' 48;
+    .header {
+      @include headerStyle();
+      border-radius: calc($round-corner / 2) calc($round-corner / 2) 0 0;
 
-      text-align: left;
-      line-height: none;
-      text-shadow: 2px 2px 2px #111;
-    }
+      .material-symbols-outlined {
+        cursor: pointer;
+        font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 48;
 
-    .weekday {
-      border-radius: calc($round-corner / 3);
-      padding: .3rem;
-      width: 2.5rem;
-      margin: auto;
+        text-align: left;
+        line-height: none;
+        text-shadow: 2px 2px 2px #111;
+      }
 
-      text-align: center;
+      .weekday {
+        border-radius: calc($round-corner / 3);
+        padding: .3rem;
+        width: 2.5rem;
+        margin: auto;
 
-      background-color: #555;
-      box-shadow:
-        2px 2px 4px 0px #222,
-        -1px -1px 2px -1px #fff;
-    }
+        text-align: center;
 
-    .date {
-      margin: 0;
-      text-align: center;
-      line-height: -10px;
-    }
+        background-color: $label-color;
+        box-shadow:
+          2px 2px 4px 0px #222,
+          -1px -1px 2px -1px #fff;
+      }
 
-    .weather.wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: end;
-
-      .weather {
+      .date {
         margin: 0;
-        width: 2rem;
-        color: white;
+        text-align: center;
+        line-height: -10px;
+      }
+
+      .weather.wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        .weather {
+          margin: 0;
+          width: 2rem;
+          color: white;
+        }
       }
     }
 
+    .sub-header {
+      @include headerStyle();
+
+      // overwrite card styles
+      margin-top: 0;
+      padding: 1.1rem 1.1rem;
+      border-radius: 0 0 $round-corner-small $round-corner-small;
+
+      display: grid;
+      grid-template-columns: 3fr 5fr 3fr;
+
+      background-color: $label-color;
+      box-shadow: none;
+
+      .sub-header-item {
+        display: flex;
+        justify-content: center;
+      }
+
+      .slot-time,
+      .hall-name,
+      .hall-limit {
+        line-height: 0;
+        text-align: center;
+        vertical-align: middle;
+
+      }
+
+      .slot-time {}
+
+      .hall-name {
+        margin: 0;
+      }
+
+      .hall-limit {}
+    }
   }
+
 }
 </style>

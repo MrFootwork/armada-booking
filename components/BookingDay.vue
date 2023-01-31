@@ -52,7 +52,7 @@ defineProps<{
 
       text-align: center;
 
-      background-color: #555;
+      background-color: $label-color;
       box-shadow:
         2px 2px 4px 0px #222,
         -1px -1px 2px -1px #fff;
