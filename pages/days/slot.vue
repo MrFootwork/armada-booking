@@ -30,7 +30,7 @@ useHead({
       </span>
       <span class="weekday"> {{ useDate(currentSlot!.start).weekday }}</span>
       <h2 class="date">{{ useDate(currentSlot!.start).date }}</h2>
-      <img src="icons8-rain-cloud.png" alt="weather" class="weather">
+      <img :src="'/icons8-rain-cloud.png'" alt="weather" class="weather">
     </div>
 
     <p>dayIndex: {{ dayIndex }}</p>
