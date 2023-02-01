@@ -30,9 +30,11 @@ const freeSeatCaption = computed(() => {
     <div class="header wrapper">
 
       <div class="header">
-        <span class="material-symbols-outlined" @click="navigateTo('/days')">
-          arrow_back_ios_new
-        </span>
+        <button class="go-back-button" @click="navigateTo('/days')">
+          <span class="material-symbols-outlined">
+            arrow_back_ios_new
+          </span>
+        </button>
         <span class="weekday"> {{ useDate(currentSlot!.start).weekday }}</span>
         <h2 class="date">{{ useDate(currentSlot!.start).date }}</h2>
         <div class="weather wrapper">
@@ -77,17 +79,46 @@ const freeSeatCaption = computed(() => {
       @include headerStyle();
       border-radius: calc($round-corner / 2) calc($round-corner / 2) 0 0;
 
-      .material-symbols-outlined {
+      .go-back-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         cursor: pointer;
-        font-variation-settings:
-          'FILL' 0,
-          'wght' 400,
-          'GRAD' 0,
-          'opsz' 48;
 
-        text-align: left;
-        line-height: none;
-        text-shadow: 2px 2px 2px #111;
+        background: none;
+        border: none;
+
+        &:hover,
+        &:active {
+          background-color: $card-color-secondary;
+          border-radius: $round-corner-small;
+        }
+
+        &:hover {
+          box-shadow:
+            2px 2px 4px 0px #222,
+            -1px -1px 2px -1px #fff;
+        }
+
+        &:active {
+          transform: translateY(2px);
+          box-shadow:
+            2px 2px 4px -1px #222,
+            -1px -1px 2px -2px #fff;
+        }
+
+        .material-symbols-outlined {
+          font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 48;
+
+          text-align: left;
+          line-height: none;
+          color: white;
+          text-shadow: 2px 2px 2px #111;
+        }
       }
 
       .weekday {
@@ -148,7 +179,6 @@ const freeSeatCaption = computed(() => {
         line-height: 0;
         text-align: center;
         vertical-align: middle;
-
       }
 
       .slot-time {}

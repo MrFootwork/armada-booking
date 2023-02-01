@@ -47,6 +47,7 @@ const seatsFree = props.slotTime.limit - seatsTaken
   margin: 1rem;
   width: 35vw;
   max-width: 15rem;
+  cursor: pointer;
 
   text-align: center;
 
@@ -54,11 +55,17 @@ const seatsFree = props.slotTime.limit - seatsTaken
     4px 4px 5px -2px #111,
     -2px -2px 7px -4px #ccc;
 
+  &:active {
+    transform: translateY(2px);
+  }
+
   label.time {
     display: block;
     box-sizing: content-box;
     padding: 1rem;
     font-size: 1.5rem;
+    cursor: pointer;
+
   }
 
   .divider {
