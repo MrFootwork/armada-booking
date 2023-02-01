@@ -189,14 +189,15 @@ const freeSeatCaption = computed(() => {
 
       .hall-limit {
         color: greenyellow;
+        text-shadow: 1px 1px 2px #222;
 
         &.full {
-          color: hsl(0, 100%, 45%);
+          color: hsl(0, 100%, 65%);
           font-weight: bold;
+          text-shadow: 1px 1px 2px #222;
         }
       }
     }
   }
-
 }
 </style>
