@@ -67,7 +67,7 @@ defineProps<{
     .weather.wrapper {
       display: flex;
       align-items: center;
-      justify-content: end;
+      justify-content: flex-end;
 
       .weather {
         margin: 0;
