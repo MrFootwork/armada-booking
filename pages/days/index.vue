@@ -11,6 +11,12 @@ onMounted(() => {
   setLanguage(navigator.language)
 })
 
+// test
+let device = ''
+onMounted(() => {
+  device = navigator.userAgent
+})
+
 // model
 const calendar = new Calendar()
 
@@ -18,6 +24,7 @@ const calendar = new Calendar()
 
 <template>
   <div class="wrapper">
+    {{ device }}
     <BookingDay v-for="(day, i) in calendar.days" :booking-day="day" :day-index="i" />
   </div>
 </template>
