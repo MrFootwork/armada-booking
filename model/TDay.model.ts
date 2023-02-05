@@ -9,12 +9,19 @@ export type Day = {
 			courtNumber: string
 			slots: {
 				ID: string
+				hourIndex: number
+				coach: {
+					ID: string
+					name: string
+				}
 				start: Date
 				end: Date
 				bookingDate: Date
 				player: {
 					ID: string
 					name: string
+					// BUG @Cristi:
+					// Are friends user objects or just strings?
 					friends: {
 						ID: string
 						name: string
