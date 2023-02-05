@@ -1,20 +1,25 @@
 export type Day = {
 	date: Date
-	halls: {
+	gyms: {
+		ID: string
 		name: string
-		limit: number
-		slots: {
-			start: Date
-			end: Date
-			hall: string
-			limit: number
-			players: {
-				name: string
-				active: boolean
-				friends: {
+		place: string
+		courts: {
+			ID: string
+			courtNumber: string
+			slots: {
+				ID: string
+				start: Date
+				end: Date
+				bookingDate: Date
+				player: {
+					ID: string
 					name: string
-					active: boolean
-				}[]
+					friends: {
+						ID: string
+						name: string
+					}[]
+				}
 			}[]
 		}[]
 	}[]
