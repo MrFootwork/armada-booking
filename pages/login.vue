@@ -7,7 +7,7 @@ function onLogin() {
 <template>
   <div class="wrapper">
     <img class="logo" src="/logo.png" alt="logo">
-    <form class="card" @submit.prevent>
+    <form class="login" @submit.prevent>
       <input type="password" name="password" id="password" placeholder="Enter password here!">
       <button @click="onLogin">Login</button>
     </form>
@@ -32,12 +32,11 @@ div.wrapper {
     translate: 0 calc(-100vh / 3);
   }
 
-  form.card {
+  form.login {
     @include cardStyle;
     outline: none;
 
     width: clamp(10rem, 50vw, 20rem);
-    // translate: 0 -16.5vh;
 
     input {
       border: none;

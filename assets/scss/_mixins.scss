@@ -22,12 +22,21 @@
     -2px -2px 7px -3px #777;
 }
 
+// FIXME apply stable and changeable dark mode
+// https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
 @mixin body() {
   body {
-    background-color  : $background-color;
-    color             : $font-color;
+    background-color: $background-color-light;
+    color           : $font-color;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: $background-color-dark;
+      color           : $font-color;
+    }
+
     @import url('https://fonts.googleapis.com/css2?family=Cabin&display=swap');
-    font-family       : 'Cabin', sans-serif;
+    font-family       : 'Cabin',
+    sans-serif;
 
     display        : flex;
     align-items    : center;
