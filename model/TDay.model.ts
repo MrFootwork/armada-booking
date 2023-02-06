@@ -27,6 +27,11 @@ export type Day = {
 						name: string
 					}[]
 				}
+				// BUG alternative, if each user needs a valid account
+				players: {
+					ID: string
+					name: string
+				}[]
 			}[]
 		}[]
 	}[]
