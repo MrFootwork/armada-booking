@@ -46,10 +46,10 @@ div.wrapper {
 
       width: 100%;
 
-      color: $font-color;
+      // color: $font-color;
       text-align: center;
 
-      background-color: $card-color;
+      background-color: $card-color-primary-light;
       box-shadow:
         inset 2px 2px 5px 1px #222,
         inset -2px -2px 5px -3px #777;
@@ -63,10 +63,10 @@ div.wrapper {
       width: 100%;
       cursor: pointer;
 
-      color: $font-color;
+      // color: $font-color;
       text-align: center;
 
-      background-color: $card-color;
+      background-color: $card-color-primary-light;
       box-shadow:
         2px 2px 5px 1px #222,
         -2px -2px 5px -3px #777;

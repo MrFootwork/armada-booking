@@ -35,7 +35,7 @@ div {
   justify-content: center;
 
   span {
-    color: $font-color;
+    // color: $font-color;
   }
 }
 </style>

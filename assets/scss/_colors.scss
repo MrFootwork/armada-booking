@@ -1,16 +1,21 @@
 // background
-$background-color-light: hsl(240, 10%, 90%);
+$background-color-light: hsl(240, 10%, 96%);
 $background-color-dark : hsl(240, 10%, 13%);
 
 // cards
-$card-color          : hsl(240, 10%, 20.5%);
-$card-color-secondary: hsl(240, 10%, 41%);
+$card-color-primary-light  : hsl(240, 10%, 92%);
+$card-color-secondary-light: hsl(240, 10%, 86%);
+
+$card-color-primary-dark   : hsl(240, 10%, 20.5%);
+$card-color-secondary-dark : hsl(240, 10%, 41%);
 
 // header
-$label-color : hsl(240, 0%, 33%);
+$label-color-light : hsl(240, 0%, 66%);
+$label-color-dark  : hsl(240, 0%, 33%);
 
 // buttons
 $button-color: rgb(36, 0, 140);
 
 // font color
-$font-color: white;
+$font-color-light: black;
+$font-color-dark : white;

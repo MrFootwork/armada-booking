@@ -90,7 +90,7 @@ const freeSeatCaption = computed(() => {
 
         &:hover,
         &:active {
-          background-color: $card-color-secondary;
+          background-color: $card-color-secondary-light;
           border-radius: $round-corner-small;
         }
 
