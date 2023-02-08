@@ -23,8 +23,7 @@ function toggleDarkMode() {
 <template>
   <div>
     <button @click="toggleDarkMode">
-      <SvgIcon fill="var(--font-color)" type="mdi" :path="mdiThemeLightDark"></SvgIcon>
-      <!-- <SvgIcon type="mdi" :path="mdiThemeLightDark"></SvgIcon> -->
+      <SvgIcon class="icon" type="mdi" :path="mdiThemeLightDark"></SvgIcon>
     </button>
 
     <slot />
@@ -32,5 +31,7 @@ function toggleDarkMode() {
 </template>
 
 <style lang="scss">
-
+.icon {
+  color: var(--font-color)
+}
 </style>
