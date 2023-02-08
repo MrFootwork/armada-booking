@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiThemeLightDark } from '@mdi/js';
+
 function onLogin() {
   navigateTo('/days')
 }
@@ -29,6 +32,7 @@ function toggleDarkMode() {
       <button @click="onLogin">Login</button>
       <p class="test">test</p>
       <button @click="toggleDarkMode">Toggle Theme</button>
+      <SvgIcon fill="var(--font-color)" type="mdi" :path="mdiThemeLightDark"></SvgIcon>
     </form>
 
   </div>
