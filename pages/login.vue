@@ -2,6 +2,23 @@
 function onLogin() {
   navigateTo('/days')
 }
+
+// FIXME put this into composable and add it to a layout button
+function toggleDarkMode() {
+  if (document.documentElement.classList.contains("light")) {
+    document.documentElement.classList.remove("light")
+    document.documentElement.classList.add("dark")
+  } else if (document.documentElement.classList.contains("dark")) {
+    document.documentElement.classList.remove("dark")
+    document.documentElement.classList.add("light")
+  } else {
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add("dark")
+    } else {
+      document.documentElement.classList.add("light")
+    }
+  }
+}
 </script>
 
 <template>
@@ -10,15 +27,22 @@ function onLogin() {
     <form class="login" @submit.prevent>
       <input type="password" name="password" id="password" placeholder="Enter password here!">
       <button @click="onLogin">Login</button>
+      <p class="test">test</p>
+      <button @click="toggleDarkMode">Toggle Theme</button>
     </form>
+
   </div>
 </template>
 
 <style lang="scss">
-@include body()
+// @include body()
 </style>
 
 <style scoped lang="scss">
+.test {
+  color: var(--font-color)
+}
+
 div.wrapper {
   display: flex;
   align-items: center;

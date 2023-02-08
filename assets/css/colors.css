@@ -1,0 +1,34 @@
+/* https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting */
+/* automatic/manual light mode */
+:root, :root.light {
+  --background-color: hsl(240, 10%, 96%);
+  --card-color-primary: hsl(240, 10%, 92%);
+  --card-color-secondary: hsl(240, 10%, 86%);
+  --label-color: hsl(240, 0%, 66%);
+  --button-color: rgb(36, 0, 140);
+  --font-color: black;
+}
+
+/* automatic dark mode */
+/* ❗️ keep the rules in sync with the manual dark mode below! */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: hsl(240, 10%, 13%);
+    --card-color-primary: hsl(240, 10%, 20.5%);
+    --card-color-secondary: hsl(240, 10%, 41%);
+    --label-color: hsl(240, 0%, 33%);
+    --button-color: rgb(36, 0, 140);
+    --font-color: white;
+  }
+}
+
+/* manual dark mode 
+/* ❗️ keep the rules in sync with the automatic dark mode above! */
+:root.dark {
+  --background-color: hsl(240, 10%, 13%);
+  --card-color-primary: hsl(240, 10%, 20.5%);
+  --card-color-secondary: hsl(240, 10%, 41%);
+  --label-color: hsl(240, 0%, 33%);
+  --button-color: rgb(36, 0, 140);
+  --font-color: white;
+}

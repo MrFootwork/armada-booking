@@ -27,7 +27,7 @@ export default defineNuxtConfig({
 			},
 		},
 	},
-	css: ['normalize.css/normalize.css'],
+	css: ['normalize.css/normalize.css', '@/assets/css/colors.css'],
 	modules: ['@pinia/nuxt'],
 	// preset for deploying
 	// https://v3.nuxtjs.org/guide/deploy/presets/

@@ -16,37 +16,27 @@
   flex-flow      : column;
   gap            : 2rem;
 
-  background-color: $card-color-primary-light;
+  background-color: var(--card-color-primary);
   box-shadow      :
     10px 10px 10px -5px #111,
     -2px -2px 7px -3px #777;
 }
 
+@mixin styleBody($theme-name) {
+
+  body.theme-#{$theme-name} {
+    @content;
+  }
+
+}
+
 // FIXME apply stable and changeable dark mode
 // https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
 @mixin body() {
-  :root {
-    @media (prefers-color-scheme: light) {
-      color: $font-color-light;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      color: $font-color-dark;
-    }
-  }
-
   body {
-    @media (prefers-color-scheme: light) {
-      background-color: $background-color-light;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      background-color: $background-color-dark;
-    }
-
     @import url('https://fonts.googleapis.com/css2?family=Cabin&display=swap');
     font-family       : 'Cabin',
-    sans-serif;
+      sans-serif;
 
     display        : flex;
     align-items    : center;
@@ -67,6 +57,7 @@
   grid-template-columns: 1fr 2fr 7fr 3fr;
 
   background-color: $card-color-primary-light;
+  background-color: var(--card-color-primary);
   box-shadow      :
     3px 3px 10px 2px #111,
     -1px -1px 6px -1px #999;
