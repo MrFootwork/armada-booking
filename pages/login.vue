@@ -1,26 +1,10 @@
 <script setup lang="ts">
-import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiThemeLightDark } from '@mdi/js';
+// definePageMeta({
+//   layout: "default",
+// });
 
 function onLogin() {
   navigateTo('/days')
-}
-
-// FIXME put this into composable and add it to a layout button
-function toggleDarkMode() {
-  if (document.documentElement.classList.contains("light")) {
-    document.documentElement.classList.remove("light")
-    document.documentElement.classList.add("dark")
-  } else if (document.documentElement.classList.contains("dark")) {
-    document.documentElement.classList.remove("dark")
-    document.documentElement.classList.add("light")
-  } else {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.documentElement.classList.add("dark")
-    } else {
-      document.documentElement.classList.add("light")
-    }
-  }
 }
 </script>
 
@@ -31,8 +15,6 @@ function toggleDarkMode() {
       <input type="password" name="password" id="password" placeholder="Enter password here!">
       <button @click="onLogin">Login</button>
       <p class="test">test</p>
-      <button @click="toggleDarkMode">Toggle Theme</button>
-      <SvgIcon fill="var(--font-color)" type="mdi" :path="mdiThemeLightDark"></SvgIcon>
     </form>
 
   </div>
