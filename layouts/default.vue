@@ -18,6 +18,12 @@ function toggleDarkMode() {
     }
   }
 }
+
+onBeforeMount(() => {
+
+  toggleDarkMode()
+
+})
 </script>
 
 <template>
@@ -30,8 +36,22 @@ function toggleDarkMode() {
   </div>
 </template>
 
-<style lang="scss">
-.icon {
-  color: var(--font-color)
+<style scoped lang="scss">
+button {
+  border-radius: 50%;
+  width: 3rem;
+  aspect-ratio: 1 / 1;
+
+  background-color: var(--card-color-primary);
+  border: none;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .icon {
+    color: var(--font-color);
+  }
 }
 </style>

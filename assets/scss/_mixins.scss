@@ -25,13 +25,13 @@
 @mixin inputShadow() {
   box-shadow:
     inset 2px 2px 5px 1px var(--ui-shadow-dark),
-    inset -2px -2px var(--ui-shadow-blurr) -2px var(--ui-shadow-light);
+    inset -2px -2px var(--ui-shadow-blur) -2px var(--ui-shadow-light);
 }
 
 @mixin buttonShadow() {
   box-shadow:
     2px 2px 5px 1px var(--ui-shadow-dark),
-    -2px -2px var(--ui-shadow-blurr) -2px var(--ui-shadow-light);
+    -2px -2px var(--ui-shadow-blur) -2px var(--ui-shadow-light);
 }
 
 // FIXME apply stable and changeable dark mode
