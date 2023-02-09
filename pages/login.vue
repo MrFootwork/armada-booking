@@ -24,10 +24,6 @@ function onLogin() {
 </style>
 
 <style scoped lang="scss">
-.test {
-  color: var(--font-color)
-}
-
 div.wrapper {
   display: flex;
   align-items: center;
@@ -55,13 +51,11 @@ div.wrapper {
 
       width: 100%;
 
-      // color: $font-color;
+      color: var(--font-color);
       text-align: center;
 
-      background-color: $card-color-primary-light;
-      box-shadow:
-        inset 2px 2px 5px 1px #222,
-        inset -2px -2px 5px -3px #777;
+      background-color: var(--card-color-primary);
+      @include inputShadow();
     }
 
     button {
@@ -72,22 +66,19 @@ div.wrapper {
       width: 100%;
       cursor: pointer;
 
-      // color: $font-color;
+      color: var(--font-color);
       text-align: center;
 
-      // background-color: $card-color-primary-light;
       background-color: var(--card-color-primary);
-      box-shadow:
-        2px 2px 5px 1px #222,
-        -2px -2px 5px -3px #777;
+      @include buttonShadow();
 
       &:hover,
       &:focus {
-        background-color: $button-color;
+        background-color: var(--button-color);
       }
 
       &:active {
-        background-color: $button-color;
+        background-color: var(--button-color);
         transform: translateY(2px);
       }
     }

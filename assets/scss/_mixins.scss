@@ -18,23 +18,25 @@
 
   background-color: var(--card-color-primary);
   box-shadow      :
-    10px 10px 10px -5px #111,
-    -2px -2px 7px -3px #777;
+    10px 10px 8px -7px var(--card-shadow-dark),
+    -2px -2px 7px -3px var(--card-shadow-light);
+}
+
+@mixin inputShadow() {
+  box-shadow:
+    inset 2px 2px 5px 1px var(--ui-shadow-dark),
+    inset -2px -2px var(--ui-shadow-blurr) -2px var(--ui-shadow-light);
+}
+
+@mixin buttonShadow() {
+  box-shadow:
+    2px 2px 5px 1px var(--ui-shadow-dark),
+    -2px -2px var(--ui-shadow-blurr) -2px var(--ui-shadow-light);
 }
 
 // FIXME apply stable and changeable dark mode
 // https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
-@mixin body() {
-  body {
-    @import url('https://fonts.googleapis.com/css2?family=Cabin&display=swap');
-    font-family       : 'Cabin',
-      sans-serif;
-
-    display        : flex;
-    align-items    : center;
-    justify-content: center;
-  }
-}
+@mixin body() {}
 
 // header Day and Slot component
 @mixin headerStyle() {
