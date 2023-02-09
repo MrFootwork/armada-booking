@@ -6,7 +6,6 @@ export default defineNuxtConfig({
 			viewport: 'width=device-width, initial-scale=1',
 			title: 'Armada App',
 			meta: [
-				// <meta name="description" content="My amazing site">
 				{ name: 'description', content: 'Booking App for Armada Badminton.' },
 			],
 			link: [
@@ -27,7 +26,11 @@ export default defineNuxtConfig({
 			},
 		},
 	},
-	css: ['normalize.css/normalize.css', '@/assets/css/colors.css'],
+	css: [
+		'normalize.css/normalize.css',
+		'@/assets/css/colors.css',
+		'@/assets/css/basic.css',
+	],
 	modules: ['@pinia/nuxt'],
 	// preset for deploying
 	// https://v3.nuxtjs.org/guide/deploy/presets/

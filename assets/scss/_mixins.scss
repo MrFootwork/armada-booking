@@ -22,14 +22,6 @@
     -2px -2px 7px -3px #777;
 }
 
-@mixin styleBody($theme-name) {
-
-  body.theme-#{$theme-name} {
-    @content;
-  }
-
-}
-
 // FIXME apply stable and changeable dark mode
 // https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
 @mixin body() {

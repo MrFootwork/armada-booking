@@ -1,11 +1,11 @@
 <script setup lang="ts">
-// definePageMeta({
-//   layout: "default",
-// });
 
 function onLogin() {
+
   navigateTo('/days')
+
 }
+
 </script>
 
 <template>
@@ -14,7 +14,6 @@ function onLogin() {
     <form class="login" @submit.prevent>
       <input type="password" name="password" id="password" placeholder="Enter password here!">
       <button @click="onLogin">Login</button>
-      <p class="test">test</p>
     </form>
 
   </div>
@@ -76,7 +75,8 @@ div.wrapper {
       // color: $font-color;
       text-align: center;
 
-      background-color: $card-color-primary-light;
+      // background-color: $card-color-primary-light;
+      background-color: var(--card-color-primary);
       box-shadow:
         2px 2px 5px 1px #222,
         -2px -2px 5px -3px #777;
