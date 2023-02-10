@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Day } from '@/model/TDay.model'
 import useDate from '@/composables/date'
+import SvgIcon from '@jamescoyle/vue-icon';
+import { mdiWeatherPartlyRainy } from '@mdi/js';
 
 defineProps<{
   bookingDay: Day,
@@ -19,7 +21,7 @@ defineProps<{
       <!-- TODO add dynamic weather icon -->
       <!-- https://openweathermap.org/guide -->
       <div class="weather wrapper">
-        <img :src="'/icons8-rain-cloud.png'" alt="weather" class="weather">
+        <SvgIcon class="icon" type="mdi" :path="mdiWeatherPartlyRainy"></SvgIcon>
       </div>
     </div>
 
@@ -53,9 +55,7 @@ defineProps<{
       text-align: center;
 
       background-color: var(--label-color);
-      box-shadow:
-        2px 2px 4px 0px #222,
-        -1px -1px 2px -1px #fff;
+      @include weekdayShadow();
     }
 
     .date {
@@ -72,7 +72,7 @@ defineProps<{
       .weather {
         margin: 0;
         width: 2rem;
-        color: white;
+        color: var(--font-color);
       }
     }
   }
@@ -90,7 +90,6 @@ defineProps<{
       align-items: center;
       justify-content: center;
       flex-flow: wrap;
-      // @include appWidth();
     }
   }
 

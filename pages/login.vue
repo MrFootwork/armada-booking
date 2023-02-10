@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 function onLogin() {
 
   navigateTo('/days')
@@ -15,7 +14,6 @@ function onLogin() {
       <input type="password" name="password" id="password" placeholder="Enter password here!">
       <button @click="onLogin">Login</button>
     </form>
-
   </div>
 </template>
 

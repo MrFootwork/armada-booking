@@ -34,6 +34,12 @@
     -2px -2px var(--ui-shadow-blur) -2px var(--ui-shadow-light);
 }
 
+@mixin weekdayShadow() {
+  box-shadow:
+    2px 2px 4px 0px var(--weather-shadow-dark),
+    -1px -1px var(--weather-shadow-blur) -0px var(--weather-shadow-light);
+}
+
 // header Day and Slot component
 @mixin headerStyle() {
   border-radius: $round-corner-small;
@@ -48,6 +54,6 @@
 
   background-color: var(--card-color-primary);
   box-shadow      :
-    3px 3px 10px 2px #111,
-    -1px -1px 6px -1px #999;
+    4px 4px 10px -3px var(--ui-shadow-dark),
+    -2px -2px var(--ui-shadow-blur) -2px var(--ui-shadow-light);
 }

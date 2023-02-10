@@ -9,7 +9,10 @@
   --card-shadow-light   : #fff;
   --ui-shadow-dark      : #999;
   --ui-shadow-light     : #fff;
-  --ui-shadow-blur      : 20px;
+  --ui-shadow-blur      : 10px;
+  --weather-shadow-dark : #888;
+  --weather-shadow-light: #fff;
+  --weather-shadow-blur : 5px;
   --label-color         : hsl(240, 0%, 66%);
   --button-color        : rgb(36, 0, 140);
   --button-font-hover   : white;
@@ -29,6 +32,9 @@
     --ui-shadow-dark      : #222;
     --ui-shadow-light     : #777;
     --ui-shadow-blur      : 5px;
+    --weather-shadow-dark : #222;
+    --weather-shadow-light: #fff;
+    --weather-shadow-blur : 2px;
     --label-color         : hsl(240, 0%, 33%);
     --button-color        : rgb(36, 0, 140);
     --button-font-hover   : white;
@@ -48,6 +54,9 @@
   --ui-shadow-dark      : #222;
   --ui-shadow-light     : #777;
   --ui-shadow-blur      : 5px;
+  --weather-shadow-dark : #222;
+  --weather-shadow-light: #777;
+  --weather-shadow-blur : 2px;
   --label-color         : hsl(240, 0%, 33%);
   --button-color        : rgb(36, 0, 140);
   --button-font-hover   : white;

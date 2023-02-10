@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SvgIcon from '@jamescoyle/vue-icon';
-import { mdiThemeLightDark } from '@mdi/js';
+import { mdiBrightness6 } from '@mdi/js';
 
 // FIXME put this into composable and add it to a layout button
 function toggleDarkMode() {
@@ -29,7 +29,7 @@ onBeforeMount(() => {
 <template>
   <div>
     <button @click="toggleDarkMode">
-      <SvgIcon class="icon" type="mdi" :path="mdiThemeLightDark"></SvgIcon>
+      <SvgIcon class="icon" type="mdi" :path="mdiBrightness6"></SvgIcon>
     </button>
 
     <slot />
