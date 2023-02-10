@@ -22,10 +22,6 @@ const calendar = new Calendar()
   </div>
 </template>
 
-<style lang="scss">
-@include body()
-</style>
-
 <style scoped lang="scss">
 .wrapper {}
 </style>

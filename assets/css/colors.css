@@ -1,49 +1,56 @@
 /* https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting */
 /* automatic/manual light mode */
-:root, :root.light {
-  --background-color: hsl(240, 10%, 92%);
-  --card-color-primary: hsl(240, 10%, 86%);
+:root,
+:root.light {
+  --background-color    : hsl(240, 10%, 92%);
+  --card-color-primary  : hsl(240, 10%, 86%);
   --card-color-secondary: hsl(240, 10%, 80%);
-  --card-shadow-dark: #777;    
-  --card-shadow-light: #fff;   
-  --ui-shadow-dark: #999;   
-  --ui-shadow-light: #fff;   
-  --ui-shadow-blur: 20px;   
-  --label-color: hsl(240, 0%, 66%);
-  --button-color: rgb(36, 0, 140);
-  --font-color: black;
+  --card-shadow-dark    : #777;
+  --card-shadow-light   : #fff;
+  --ui-shadow-dark      : #999;
+  --ui-shadow-light     : #fff;
+  --ui-shadow-blur      : 20px;
+  --label-color         : hsl(240, 0%, 66%);
+  --button-color        : rgb(36, 0, 140);
+  --button-font-hover   : white;
+  --font-color          : black;
+  --highlight-color     : #732937;
 }
 
 /* automatic dark mode */
 /* ❗️ keep the rules in sync with the manual dark mode below! */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background-color: hsl(240, 10%, 13%);
-    --card-color-primary: hsl(240, 10%, 20.5%);
+    --background-color    : hsl(240, 10%, 13%);
+    --card-color-primary  : hsl(240, 10%, 20.5%);
     --card-color-secondary: hsl(240, 10%, 41%);
-    --card-shadow-dark: #111;    
-    --card-shadow-light: #777;   
-    --ui-shadow-dark: #222;   
-    --ui-shadow-light: #777;   
-    --ui-shadow-blur: 5px;   
-    --label-color: hsl(240, 0%, 33%);
-    --button-color: rgb(36, 0, 140);
-    --font-color: white;
+    --card-shadow-dark    : #111;
+    --card-shadow-light   : #777;
+    --ui-shadow-dark      : #222;
+    --ui-shadow-light     : #777;
+    --ui-shadow-blur      : 5px;
+    --label-color         : hsl(240, 0%, 33%);
+    --button-color        : rgb(36, 0, 140);
+    --button-font-hover   : white;
+    --font-color          : white;
+    --highlight-color     : #732937;
   }
 }
 
 /* manual dark mode 
 /* ❗️ keep the rules in sync with the automatic dark mode above! */
 :root.dark {
-  --background-color: hsl(240, 10%, 13%);
-  --card-color-primary: hsl(240, 10%, 20.5%);
+  --background-color    : hsl(240, 10%, 13%);
+  --card-color-primary  : hsl(240, 10%, 20.5%);
   --card-color-secondary: hsl(240, 10%, 41%);
-  --card-shadow-dark: #111;    
-  --card-shadow-light: #777;   
-  --ui-shadow-dark: #222;   
-  --ui-shadow-light: #777;   
-  --ui-shadow-blur: 5px;
-  --label-color: hsl(240, 0%, 33%);
-  --button-color: rgb(36, 0, 140);
-  --font-color: white;
+  --card-shadow-dark    : #111;
+  --card-shadow-light   : #777;
+  --ui-shadow-dark      : #222;
+  --ui-shadow-light     : #777;
+  --ui-shadow-blur      : 5px;
+  --label-color         : hsl(240, 0%, 33%);
+  --button-color        : rgb(36, 0, 140);
+  --button-font-hover   : white;
+  --font-color          : white;
+  --highlight-color     : #732937;
 }

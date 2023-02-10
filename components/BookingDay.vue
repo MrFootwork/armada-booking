@@ -24,10 +24,10 @@ defineProps<{
     </div>
 
     <!-- TODO add timeline -->
-    <div class="halls wrapper" v-for="hall in bookingDay.halls">
-      <h3 class="halls title"> {{ hall.name }}</h3>
+    <div class="halls wrapper" v-for="gym in bookingDay.gyms">
+      <h3 class="halls title"> {{ gym.name }}</h3>
       <div class="time-slots wrapper">
-        <BookingDaySlot v-for="slot in hall.slots" :slot-time="slot" :day-index="dayIndex" />
+        <!-- <BookingDaySlot v-for="slot in gym.slots" :slot-time="slot" :day-index="dayIndex" /> -->
       </div>
     </div>
 
@@ -52,7 +52,7 @@ defineProps<{
 
       text-align: center;
 
-      background-color: $label-color;
+      background-color: var(--label-color);
       box-shadow:
         2px 2px 4px 0px #222,
         -1px -1px 2px -1px #fff;

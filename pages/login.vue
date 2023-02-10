@@ -19,10 +19,6 @@ function onLogin() {
   </div>
 </template>
 
-<style lang="scss">
-// @include body()
-</style>
-
 <style scoped lang="scss">
 div.wrapper {
   display: flex;
@@ -74,11 +70,13 @@ div.wrapper {
 
       &:hover,
       &:focus {
-        background-color: var(--button-color);
+        background-color: var(--highlight-color);
+        color: var(--button-font-hover);
       }
 
       &:active {
-        background-color: var(--button-color);
+        background-color: var(--highlight-color);
+        color: var(--button-font-hover);
         transform: translateY(2px);
       }
     }

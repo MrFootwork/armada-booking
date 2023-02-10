@@ -34,10 +34,6 @@
     -2px -2px var(--ui-shadow-blur) -2px var(--ui-shadow-light);
 }
 
-// FIXME apply stable and changeable dark mode
-// https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
-@mixin body() {}
-
 // header Day and Slot component
 @mixin headerStyle() {
   border-radius: $round-corner-small;
@@ -50,7 +46,6 @@
   display              : grid;
   grid-template-columns: 1fr 2fr 7fr 3fr;
 
-  background-color: $card-color-primary-light;
   background-color: var(--card-color-primary);
   box-shadow      :
     3px 3px 10px 2px #111,
