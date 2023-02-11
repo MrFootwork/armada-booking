@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SvgIcon from '@jamescoyle/vue-icon';
+import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue';
 import { mdiBrightness6 } from '@mdi/js';
 
 // FIXME put this into composable and add it to a layout button
