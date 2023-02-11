@@ -25,9 +25,7 @@ const calendar = new Calendar()
       <h1>test</h1>
     </header>
 
-    <div class="calendar">
-      <BookingDay />
-    </div>
+    <Schedule />
 
   </div>
 </template>
@@ -37,6 +35,5 @@ const calendar = new Calendar()
 
   header {}
 
-  .calendar {}
 }
 </style>
