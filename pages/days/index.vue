@@ -20,7 +20,6 @@ const calendar = new Calendar()
 
 <template>
   <div class="wrapper">
-    <BookingDay v-for="(day, i) in calendar.days" :booking-day="day" :day-index="i" />
   </div>
 </template>
 

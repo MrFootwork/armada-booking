@@ -27,31 +27,50 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div>
-    <button @click="toggleDarkMode">
-      <SvgIcon class="icon" type="mdi" :path="mdiBrightness6"></SvgIcon>
-    </button>
+  <div class="wrapper">
+
+    <nav>
+      <button @click="toggleDarkMode">
+        <SvgIcon class="icon" type="mdi" :path="mdiBrightness6"></SvgIcon>
+      </button>
+    </nav>
 
     <slot />
+
   </div>
 </template>
 
 <style scoped lang="scss">
-button {
-  border-radius: 50%;
-  width: 3rem;
-  aspect-ratio: 1 / 1;
-
-  background-color: var(--card-color-primary);
-  border: none;
-  cursor: pointer;
-
+.wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 
-  .icon {
-    color: var(--font-color);
+  nav {
+    @include appWidth();
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    button {
+      border-radius: 50%;
+      width: 3rem;
+      aspect-ratio: 1 / 1;
+
+      background-color: var(--card-color-primary);
+      border: none;
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .icon {
+        color: var(--font-color);
+      }
+    }
   }
 }
 </style>
