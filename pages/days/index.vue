@@ -20,9 +20,23 @@ const calendar = new Calendar()
 
 <template>
   <div class="wrapper">
+
+    <header>
+      <h1>test</h1>
+    </header>
+
+    <div class="calendar">
+      <BookingDay />
+    </div>
+
   </div>
 </template>
 
 <style scoped lang="scss">
-.wrapper {}
+.wrapper {
+
+  header {}
+
+  .calendar {}
+}
 </style>
