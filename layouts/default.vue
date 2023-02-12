@@ -30,7 +30,7 @@ onBeforeMount(() => {
   <div class="wrapper">
 
     <nav>
-      <button @click="toggleDarkMode">
+      <button class="theme-toggler" @click="toggleDarkMode">
         <SvgIcon class="icon" type="mdi" :path="mdiBrightness6"></SvgIcon>
       </button>
     </nav>
@@ -54,7 +54,7 @@ onBeforeMount(() => {
     align-items: center;
     justify-content: flex-start;
 
-    button {
+    button.theme-toggler {
       border-radius: 50%;
       width: 3rem;
       aspect-ratio: 1 / 1;

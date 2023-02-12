@@ -27,9 +27,12 @@ export default class Calendar {
 						id: '111',
 						name: hall1,
 						place: `${hall1} Place`,
+						courts: [],
 					},
 					{
+						id: '222',
 						name: hall2,
+						place: `${hall2} Place`,
 						slots: [
 							{
 								start: new Date(
