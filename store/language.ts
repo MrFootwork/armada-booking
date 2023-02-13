@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 
 export const useLanguage = defineStore('language', () => {
 	// state
-	const preferred = ref('de-DE')
+	const preferred = ref('zh-CH')
 	const wasSet = ref(false)
 	// getters (computed())
 	// actions

@@ -37,7 +37,7 @@
 @mixin weekdayShadow() {
   box-shadow:
     2px 2px 4px 0px var(--weather-shadow-dark),
-    -1px -1px var(--weather-shadow-blur) -0px var(--weather-shadow-light);
+    -1px -1px var(--weather-shadow-blur) -0yarpx var(--weather-shadow-light);
 }
 
 // header Day and Slot component

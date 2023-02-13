@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import Calendar from '@/model/MCalendar.model'
 import { useLanguage } from '@/store/language'
+import { Day } from '@/model/TDay.model'
+import useDate from '@/composables/date'
+import Datepicker from 'vue3-datepicker'
+import { de, ro } from 'date-fns/locale'
 import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue';
 import { mdiMenuLeft, mdiMenuRight } from '@mdi/js';
-import { Day } from '@/model/TDay.model'
 
 // language
 const languageStore = useLanguage()
@@ -12,18 +15,11 @@ const { setLanguage } = languageStore
 onMounted(() => {
 
   if (languageStore.wasSet) return
-  setLanguage(navigator.language)
+  setLanguage('zh-TW')
+  // setLanguage(navigator.language)
 
 })
 
-// dummies
-const month = new Date().getMonth()
-const day = new Date().getDate()
-const currentDay: Date = new Date(2023, month, day)
-
-const currentGym = '111'
-
-const currentCourt = '2'
 
 // model
 const calendar = new Calendar()
@@ -42,6 +38,18 @@ const gyms: Day['gyms'] = [
   }
 ]
 
+// date picker
+const dummyDate = ref(new Date())
+
+function increaseDay() {
+  dummyDate.value.setDate(dummyDate.value.getDate() + 1)
+  dummyDate.value = new Date(dummyDate.value)
+}
+function decreaseDay() {
+  dummyDate.value.setDate(dummyDate.value.getDate() - 1)
+  dummyDate.value = new Date(dummyDate.value)
+}
+
 </script>
 
 <template>
@@ -49,16 +57,17 @@ const gyms: Day['gyms'] = [
 
     <form class="wrapper selectors" @submit.prevent>
 
+
       <div class="selector date-picker">
 
         <button>
-          <SvgIcon class="icon left" type="mdi" :path="mdiMenuLeft"></SvgIcon>
+          <SvgIcon class="icon left" type="mdi" :path="mdiMenuLeft" @click="decreaseDay"></SvgIcon>
         </button>
 
-        <input type="date" name="" id="">
+        <Datepicker v-model="dummyDate" :locale="zh" :lowerLimit="new Date()" />
 
         <button>
-          <SvgIcon class="icon right" type="mdi" :path="mdiMenuRight"></SvgIcon>
+          <SvgIcon class="icon right" type="mdi" :path="mdiMenuRight" @click="increaseDay"></SvgIcon>
         </button>
 
       </div>
@@ -76,7 +85,8 @@ const gyms: Day['gyms'] = [
 
     </form>
 
-    <Schedule :day="currentDay" :gym="currentGym" :court="currentCourt" />
+    <div>dummyDate: {{ useDate(dummyDate).date }}</div>
+    <Schedule :day="inputDay" :gym="currentGym" :court="currentCourt" />
 
   </div>
 </template>
@@ -94,7 +104,11 @@ const gyms: Day['gyms'] = [
     align-items: center;
     justify-content: space-between;
 
-    .selector.date-picker {}
+    .selector.date-picker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
     .selector.gym-picker {
       display: flex;

@@ -18,6 +18,7 @@
 	"dependencies": {
 		"@jamescoyle/vue-icon": "^0.1.2",
 		"@mdi/js": "^7.1.96",
-		"normalize.css": "^8.0.1"
+		"normalize.css": "^8.0.1",
+		"vue3-datepicker": "^0.3.4"
 	}
 }

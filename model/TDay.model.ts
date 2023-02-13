@@ -20,17 +20,7 @@ export type Day = {
 				player: {
 					id: string
 					name: string
-					// BUG @Cristi:
-					// Are friends user objects or just strings?
-					friends: {
-						id: string
-						name: string
-					}[]
-				}
-				// BUG alternative, if each user needs a valid account
-				players: {
-					id: string
-					name: string
+					bookedBy: string
 				}[]
 			}[]
 		}[]
