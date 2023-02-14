@@ -68,6 +68,8 @@ const upperLimit: Date = new Date(today.setDate(today.getDate() + 7))
         </button>
 
         <Datepicker v-model="dummyDate" :locale="zhCN" :lower-limit="lowerLimit" :upper-limit="upperLimit" />
+        <!-- TODO try out better date picker -->
+        <!-- https://vue3datepicker.com/ -->
 
         <button>
           <SvgIcon class="icon right" type="mdi" :path="mdiMenuRight" @click="increaseDay"></SvgIcon>
