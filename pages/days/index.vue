@@ -50,8 +50,8 @@ function decreaseDay() {
   dummyDate.value = new Date(dummyDate.value)
 }
 const today = new Date()
-const lowerLimit: Date = new Date()
-const upperLimit: Date = new Date(today.setDate(today.getDate() + 7))
+const lowerLimit: Date = new Date(today)
+const upperLimit: Date = new Date(today.setDate(today.getDate() + 6))
 
 </script>
 
