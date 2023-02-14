@@ -4,7 +4,7 @@ import { useLanguage } from '@/store/language'
 import { Day } from '@/model/TDay.model'
 import useDate from '@/composables/date'
 import Datepicker from 'vue3-datepicker'
-import { de, ro } from 'date-fns/locale'
+import { de, ro, zhCN } from 'date-fns/locale'
 import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue';
 import { mdiMenuLeft, mdiMenuRight } from '@mdi/js';
 
@@ -49,6 +49,9 @@ function decreaseDay() {
   dummyDate.value.setDate(dummyDate.value.getDate() - 1)
   dummyDate.value = new Date(dummyDate.value)
 }
+const today = new Date()
+const lowerLimit: Date = new Date()
+const upperLimit: Date = new Date(today.setDate(today.getDate() + 7))
 
 </script>
 
@@ -64,7 +67,7 @@ function decreaseDay() {
           <SvgIcon class="icon left" type="mdi" :path="mdiMenuLeft" @click="decreaseDay"></SvgIcon>
         </button>
 
-        <Datepicker v-model="dummyDate" :locale="zh" :lowerLimit="new Date()" />
+        <Datepicker v-model="dummyDate" :locale="zhCN" :lower-limit="lowerLimit" :upper-limit="upperLimit" />
 
         <button>
           <SvgIcon class="icon right" type="mdi" :path="mdiMenuRight" @click="increaseDay"></SvgIcon>
@@ -108,6 +111,15 @@ function decreaseDay() {
       display: flex;
       align-items: center;
       justify-content: center;
+
+      @at-root :root.light {
+        --disabled-color: red
+      }
+
+      --vdp-bg-color: var(--card-color-secondary);
+      --vdp-text-color: var(--font-color);
+      // --vdp-disabled-color: var(--disabled-color);
+      --vdp-disabled-color: var(--card-shadow-dark);
     }
 
     .selector.gym-picker {

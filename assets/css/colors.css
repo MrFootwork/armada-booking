@@ -31,8 +31,8 @@
   --font-color      : white;
   --highlight-color : #732937;
 
-  --card-color-primary  : hsl(240, 10%, 20.5%);
-  --card-color-secondary: hsl(240, 10%, 41%);
+  --card-color-primary  : hsl(240, 10%, 20%);
+  --card-color-secondary: hsl(240, 10%, 26%);
   --card-shadow-dark    : #111;
   --card-shadow-light   : #777;
 
