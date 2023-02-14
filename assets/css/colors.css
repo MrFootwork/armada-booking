@@ -19,6 +19,8 @@
   --weather-shadow-light: #fff;
   --weather-shadow-blur : 5px;
 
+  --datepicker-disabled-color: hsl(240, 10%, 65%);
+
   --label-color      : hsl(240, 0%, 66%);
   --button-color     : rgb(36, 0, 140);
   --button-font-hover: white;
@@ -43,6 +45,8 @@
   --weather-shadow-dark : #222;
   --weather-shadow-light: #777;
   --weather-shadow-blur : 2px;
+
+  --datepicker-disabled-color: hsl(240, 10%, 45%);
 
   --label-color      : hsl(240, 0%, 33%);
   --button-color     : rgb(36, 0, 140);

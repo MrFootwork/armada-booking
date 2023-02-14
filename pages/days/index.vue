@@ -89,7 +89,7 @@ const upperLimit: Date = new Date(today.setDate(today.getDate() + 7))
     </form>
 
     <div>dummyDate: {{ useDate(dummyDate).date }}</div>
-    <Schedule :day="inputDay" :gym="currentGym" :court="currentCourt" />
+    <!-- <Schedule :day="inputDay" :gym="currentGym" :court="currentCourt" /> -->
 
   </div>
 </template>
@@ -112,14 +112,10 @@ const upperLimit: Date = new Date(today.setDate(today.getDate() + 7))
       align-items: center;
       justify-content: center;
 
-      @at-root :root.light {
-        --disabled-color: red
-      }
-
       --vdp-bg-color: var(--card-color-secondary);
       --vdp-text-color: var(--font-color);
-      // --vdp-disabled-color: var(--disabled-color);
-      --vdp-disabled-color: var(--card-shadow-dark);
+      --vdp-disabled-color: var(--datepicker-disabled-color);
+      --vdp-elem-font-size: .9rem;
     }
 
     .selector.gym-picker {
