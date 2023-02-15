@@ -40,18 +40,21 @@ const gyms: Day['gyms'] = [
 
 // date picker
 const dummyDate = ref(new Date())
+const today = new Date()
+const lowerLimit: Date = new Date(today)
+const upperLimit: Date = new Date(today.setDate(today.getDate() + 6))
+
 
 function increaseDay() {
+  if (dummyDate.value >= upperLimit) return
   dummyDate.value.setDate(dummyDate.value.getDate() + 1)
   dummyDate.value = new Date(dummyDate.value)
 }
 function decreaseDay() {
+  if (dummyDate.value <= lowerLimit) return
   dummyDate.value.setDate(dummyDate.value.getDate() - 1)
   dummyDate.value = new Date(dummyDate.value)
 }
-const today = new Date()
-const lowerLimit: Date = new Date(today)
-const upperLimit: Date = new Date(today.setDate(today.getDate() + 6))
 
 </script>
 
@@ -118,6 +121,10 @@ const upperLimit: Date = new Date(today.setDate(today.getDate() + 6))
       --vdp-text-color: var(--font-color);
       --vdp-disabled-color: var(--datepicker-disabled-color);
       --vdp-elem-font-size: .9rem;
+
+      button {
+        cursor: pointer;
+      }
     }
 
     .selector.gym-picker {
