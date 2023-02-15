@@ -39,21 +39,42 @@ const gyms: Day['gyms'] = [
 ]
 
 // date picker
-const dummyDate = ref(new Date())
+const daySelected = ref(new Date())
 const today = new Date()
 const lowerLimit: Date = new Date(today)
 const upperLimit: Date = new Date(today.setDate(today.getDate() + 6))
 
 
 function increaseDay() {
-  if (dummyDate.value >= upperLimit) return
-  dummyDate.value.setDate(dummyDate.value.getDate() + 1)
-  dummyDate.value = new Date(dummyDate.value)
+  if (daySelected.value >= upperLimit) return
+  daySelected.value.setDate(daySelected.value.getDate() + 1)
+  daySelected.value = new Date(daySelected.value)
 }
 function decreaseDay() {
-  if (dummyDate.value <= lowerLimit) return
-  dummyDate.value.setDate(dummyDate.value.getDate() - 1)
-  dummyDate.value = new Date(dummyDate.value)
+  if (daySelected.value <= lowerLimit) return
+  daySelected.value.setDate(daySelected.value.getDate() - 1)
+  daySelected.value = new Date(daySelected.value)
+}
+
+// gym picker
+const gymSelected = ref(gyms[0])
+
+// court picker
+const showCourtPicker = ref(false)
+// const courts = ref(calendar.days
+//   .find(day => day.date === daySelected.value)!.gyms
+//   .find(gym => gym.name === gymSelected.value.name)
+// )
+
+function toggleCourtPicker() {
+  showCourtPicker.value = !showCourtPicker.value
+}
+
+function courtPrevious() {
+
+}
+function courtNext() {
+
 }
 
 </script>
@@ -70,7 +91,7 @@ function decreaseDay() {
           <SvgIcon class="icon left" type="mdi" :path="mdiMenuLeft" @click="decreaseDay"></SvgIcon>
         </button>
 
-        <Datepicker v-model="dummyDate" :locale="zhCN" :lower-limit="lowerLimit" :upper-limit="upperLimit" />
+        <Datepicker v-model="daySelected" :locale="zhCN" :lower-limit="lowerLimit" :upper-limit="upperLimit" />
         <!-- TODO try out better date picker -->
         <!-- https://vue3datepicker.com/ -->
 
@@ -82,20 +103,44 @@ function decreaseDay() {
 
       <div class="selector gym-picker">
         <label for="gyms">Choose your gym:</label>
-        <select name="gyms" id="gyms">
-          <option v-for="gym in gyms" :value="gym.id">{{ gym.name }}</option>
+        <select name="gyms" id="gyms" v-model="gymSelected">
+          <option v-for="(gym, i) in gyms" :value="gyms[i]">{{ gym.name }}</option>
         </select>
       </div>
 
       <div class="selector court-picker">
-        court picker
+
+        <label for="court">Choose your Court</label>
+        <div class="wrapper buttons">
+
+          <button>
+            <SvgIcon class="icon court left" type="mdi" :path="mdiMenuLeft" @click="courtPrevious"></SvgIcon>
+          </button>
+
+          <input type="button" id="court" value="1" @click="toggleCourtPicker">
+
+          <button>
+            <SvgIcon class="icon court right" type="mdi" :path="mdiMenuRight" @click="courtNext"></SvgIcon>
+          </button>
+
+        </div>
+
+        <!-- <div>{{ courts }}</div> -->
+
+        <DaysCourtPicker v-if="showCourtPicker" class="court-picker component" />
+
       </div>
 
     </form>
 
-    <div>dummyDate: {{ useDate(dummyDate).date }}</div>
+    <div>dummyDate: {{ useDate(daySelected).date }}</div>
     <!-- <Schedule :day="inputDay" :gym="currentGym" :court="currentCourt" /> -->
-
+    <div>
+      Selection
+      <div>Date {{ daySelected }}</div>
+      <div>Gym {{ gymSelected }}</div>
+      <div>Court</div>
+    </div>
   </div>
 </template>
 
@@ -112,6 +157,10 @@ function decreaseDay() {
     align-items: center;
     justify-content: space-between;
 
+    button {
+      cursor: pointer;
+    }
+
     .selector.date-picker {
       display: flex;
       align-items: center;
@@ -122,9 +171,7 @@ function decreaseDay() {
       --vdp-disabled-color: var(--datepicker-disabled-color);
       --vdp-elem-font-size: .9rem;
 
-      button {
-        cursor: pointer;
-      }
+
     }
 
     .selector.gym-picker {
@@ -132,7 +179,20 @@ function decreaseDay() {
       flex-flow: column;
     }
 
-    .selector.court-picker {}
+    .selector.court-picker {
+      position: relative;
+
+      .wrapper.buttons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .court-picker.component {
+        position: absolute;
+        right: 0;
+      }
+    }
 
   }
 
