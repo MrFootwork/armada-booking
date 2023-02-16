@@ -67,6 +67,8 @@ const showCourtPicker = ref(false)
 //   .find(day => day.date === daySelected.value)!.gyms
 //   .find(gym => gym.id === gymSelected.value.id)!.courts
 // )
+
+// FIXME fallback empty array
 const courts = computed(() => {
   console.log(daySelected.value.getDate())
   return calendar.days
