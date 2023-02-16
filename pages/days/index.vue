@@ -1,4 +1,31 @@
 <script setup lang="ts">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import Calendar from '@/model/MCalendar.model'
 import { useLanguage } from '@/store/language'
 import { Day } from '@/model/TDay.model'
@@ -39,8 +66,11 @@ const gyms: Day['gyms'] = [
 ]
 
 // date picker
-const daySelected = ref(new Date())
 const today = new Date()
+const year = today.getFullYear()
+const month = today.getMonth()
+const day = today.getDate()
+const daySelected = ref(new Date(year, month, day))
 const lowerLimit: Date = new Date(today)
 const upperLimit: Date = new Date(today.setDate(today.getDate() + 6))
 
@@ -63,8 +93,18 @@ const gymSelected = ref(gyms[0])
 const showCourtPicker = ref(false)
 // const courts = ref(calendar.days
 //   .find(day => day.date === daySelected.value)!.gyms
-//   .find(gym => gym.name === gymSelected.value.name)
+//   .find(gym => gym.id === gymSelected.value.id)!.courts
 // )
+const courts = computed(() => {
+  console.log(daySelected.value.getDate());
+  return calendar.days
+    .find(day => day.date.getDate() === daySelected.value.getDate())?.gyms
+    .find(gym => gym.id === gymSelected.value.id)?.courts || []
+})
+
+// const courts = calendar.days
+//   .find(day => day.date.getDate === daySelected.value.getDate)!.gyms
+//   .find(gym => gym.id === gymSelected.value.id)!.courts
 
 function toggleCourtPicker() {
   showCourtPicker.value = !showCourtPicker.value
@@ -125,13 +165,14 @@ function courtNext() {
 
         </div>
 
-        <!-- <div>{{ courts }}</div> -->
 
         <DaysCourtPicker v-if="showCourtPicker" class="court-picker component" />
 
       </div>
 
     </form>
+
+    <div>{{ courts }}</div>
 
     <div>dummyDate: {{ useDate(daySelected).date }}</div>
     <!-- <Schedule :day="inputDay" :gym="currentGym" :court="currentCourt" /> -->
@@ -141,7 +182,7 @@ function courtNext() {
       <div>Gym {{ gymSelected }}</div>
       <div>Court</div>
     </div>
-  </div>
+</div>
 </template>
 
 <style scoped lang="scss">

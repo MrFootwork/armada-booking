@@ -10,7 +10,7 @@ export type Day = {
 			slots: {
 				id: string
 				hourIndex: number
-				coach: {
+				coach?: {
 					id: string
 					name: string
 				}

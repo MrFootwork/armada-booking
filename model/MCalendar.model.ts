@@ -27,105 +27,123 @@ export default class Calendar {
 						id: '111',
 						name: hall1,
 						place: `${hall1} Place`,
-						courts: [],
+						courts: [
+							{
+								id: '1',
+								courtNumber: 1,
+								slots: [
+									{
+										id: '0001',
+										hourIndex: 8,
+										start: new Date(
+											today_0.getFullYear(),
+											today_0.getMonth(),
+											today_0.getDate(),
+											8
+										),
+										end: new Date(
+											today_0.getFullYear(),
+											today_0.getMonth(),
+											today_0.getDate(),
+											11
+										),
+										bookingDate: new Date(
+											today_0.getFullYear(),
+											today_0.getMonth(),
+											today_0.getDate() - 5,
+											20
+										),
+										player: [
+											{
+												id: '123',
+												name: 'Peter',
+												bookedBy: '123',
+											},
+										],
+									},
+								],
+							},
+							{
+								id: '2',
+								courtNumber: 2,
+								slots: [
+									{
+										id: '0011',
+										hourIndex: 12,
+										start: new Date(
+											today_0.getFullYear(),
+											today_0.getMonth(),
+											today_0.getDate(),
+											12
+										),
+										end: new Date(
+											today_0.getFullYear(),
+											today_0.getMonth(),
+											today_0.getDate(),
+											13,
+											59
+										),
+										bookingDate: new Date(
+											today_0.getFullYear(),
+											today_0.getMonth(),
+											today_0.getDate() - 5,
+											16
+										),
+										player: [
+											{
+												id: '222',
+												name: 'Jan',
+												bookedBy: '222',
+											},
+											{
+												id: '333',
+												name: 'Julia',
+												bookedBy: '222',
+											},
+										],
+									},
+								],
+							},
+						],
 					},
 					{
 						id: '222',
 						name: hall2,
 						place: `${hall2} Place`,
-						slots: [
+						courts: [
 							{
-								start: new Date(
-									today_0.getFullYear(),
-									today_0.getMonth(),
-									today_0.getDate(),
-									11
-								),
-								end: new Date(
-									today_0.getFullYear(),
-									today_0.getMonth(),
-									today_0.getDate(),
-									13
-								),
-								gym: hall2,
-								players: [
+								id: '1',
+								courtNumber: 1,
+								slots: [
 									{
-										name: 'Peter',
-										active: true,
-									},
-									{
-										name: 'Jenny',
-										active: true,
-									},
-									{
-										name: 'Lisa',
-										active: true,
-									},
-									{
-										name: 'Michael',
-										active: true,
-									},
-								],
-							},
-							{
-								start: new Date(
-									today_0.getFullYear(),
-									today_0.getMonth(),
-									today_0.getDate(),
-									15
-								),
-								end: new Date(
-									today_0.getFullYear(),
-									today_0.getMonth(),
-									today_0.getDate(),
-									17
-								),
-								gym: hall2,
-								players: [
-									{
-										name: 'Jenny',
-										active: false,
-									},
-									{
-										name: 'Lisa',
-										active: true,
-									},
-									{
-										name: 'Peter',
-										active: true,
-									},
-								],
-							},
-							{
-								start: new Date(
-									today_0.getFullYear(),
-									today_0.getMonth(),
-									today_0.getDate(),
-									18
-								),
-								end: new Date(
-									today_0.getFullYear(),
-									today_0.getMonth(),
-									today_0.getDate(),
-									20
-								),
-								gym: hall2,
-								players: [
-									{
-										name: 'Michael',
-										active: true,
-									},
-									{
-										name: 'Jenny',
-										active: false,
-									},
-									{
-										name: 'Lisa',
-										active: true,
-									},
-									{
-										name: 'Peter',
-										active: true,
+										id: '0001',
+										hourIndex: 8,
+										start: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate(),
+											14
+										),
+										end: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate(),
+											14,
+											59
+										),
+										bookingDate: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate() - 5,
+											13
+										),
+										player: [
+											{
+												id: '123',
+												name: 'Peter',
+												bookedBy: '123',
+											},
+										],
 									},
 								],
 							},
@@ -135,65 +153,169 @@ export default class Calendar {
 			},
 			{
 				date: today_1,
-				halls: [
+				gyms: [
 					{
+						id: '111',
 						name: hall1,
-						slots: [
+						place: `${hall1} Place`,
+						courts: [
 							{
-								start: new Date(
-									today_0.getFullYear(),
-									today_0.getMonth(),
-									today_0.getDate() + 1,
-									8
-								),
-								end: new Date(
-									today_0.getFullYear(),
-									today_0.getMonth(),
-									today_0.getDate() + 1,
-									10
-								),
-								gym: hall1,
-								players: [
+								id: '1',
+								courtNumber: 1,
+								slots: [
 									{
-										name: 'Peter',
-										active: true,
-									},
-									{
-										name: 'Michael',
-										active: true,
-									},
-									{
-										name: 'Jenny',
-										active: true,
+										id: '0001',
+										hourIndex: 8,
+										start: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate(),
+											14
+										),
+										end: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate(),
+											14,
+											59
+										),
+										bookingDate: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate() - 5,
+											13
+										),
+										player: [
+											{
+												id: '123',
+												name: 'Peter',
+												bookedBy: '123',
+											},
+										],
 									},
 								],
 							},
 							{
-								start: new Date(
-									today_0.getFullYear(),
-									today_0.getMonth(),
-									today_0.getDate() + 1,
-									12
-								),
-								end: new Date(
-									today_0.getFullYear(),
-									today_0.getMonth(),
-									today_0.getDate() + 1,
-									14
-								),
-								gym: hall1,
-								players: [
+								id: '2',
+								courtNumber: 2,
+								slots: [
 									{
-										name: 'Peter',
-										active: true,
+										id: '0011',
+										hourIndex: 12,
+										start: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate(),
+											12
+										),
+										end: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate(),
+											13,
+											59
+										),
+										bookingDate: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate() - 5,
+											16
+										),
+										player: [
+											{
+												id: '222',
+												name: 'Jan',
+												bookedBy: '222',
+											},
+											{
+												id: '333',
+												name: 'Julia',
+												bookedBy: '222',
+											},
+										],
 									},
+								],
+							},
+						],
+					},
+					{
+						id: '222',
+						name: hall2,
+						place: `${hall2} Place`,
+						courts: [
+							{
+								id: '1',
+								courtNumber: 1,
+								slots: [
 									{
-										name: 'Jenny',
-										active: true,
+										id: '0001',
+										hourIndex: 8,
+										start: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate(),
+											8
+										),
+										end: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate(),
+											11
+										),
+										bookingDate: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate() - 5,
+											20
+										),
+										player: [
+											{
+												id: '123',
+												name: 'Peter',
+												bookedBy: '123',
+											},
+										],
 									},
+								],
+							},
+							{
+								id: '2',
+								courtNumber: 2,
+								slots: [
 									{
-										name: 'Lisa',
-										active: true,
+										id: '0011',
+										hourIndex: 12,
+										start: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate(),
+											12
+										),
+										end: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate(),
+											13,
+											59
+										),
+										bookingDate: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate() - 5,
+											16
+										),
+										player: [
+											{
+												id: '222',
+												name: 'Jan',
+												bookedBy: '222',
+											},
+											{
+												id: '333',
+												name: 'Julia',
+												bookedBy: '222',
+											},
+										],
 									},
 								],
 							},
