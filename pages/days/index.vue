@@ -1,31 +1,4 @@
 <script setup lang="ts">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import Calendar from '@/model/MCalendar.model'
 import { useLanguage } from '@/store/language'
 import { Day } from '@/model/TDay.model'
@@ -46,7 +19,6 @@ onMounted(() => {
   // setLanguage(navigator.language)
 
 })
-
 
 // model
 const calendar = new Calendar()
@@ -96,7 +68,7 @@ const showCourtPicker = ref(false)
 //   .find(gym => gym.id === gymSelected.value.id)!.courts
 // )
 const courts = computed(() => {
-  console.log(daySelected.value.getDate());
+  console.log(daySelected.value.getDate())
   return calendar.days
     .find(day => day.date.getDate() === daySelected.value.getDate())?.gyms
     .find(gym => gym.id === gymSelected.value.id)?.courts || []
@@ -105,6 +77,8 @@ const courts = computed(() => {
 // const courts = calendar.days
 //   .find(day => day.date.getDate === daySelected.value.getDate)!.gyms
 //   .find(gym => gym.id === gymSelected.value.id)!.courts
+
+const courtSelected = ref('1')
 
 function toggleCourtPicker() {
   showCourtPicker.value = !showCourtPicker.value
@@ -165,7 +139,6 @@ function courtNext() {
 
         </div>
 
-
         <DaysCourtPicker v-if="showCourtPicker" class="court-picker component" />
 
       </div>
@@ -182,7 +155,7 @@ function courtNext() {
       <div>Gym {{ gymSelected }}</div>
       <div>Court</div>
     </div>
-</div>
+  </div>
 </template>
 
 <style scoped lang="scss">

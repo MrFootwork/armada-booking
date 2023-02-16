@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import Calendar from '@/model/MCalendar.model'
 import useDate from '@/composables/date'
 import useSlot from '@/composables/slot'
@@ -45,7 +46,7 @@ const freeSeatCaption = computed(() => {
       <div class="sub-header">
         <div class="sub-header-item ">
           <span class=" slot-time">{{
-          `${useDate(currentSlot!.start).time}-${useDate(currentSlot!.end).time}`}}
+            `${useDate(currentSlot!.start).time}-${useDate(currentSlot!.end).time}` }}
           </span>
         </div>
         <div class="sub-header-item">
@@ -60,7 +61,7 @@ const freeSeatCaption = computed(() => {
 
     <BookingSlotPlayers :slot="currentSlot!" />
 
-  </div>
+</div>
 </template>
 
 <style scoped lang="scss">
