@@ -30,7 +30,7 @@ export default class Calendar {
 						courts: [
 							{
 								id: '1',
-								courtNumber: 1,
+								courtName: '1',
 								slots: [
 									{
 										id: '0001',
@@ -65,7 +65,7 @@ export default class Calendar {
 							},
 							{
 								id: '2',
-								courtNumber: 2,
+								courtName: '2',
 								slots: [
 									{
 										id: '0011',
@@ -113,7 +113,7 @@ export default class Calendar {
 						courts: [
 							{
 								id: '1',
-								courtNumber: 1,
+								courtName: '1',
 								slots: [
 									{
 										id: '0001',
@@ -161,7 +161,7 @@ export default class Calendar {
 						courts: [
 							{
 								id: '1',
-								courtNumber: 1,
+								courtName: '1',
 								slots: [
 									{
 										id: '0001',
@@ -188,7 +188,7 @@ export default class Calendar {
 										player: [
 											{
 												id: '123',
-												name: 'Peter',
+												name: 'Wolfgang',
 												bookedBy: '123',
 											},
 										],
@@ -197,7 +197,7 @@ export default class Calendar {
 							},
 							{
 								id: '2',
-								courtNumber: 2,
+								courtName: '2',
 								slots: [
 									{
 										id: '0011',
@@ -245,7 +245,7 @@ export default class Calendar {
 						courts: [
 							{
 								id: '1',
-								courtNumber: 1,
+								courtName: '1',
 								slots: [
 									{
 										id: '0001',
@@ -280,7 +280,7 @@ export default class Calendar {
 							},
 							{
 								id: '2',
-								courtNumber: 2,
+								courtName: '2',
 								slots: [
 									{
 										id: '0011',

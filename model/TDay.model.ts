@@ -6,7 +6,7 @@ export type Day = {
 		place: string
 		courts: {
 			id: string
-			courtNumber: string
+			courtName: string
 			slots: {
 				id: string
 				hourIndex: number

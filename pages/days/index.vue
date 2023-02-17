@@ -63,34 +63,48 @@ const gymSelected = ref(gyms[0])
 
 // court picker
 const showCourtPicker = ref(false)
-// const courts = ref(calendar.days
-//   .find(day => day.date === daySelected.value)!.gyms
-//   .find(gym => gym.id === gymSelected.value.id)!.courts
-// )
 
 // FIXME fallback empty array
 const courts = computed(() => {
-  console.log(daySelected.value.getDate())
   return calendar.days
-    .find(day => day.date.getDate() === daySelected.value.getDate())?.gyms
-    .find(gym => gym.id === gymSelected.value.id)?.courts || []
+    .find(day => day.date.getDate() === daySelected.value.getDate())
+    ?.gyms
+    .find(gym => gym.id === gymSelected.value.id)
+    ?.courts || []
 })
 
-// const courts = calendar.days
-//   .find(day => day.date.getDate === daySelected.value.getDate)!.gyms
-//   .find(gym => gym.id === gymSelected.value.id)!.courts
+const courtsNames = computed(() => {
+  return courts.value.map(court => court.courtName)
+})
 
-const courtSelected = ref('1')
+const courtSelected = ref(courts.value[0])
+
+const courtIndex = computed(() => {
+  console.log('index: ', courtsNames.value.indexOf(courtSelected.value.courtName));
+  return courtsNames.value.indexOf(courtSelected.value.courtName) || 0
+})
 
 function toggleCourtPicker() {
   showCourtPicker.value = !showCourtPicker.value
 }
 
+// BUG no reaction when button clicked
 function courtPrevious() {
+  const currentCourt = courtIndex.value
+  const previousCourt = currentCourt - 1
 
+  if (previousCourt > 0) {
+    courtSelected.value = courts.value[previousCourt]
+  }
 }
-function courtNext() {
 
+function courtNext() {
+  const currentCourt = courtIndex.value
+  const nextCourt = currentCourt + 1
+
+  if (nextCourt < courts.value.length) {
+    courtSelected.value = courts.value[nextCourt]
+  }
 }
 
 </script>
@@ -133,7 +147,7 @@ function courtNext() {
             <SvgIcon class="icon court left" type="mdi" :path="mdiMenuLeft" @click="courtPrevious"></SvgIcon>
           </button>
 
-          <input type="button" id="court" value="1" @click="toggleCourtPicker">
+          <input type="button" id="court" :value="courtsNames[courtIndex]" @click="toggleCourtPicker">
 
           <button>
             <SvgIcon class="icon court right" type="mdi" :path="mdiMenuRight" @click="courtNext"></SvgIcon>
@@ -155,7 +169,7 @@ function courtNext() {
       Selection
       <div>Date {{ daySelected }}</div>
       <div>Gym {{ gymSelected }}</div>
-      <div>Court</div>
+      <div>Court {{ courtSelected }}</div>
     </div>
   </div>
 </template>
