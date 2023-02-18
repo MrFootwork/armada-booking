@@ -7,7 +7,7 @@
 		"generate": "nuxt generate",
 		"preview": "nuxt preview",
 		"postinstall": "nuxt prepare",
-		"lint": "eslint --fix"
+		"lint": "eslint --ext .js,.json,.md,.vue,.ts ."
 	},
 	"devDependencies": {
 		"@pinia/nuxt": "^0.4.6",
