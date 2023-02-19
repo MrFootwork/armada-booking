@@ -147,6 +147,47 @@ export default class Calendar {
 									},
 								],
 							},
+							{
+								id: '2',
+								courtName: '2',
+								slots: [
+									{
+										id: '0011',
+										hourIndex: 12,
+										start: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate(),
+											13
+										),
+										end: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate(),
+											13,
+											59
+										),
+										bookingDate: new Date(
+											today_1.getFullYear(),
+											today_1.getMonth(),
+											today_1.getDate() - 5,
+											18
+										),
+										player: [
+											{
+												id: '444',
+												name: 'Romeo',
+												bookedBy: '444',
+											},
+											{
+												id: '333',
+												name: 'Julia',
+												bookedBy: '444',
+											},
+										],
+									},
+								],
+							},
 						],
 					},
 				],
