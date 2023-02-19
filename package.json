@@ -12,11 +12,13 @@
 	"devDependencies": {
 		"@pinia/nuxt": "^0.4.6",
 		"eslint": "^8.34.0",
+		"eslint-config-prettier": "^8.6.0",
 		"eslint-plugin-nuxt": "^4.0.0",
 		"nuxt": "^3.1.0",
 		"pinia": "^2.0.29",
 		"sass": "^1.57.1",
-		"sass-loader": "^13.2.0"
+		"sass-loader": "^13.2.0",
+		"vue-eslint-parser": "^9.1.0"
 	},
 	"dependencies": {
 		"@jamescoyle/vue-icon": "^0.1.2",

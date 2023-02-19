@@ -114,7 +114,6 @@ function courtNext() {
 
     <form class="wrapper selectors" @submit.prevent>
 
-
       <div class="selector date-picker">
 
         <button>

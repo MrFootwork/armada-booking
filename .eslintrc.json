@@ -1,4 +1,5 @@
 {
 	"root": true,
-	"extends": ["plugin:nuxt/recommended"]
+	"parser": "vue-eslint-parser",
+	"extends": ["eslint:recommended", "plugin:nuxt/recommended", "prettier"]
 }
