@@ -150,22 +150,28 @@ function courtNext() {
 
       <div class="selector date-picker">
 
-        <button>
-          <SvgIcon class="icon left" type="mdi" :path="mdiMenuLeft" @click="decreaseDay"></SvgIcon>
-        </button>
+        <label for="date">Date</label>
 
-        <Datepicker v-model="daySelected" :locale="zhCN" :lower-limit="lowerLimit" :upper-limit="upperLimit" />
-        <!-- TODO try out better date picker -->
-        <!-- https://vue3datepicker.com/ -->
+        <div class="wrapper buttons">
 
-        <button>
-          <SvgIcon class="icon right" type="mdi" :path="mdiMenuRight" @click="increaseDay"></SvgIcon>
-        </button>
+          <button>
+            <SvgIcon class="icon left" type="mdi" :path="mdiMenuLeft" @click="decreaseDay"></SvgIcon>
+          </button>
+
+          <Datepicker :class="'datepicker-style'" v-model="daySelected" :locale="zhCN" :lower-limit="lowerLimit"
+            :upper-limit="upperLimit" />
+          <!-- TODO try out better date picker -->
+          <!-- https://vue3datepicker.com/ -->
+          <button>
+            <SvgIcon class="icon right" type="mdi" :path="mdiMenuRight" @click="increaseDay"></SvgIcon>
+          </button>
+
+        </div>
 
       </div>
 
       <div class="selector gym-picker">
-        <label for="gyms">Choose your gym:</label>
+        <label for="gyms">Gym</label>
         <select name="gyms" id="gyms" v-model="gymSelected">
           <option v-for="(gym, i) in gyms" :value="gyms[i]">{{ gym.name }}</option>
         </select>
@@ -173,7 +179,8 @@ function courtNext() {
 
       <div class="selector court-picker">
 
-        <label for="court">Choose your Court</label>
+        <label for="court">Court</label>
+
         <div class="wrapper buttons">
 
           <button>
@@ -207,6 +214,12 @@ function courtNext() {
   </div>
 </template>
 
+<style>
+.datepicker-style {
+  width: 6rem;
+}
+</style>
+
 <style scoped lang="scss">
 .wrapper.day-page {
 
@@ -216,9 +229,9 @@ function courtNext() {
   form.wrapper.selectors {
     width: 100%;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
 
     button {
       cursor: pointer;
@@ -226,8 +239,9 @@ function courtNext() {
 
     .selector.date-picker {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
+      flex-flow: column;
 
       --vdp-bg-color: var(--card-color-secondary);
       --vdp-text-color: var(--font-color);
@@ -235,6 +249,13 @@ function courtNext() {
       --vdp-elem-font-size: .9rem;
 
 
+
+      .wrapper.buttons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-flow: row;
+      }
     }
 
     .selector.gym-picker {
