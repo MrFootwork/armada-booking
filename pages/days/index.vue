@@ -15,13 +15,17 @@ const { setLanguage } = languageStore
 onMounted(() => {
 
   if (languageStore.wasSet) return
+
+  // TEST
   setLanguage('zh-TW')
+  // FIXME Prod
   // setLanguage(navigator.language)
 
 })
 
 // model
-const calendar = new Calendar()
+const calendar = ref(new Calendar())
+
 const gyms: Day['gyms'] = [
   {
     id: '111',
@@ -37,74 +41,104 @@ const gyms: Day['gyms'] = [
   }
 ]
 
-// date picker
+/*******************************
+ *  
+ *        date picker
+ * 
+ *******************************/
 const today = new Date()
 const year = today.getFullYear()
 const month = today.getMonth()
 const day = today.getDate()
+
 const daySelected = ref(new Date(year, month, day))
+
 const lowerLimit: Date = new Date(today)
 const upperLimit: Date = new Date(today.setDate(today.getDate() + 6))
 
-
 function increaseDay() {
+
   if (daySelected.value >= upperLimit) return
+
   daySelected.value.setDate(daySelected.value.getDate() + 1)
   daySelected.value = new Date(daySelected.value)
 }
+
 function decreaseDay() {
+
   if (daySelected.value <= lowerLimit) return
+
   daySelected.value.setDate(daySelected.value.getDate() - 1)
   daySelected.value = new Date(daySelected.value)
 }
 
-// gym picker
+/*******************************
+ *  
+ *        gym picker
+ * 
+ *******************************/
 const gymSelected = ref(gyms[0])
 
-// court picker
+/*******************************
+ *  
+ *        court picker
+ * 
+ *******************************/
 const showCourtPicker = ref(false)
 
 // FIXME fallback empty array
 const courts = computed(() => {
-  return calendar.days
+
+  const courts = calendar.value.days
     .find(day => day.date.getDate() === daySelected.value.getDate())
     ?.gyms
     .find(gym => gym.id === gymSelected.value.id)
     ?.courts || []
+
+  return courts
+
 })
 
 const courtsNames = computed(() => {
+
   return courts.value.map(court => court.courtName)
+
 })
 
 const courtSelected = ref(courts.value[0])
 
 const courtIndex = computed(() => {
-  console.log('index: ', courtsNames.value.indexOf(courtSelected.value.courtName));
+
   return courtsNames.value.indexOf(courtSelected.value.courtName) || 0
+
 })
 
 function toggleCourtPicker() {
+
   showCourtPicker.value = !showCourtPicker.value
+
 }
 
-// BUG no reaction when button clicked
 function courtPrevious() {
+
   const currentCourt = courtIndex.value
   const previousCourt = currentCourt - 1
 
-  if (previousCourt > 0) {
+  if (currentCourt > 0) {
     courtSelected.value = courts.value[previousCourt]
   }
+
 }
 
 function courtNext() {
+
   const currentCourt = courtIndex.value
   const nextCourt = currentCourt + 1
 
   if (nextCourt < courts.value.length) {
     courtSelected.value = courts.value[nextCourt]
   }
+
 }
 
 </script>

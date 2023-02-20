@@ -140,7 +140,7 @@ export default class Calendar {
 										player: [
 											{
 												id: '123',
-												name: 'Peter',
+												name: 'Norbert',
 												bookedBy: '123',
 											},
 										],
@@ -181,7 +181,7 @@ export default class Calendar {
 											},
 											{
 												id: '333',
-												name: 'Julia',
+												name: 'Julietta',
 												bookedBy: '444',
 											},
 										],
@@ -265,12 +265,12 @@ export default class Calendar {
 										player: [
 											{
 												id: '222',
-												name: 'Jan',
+												name: 'Amadeus',
 												bookedBy: '222',
 											},
 											{
 												id: '333',
-												name: 'Julia',
+												name: 'Mozart',
 												bookedBy: '222',
 											},
 										],
@@ -312,7 +312,7 @@ export default class Calendar {
 										player: [
 											{
 												id: '123',
-												name: 'Peter',
+												name: 'Siegbert',
 												bookedBy: '123',
 											},
 										],
@@ -348,12 +348,12 @@ export default class Calendar {
 										player: [
 											{
 												id: '222',
-												name: 'Jan',
+												name: 'Emily',
 												bookedBy: '222',
 											},
 											{
 												id: '333',
-												name: 'Julia',
+												name: 'Elaine',
 												bookedBy: '222',
 											},
 										],
