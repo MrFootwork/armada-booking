@@ -158,7 +158,7 @@ function courtNext() {
             <SvgIcon class="icon left" type="mdi" :path="mdiMenuLeft" @click="decreaseDay"></SvgIcon>
           </button>
 
-          <Datepicker :class="'datepicker-style'" v-model="daySelected" :locale="zhCN" :lower-limit="lowerLimit"
+          <Datepicker :class="'datepicker-input'" v-model="daySelected" :locale="zhCN" :lower-limit="lowerLimit"
             :upper-limit="upperLimit" />
           <!-- TODO try out better date picker -->
           <!-- https://vue3datepicker.com/ -->
@@ -215,7 +215,7 @@ function courtNext() {
 </template>
 
 <style>
-.datepicker-style {
+.datepicker-input {
   width: 6rem;
 }
 </style>
