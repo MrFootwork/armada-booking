@@ -172,7 +172,7 @@ function courtNext() {
 
       <div class="selector gym-picker">
         <label for="gyms">Gym</label>
-        <select name="gyms" id="gyms" v-model="gymSelected">
+        <select class="gym-picker" name="gyms" id="gyms" v-model="gymSelected">
           <option v-for="(gym, i) in gyms" :value="gyms[i]">{{ gym.name }}</option>
         </select>
       </div>
@@ -237,6 +237,10 @@ function courtNext() {
       cursor: pointer;
     }
 
+    .selector {
+      padding: .4rem;
+    }
+
     .selector.date-picker {
       display: flex;
       align-items: flex-start;
@@ -261,6 +265,10 @@ function courtNext() {
     .selector.gym-picker {
       display: flex;
       flex-flow: column;
+
+      select.gym-picker {
+        width: auto;
+      }
     }
 
     .selector.court-picker {
