@@ -26,8 +26,7 @@
   --button-font-hover: white;
 }
 
-/* manual dark mode 
-/* ❗️ keep the rules in sync with the automatic dark mode above! */
+/* dark mode */
 :root.dark {
   --background-color: hsl(240, 10%, 13%);
   --font-color      : white;

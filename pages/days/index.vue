@@ -105,6 +105,7 @@ const courtsNames = computed(() => {
 
 })
 
+// BUG day change must update current court
 const courtSelected = ref(courts.value[0])
 
 const courtIndex = computed(() => {
@@ -154,7 +155,7 @@ function courtNext() {
 
         <div class="wrapper buttons">
 
-          <button>
+          <button class="left">
             <SvgIcon class="icon left" type="mdi" :path="mdiMenuLeft" @click="decreaseDay"></SvgIcon>
           </button>
 
@@ -162,7 +163,7 @@ function courtNext() {
             :upper-limit="upperLimit" />
           <!-- TODO try out better date picker -->
           <!-- https://vue3datepicker.com/ -->
-          <button>
+          <button class="right">
             <SvgIcon class="icon right" type="mdi" :path="mdiMenuRight" @click="increaseDay"></SvgIcon>
           </button>
 
@@ -183,13 +184,13 @@ function courtNext() {
 
         <div class="wrapper buttons">
 
-          <button>
+          <button class="left">
             <SvgIcon class="icon court left" type="mdi" :path="mdiMenuLeft" @click="courtPrevious"></SvgIcon>
           </button>
 
           <input type="button" id="court" :value="courtsNames[courtIndex]" @click="toggleCourtPicker">
 
-          <button>
+          <button class="right">
             <SvgIcon class="icon court right" type="mdi" :path="mdiMenuRight" @click="courtNext"></SvgIcon>
           </button>
 
@@ -204,7 +205,7 @@ function courtNext() {
     <div>{{ courts }}</div>
 
     <div>dummyDate: {{ useDate(daySelected).date }}</div>
-    <!-- <Schedule :day="inputDay" :gym="currentGym" :court="currentCourt" /> -->
+    <!-- <Schedule :day="daySelected" :gym="gymSelected" :court="courtSelected" /> -->
     <div>
       Selection
       <div>Date {{ daySelected }}</div>
@@ -214,9 +215,11 @@ function courtNext() {
   </div>
 </template>
 
-<style>
+<style lang="scss">
 .datepicker-input {
+  box-sizing: border-box;
   width: 6rem;
+  @include inputHeight();
 }
 </style>
 
@@ -229,16 +232,37 @@ function courtNext() {
   form.wrapper.selectors {
     width: 100%;
 
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    row-gap: 1rem;
 
     button {
       cursor: pointer;
+      background: none;
+      @include inputHeight();
+
+      color: var(--font-color);
+      border: none;
+      border: 1px solid var(--font-color);
+
+
+      &.left {
+        border-radius: 15px 0 0 15px;
+      }
+
+      &.right {
+        border-radius: 0 15px 15px 0;
+      }
     }
 
     .selector {
       padding: .4rem;
+    }
+
+    label {
+      margin-bottom: .5rem;
     }
 
     .selector.date-picker {
@@ -251,8 +275,6 @@ function courtNext() {
       --vdp-text-color: var(--font-color);
       --vdp-disabled-color: var(--datepicker-disabled-color);
       --vdp-elem-font-size: .9rem;
-
-
 
       .wrapper.buttons {
         display: flex;
@@ -278,6 +300,11 @@ function courtNext() {
         display: flex;
         align-items: center;
         justify-content: center;
+
+        input {
+          padding: 0 .6rem;
+          @include inputHeight();
+        }
       }
 
       .court-picker.component {
