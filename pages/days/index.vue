@@ -8,6 +8,9 @@ import { de, ro, zhCN } from 'date-fns/locale'
 import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue'
 import { mdiMenuLeft, mdiMenuRight } from '@mdi/js'
 
+// icon size
+const iconSize = 30
+
 // language
 const languageStore = useLanguage()
 const { setLanguage } = languageStore
@@ -134,7 +137,7 @@ function courtNext() {
 
 				<div class="wrapper buttons">
 					<button class="left">
-						<SvgIcon class="icon left" type="mdi" :path="mdiMenuLeft" @click="decreaseDay"></SvgIcon>
+						<SvgIcon class="icon left" type="mdi" :path="mdiMenuLeft" :size="iconSize" @click="decreaseDay"></SvgIcon>
 					</button>
 
 					<Datepicker :class="'datepicker-input'" v-model="daySelected" :locale="zhCN" :lower-limit="lowerLimit"
@@ -142,7 +145,7 @@ function courtNext() {
 					<!-- TODO try out better date picker -->
 					<!-- https://vue3datepicker.com/ -->
 					<button class="right">
-						<SvgIcon class="icon right" type="mdi" :path="mdiMenuRight" @click="increaseDay"></SvgIcon>
+						<SvgIcon class="icon right" type="mdi" :path="mdiMenuRight" :size="iconSize" @click="increaseDay"></SvgIcon>
 					</button>
 				</div>
 			</div>
@@ -161,13 +164,15 @@ function courtNext() {
 
 				<div class="wrapper buttons">
 					<button class="left">
-						<SvgIcon class="icon court left" type="mdi" :path="mdiMenuLeft" @click="courtPrevious"></SvgIcon>
+						<SvgIcon class="icon court left" type="mdi" :path="mdiMenuLeft" :size="iconSize" @click="courtPrevious">
+						</SvgIcon>
 					</button>
 
 					<input type="button" id="court" :value="courtsNames[courtIndex]" @click="toggleCourtPicker" />
 
 					<button class="right">
-						<SvgIcon class="icon court right" type="mdi" :path="mdiMenuRight" @click="courtNext"></SvgIcon>
+						<SvgIcon class="icon court right" type="mdi" :path="mdiMenuRight" :size="iconSize" @click="courtNext">
+						</SvgIcon>
 					</button>
 				</div>
 
@@ -218,6 +223,7 @@ function courtNext() {
 			color: var(--font-color);
 			border: none;
 			border: 1px solid var(--font-color);
+
 
 			&.left {
 				border-radius: 15px 0 0 15px;
