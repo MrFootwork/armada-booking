@@ -3,15 +3,61 @@
 </script>
 
 <template>
-  <div class="wrapper court-picker">
-    This is the Court Picker
+  <div class="wrapper">
+
+    <div class="court-picker blurry-background" @click="$emit('togglePicker')"></div>
+
+    <div class="wrapper court-picker content">
+      <div class="wrapper closer"></div>
+      <div class="court-picker content">
+
+      </div>
+    </div>
+
   </div>
 </template>
 
 <style scoped lang="scss">
-.wrapper.court-picker {
-  width: 20rem;
-  height: 20rem;
-  background-color: red;
+.wrapper {
+  position: relative;
+
+  .court-picker.blurry-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    backdrop-filter: blur(1px);
+    z-index: -1;
+  }
+
+  .wrapper.court-picker.content {
+    position: relative;
+    width: clamp(10rem, 50vw, 30rem);
+    height: 20rem;
+    padding: 1rem;
+    z-index: 1;
+
+    background-color: var(--card-color-secondary);
+    border-radius: .8rem;
+    @include buttonShadow();
+
+    // FIXME closer doesn't display
+    .wrapper.closer {
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      &::before {
+        width: 2rem;
+        height: 3rem;
+        background-color: red;
+      }
+
+      &::after {}
+    }
+
+    .court-picker.content {}
+  }
 }
 </style>

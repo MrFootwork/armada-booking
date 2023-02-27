@@ -174,9 +174,11 @@ function courtNext() {
 						<SvgIcon class="icon court right" type="mdi" :path="mdiMenuRight" :size="iconSize" @click="courtNext">
 						</SvgIcon>
 					</button>
+
+					<DaysCourtPicker v-if="showCourtPicker" class="court-picker component" @toggle-picker="toggleCourtPicker" />
+
 				</div>
 
-				<DaysCourtPicker v-if="showCourtPicker" class="court-picker component" />
 			</div>
 		</form>
 
@@ -287,12 +289,17 @@ function courtNext() {
 				input {
 					padding: 0 0.6rem;
 					@include inputHeight();
+					cursor: pointer;
 				}
-			}
 
-			.court-picker.component {
-				position: absolute;
-				right: 0;
+				.court-picker.component {
+					position: absolute;
+					top: 4.5rem;
+					right: 0;
+					z-index: 10;
+				}
+
+
 			}
 		}
 	}
