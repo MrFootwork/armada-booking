@@ -8,7 +8,7 @@
     <div class="court-picker blurry-background" @click="$emit('togglePicker')"></div>
 
     <div class="wrapper court-picker content">
-      <div class="wrapper closer"></div>
+      <div class="wrapper closer">test</div>
       <div class="court-picker content">
 
       </div>
@@ -44,14 +44,18 @@
 
     // FIXME closer doesn't display
     .wrapper.closer {
-      position: absolute;
+      position: relative;
       top: 0;
       right: 0;
+
+      cursor: pointer;
 
       &::before {
         width: 2rem;
         height: 3rem;
-        background-color: red;
+        transform: rotate(45deg);
+        background-color: green;
+        z-index: 100;
       }
 
       &::after {}
