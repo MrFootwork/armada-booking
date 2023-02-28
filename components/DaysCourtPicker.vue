@@ -8,9 +8,16 @@
     <div class="court-picker blurry-background" @click="$emit('togglePicker')"></div>
 
     <div class="wrapper court-picker content">
-      <div class="wrapper closer">test</div>
-      <div class="court-picker content">
 
+      <button class="wrapper closer" @click="$emit('togglePicker')">
+        <div class="closer background"> </div>
+        <div class="closer icon ascending"></div>
+        <div class="closer icon descending"></div>
+      </button>
+
+      <div class="court-picker content">
+        <img class="court" src="/court.png" alt="">
+        <img class="court" src="/court.png" alt="">
       </div>
     </div>
 
@@ -42,26 +49,57 @@
     border-radius: .8rem;
     @include buttonShadow();
 
-    // FIXME closer doesn't display
     .wrapper.closer {
-      position: relative;
-      top: 0;
-      right: 0;
+      position: absolute;
+      top: 1rem;
+      right: 2rem;
+      z-index: 10;
 
+      border: none;
+      padding: 0;
       cursor: pointer;
 
-      &::before {
+      display: grid;
+      align-items: center;
+      justify-content: center;
+
+      filter: drop-shadow(3px 3px 2px var(--ui-shadow-dark));
+
+      .closer.background {
+        position: absolute;
         width: 2rem;
-        height: 3rem;
-        transform: rotate(45deg);
-        background-color: green;
-        z-index: 100;
+        height: 2rem;
+        border-radius: 50%;
+
+        transform: translateX(-.9rem);
       }
 
-      &::after {}
+      .icon.closer {
+        position: absolute;
+        width: .2rem;
+        height: 2rem;
+        background-color: var(--font-color);
+
+        &.ascending {
+          transform: rotate(45deg);
+        }
+
+        &.descending {
+          transform: rotate(-45deg);
+        }
+      }
     }
 
-    .court-picker.content {}
+    .court-picker.content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      .court {
+        width: 8rem;
+        aspect-ratio: 1/1;
+        transform: rotate(90deg);
+      }
+    }
   }
 }
 </style>
