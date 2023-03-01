@@ -16,8 +16,18 @@
       </button>
 
       <div class="court-picker content">
-        <img class="court" src="/court.png" alt="">
-        <img class="court" src="/court.png" alt="">
+
+        <div class="court wrapper">
+          <img class="court" src="/court.png" id="court-1" alt="">
+          <label for="court-1">1</label>
+        </div>
+
+        <div class="court wrapper">
+          <img class="court" src="/court.png" id="court-2" alt="">
+          <label for="court-2">2</label>
+
+        </div>
+
       </div>
     </div>
 
@@ -40,9 +50,8 @@
 
   .wrapper.court-picker.content {
     position: relative;
-    width: clamp(10rem, 50vw, 30rem);
-    height: 20rem;
-    padding: 1rem;
+    padding: 1.2rem;
+    padding-top: 2.4rem;
     z-index: 1;
 
     background-color: var(--card-color-secondary);
@@ -94,10 +103,35 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
 
-      .court {
-        width: 8rem;
-        aspect-ratio: 1/1;
-        transform: rotate(90deg);
+      .court.wrapper {
+        position: relative;
+
+        &:hover {
+          outline: .4rem solid var(--highlight-color);
+          border-radius: .4rem;
+        }
+
+        .court {
+          width: 8rem;
+          aspect-ratio: 1/1;
+          transform: rotate(90deg);
+        }
+
+        label {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 8rem;
+          aspect-ratio: 1/1;
+          height: 100%;
+          text-align: center;
+
+          color: var(--highlight-color);
+          font-size: 2.2rem;
+          font-weight: 900;
+
+          cursor: pointer;
+        }
       }
     }
   }
