@@ -129,6 +129,10 @@ function courtNext() {
 		courtSelected.value = courts.value[nextCourt]
 	}
 }
+
+function selectCourt(index: number) {
+	courtSelected.value = courts.value[index]
+}
 </script>
 
 <template>
@@ -208,6 +212,8 @@ function courtNext() {
 													 class="court-picker component"
 													 @toggle-picker="toggleCourtPicker"
 													 :courts="courts"
+													 :currentCourtIndex="courtIndex"
+													 @select-court="selectCourt"
 													 :layout="courtLayout" />
 
 				</div>

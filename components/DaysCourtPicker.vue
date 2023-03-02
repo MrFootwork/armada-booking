@@ -3,6 +3,7 @@ import { Day } from '@/model/TDay.model'
 
 const props = defineProps<{
   courts: Day['gyms'][number]['courts'],
+  currentCourtIndex: number,
   layout: string
 }>()
 
@@ -12,7 +13,7 @@ const props = defineProps<{
   <div class="wrapper">
 
     <div class="court-picker blurry-background"
-         @click="$emit('togglePicker')"></div>
+         @click="$emit('toggle-picker')"></div>
 
     <div class="wrapper court-picker content">
 
@@ -25,21 +26,14 @@ const props = defineProps<{
 
       <div class="court-picker content">
 
-        <button class="court wrapper">
+        <button class="court wrapper"
+                v-for="court, i in courts"
+                :key="court.id"
+                @click="$emit('select-court', i)">
           <img class="court"
                src="/court.png"
-               id="court-1"
-               alt="">
-          <label for="court-1">1</label>
-        </button>
-
-        <button class="court wrapper">
-          <img class="court"
-               src="/court.png"
-               id="court-2"
-               alt="">
-          <label for="court-2">2</label>
-
+               :id="`court-${court.courtName}`">
+          <label :for="`court-${court.courtName}`">{{ court.courtName }}</label>
         </button>
 
       </div>
