@@ -85,6 +85,8 @@ const gymSelected = ref(gyms[0])
  *******************************/
 const showCourtPicker = ref(false)
 
+const courtLayout = ''
+
 // FIXME fallback empty array
 const courts = computed(() => {
 	const courts =
@@ -205,7 +207,8 @@ function courtNext() {
 					<DaysCourtPicker v-if="showCourtPicker"
 													 class="court-picker component"
 													 @toggle-picker="toggleCourtPicker"
-													 courts="courts" />
+													 :courts="courts"
+													 :layout="courtLayout" />
 
 				</div>
 

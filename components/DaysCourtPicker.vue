@@ -2,7 +2,8 @@
 import { Day } from '@/model/TDay.model'
 
 const props = defineProps<{
-  courts: Day['gyms'][number]['courts']
+  courts: Day['gyms'][number]['courts'],
+  layout: string
 }>()
 
 </script>
@@ -24,22 +25,22 @@ const props = defineProps<{
 
       <div class="court-picker content">
 
-        <div class="court wrapper">
+        <button class="court wrapper">
           <img class="court"
                src="/court.png"
                id="court-1"
                alt="">
           <label for="court-1">1</label>
-        </div>
+        </button>
 
-        <div class="court wrapper">
+        <button class="court wrapper">
           <img class="court"
                src="/court.png"
                id="court-2"
                alt="">
           <label for="court-2">2</label>
 
-        </div>
+        </button>
 
       </div>
     </div>
@@ -116,8 +117,12 @@ const props = defineProps<{
       display: grid;
       grid-template-columns: 1fr 1fr;
 
-      .court.wrapper {
+      button.court.wrapper {
         position: relative;
+
+        background: none;
+        border: none;
+        padding: 0;
 
         &:hover {
           outline: .4rem solid var(--highlight-color);
@@ -148,4 +153,5 @@ const props = defineProps<{
       }
     }
   }
-}</style>
+}
+</style>
