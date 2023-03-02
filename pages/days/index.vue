@@ -131,29 +131,45 @@ function courtNext() {
 
 <template>
 	<div class="wrapper day-page">
-		<form class="wrapper selectors" @submit.prevent>
+		<form class="wrapper selectors"
+					@submit.prevent>
 			<div class="selector date-picker">
 				<label for="date">Date</label>
 
 				<div class="wrapper buttons">
 					<button class="left">
-						<SvgIcon class="icon left" type="mdi" :path="mdiMenuLeft" :size="iconSize" @click="decreaseDay"></SvgIcon>
+						<SvgIcon class="icon left"
+										 type="mdi"
+										 :path="mdiMenuLeft"
+										 :size="iconSize"
+										 @click="decreaseDay"></SvgIcon>
 					</button>
 
-					<Datepicker :class="'datepicker-input'" v-model="daySelected" :locale="zhCN" :lower-limit="lowerLimit"
-						:upper-limit="upperLimit" />
+					<Datepicker :class="'datepicker-input'"
+											v-model="daySelected"
+											:locale="zhCN"
+											:lower-limit="lowerLimit"
+											:upper-limit="upperLimit" />
 					<!-- TODO try out better date picker -->
 					<!-- https://vue3datepicker.com/ -->
 					<button class="right">
-						<SvgIcon class="icon right" type="mdi" :path="mdiMenuRight" :size="iconSize" @click="increaseDay"></SvgIcon>
+						<SvgIcon class="icon right"
+										 type="mdi"
+										 :path="mdiMenuRight"
+										 :size="iconSize"
+										 @click="increaseDay"></SvgIcon>
 					</button>
 				</div>
 			</div>
 
 			<div class="selector gym-picker">
 				<label for="gyms">Gym</label>
-				<select class="gym-picker" name="gyms" id="gyms" v-model="gymSelected">
-					<option v-for="(gym, i) in gyms" :value="gyms[i]">
+				<select class="gym-picker"
+								name="gyms"
+								id="gyms"
+								v-model="gymSelected">
+					<option v-for="(gym, i) in gyms"
+									:value="gyms[i]">
 						{{ gym.name }}
 					</option>
 				</select>
@@ -164,18 +180,31 @@ function courtNext() {
 
 				<div class="wrapper buttons">
 					<button class="left">
-						<SvgIcon class="icon court left" type="mdi" :path="mdiMenuLeft" :size="iconSize" @click="courtPrevious">
+						<SvgIcon class="icon court left"
+										 type="mdi"
+										 :path="mdiMenuLeft"
+										 :size="iconSize"
+										 @click="courtPrevious">
 						</SvgIcon>
 					</button>
 
-					<input type="button" id="court" :value="courtsNames[courtIndex]" @click="toggleCourtPicker" />
+					<input type="button"
+								 id="court"
+								 :value="courtsNames[courtIndex]"
+								 @click="toggleCourtPicker" />
 
 					<button class="right">
-						<SvgIcon class="icon court right" type="mdi" :path="mdiMenuRight" :size="iconSize" @click="courtNext">
+						<SvgIcon class="icon court right"
+										 type="mdi"
+										 :path="mdiMenuRight"
+										 :size="iconSize"
+										 @click="courtNext">
 						</SvgIcon>
 					</button>
 
-					<DaysCourtPicker v-if="showCourtPicker" class="court-picker component" @toggle-picker="toggleCourtPicker" />
+					<DaysCourtPicker v-if="showCourtPicker"
+													 class="court-picker component"
+													 @toggle-picker="toggleCourtPicker" />
 
 				</div>
 
@@ -303,5 +332,4 @@ function courtNext() {
 			}
 		}
 	}
-}
-</style>
+}</style>
