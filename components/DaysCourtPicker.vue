@@ -1,15 +1,22 @@
 <script setup lang="ts">
+import { Day } from '@/model/TDay.model'
+
+const props = defineProps<{
+  courts: Day['gyms'][number]['courts']
+}>()
 
 </script>
 
 <template>
   <div class="wrapper">
 
-    <div class="court-picker blurry-background" @click="$emit('togglePicker')"></div>
+    <div class="court-picker blurry-background"
+         @click="$emit('togglePicker')"></div>
 
     <div class="wrapper court-picker content">
 
-      <button class="wrapper closer" @click="$emit('togglePicker')">
+      <button class="wrapper closer"
+              @click="$emit('togglePicker')">
         <div class="closer background"> </div>
         <div class="closer icon ascending"></div>
         <div class="closer icon descending"></div>
@@ -18,12 +25,18 @@
       <div class="court-picker content">
 
         <div class="court wrapper">
-          <img class="court" src="/court.png" id="court-1" alt="">
+          <img class="court"
+               src="/court.png"
+               id="court-1"
+               alt="">
           <label for="court-1">1</label>
         </div>
 
         <div class="court wrapper">
-          <img class="court" src="/court.png" id="court-2" alt="">
+          <img class="court"
+               src="/court.png"
+               id="court-2"
+               alt="">
           <label for="court-2">2</label>
 
         </div>
@@ -135,5 +148,4 @@
       }
     }
   }
-}
-</style>
+}</style>

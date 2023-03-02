@@ -204,7 +204,8 @@ function courtNext() {
 
 					<DaysCourtPicker v-if="showCourtPicker"
 													 class="court-picker component"
-													 @toggle-picker="toggleCourtPicker" />
+													 @toggle-picker="toggleCourtPicker"
+													 courts="courts" />
 
 				</div>
 
@@ -332,4 +333,5 @@ function courtNext() {
 			}
 		}
 	}
-}</style>
+}
+</style>
