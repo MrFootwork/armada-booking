@@ -211,10 +211,10 @@ function selectCourt(index: number) {
 					<DaysCourtPicker v-if="showCourtPicker"
 													 class="court-picker component"
 													 @toggle-picker="toggleCourtPicker"
-													 :courts="courts"
-													 :currentCourtIndex="courtIndex"
 													 @select-court="selectCourt"
-													 :layout="courtLayout" />
+													 :layout="courtLayout"
+													 :courts="courts"
+													 :current-court-index="courtIndex" />
 
 				</div>
 
