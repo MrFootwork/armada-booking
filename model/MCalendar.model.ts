@@ -16,6 +16,8 @@ export default class Calendar {
 		const today_5 = new Date(year, month, firstDay + 5)
 		const today_6 = new Date(year, month, firstDay + 6)
 
+		const hallID1 = 'antilopa'
+		const hallID2 = 'sun-plaza'
 		const hall1 = 'Antilopa'
 		const hall2 = 'Sun Plaza'
 
@@ -24,7 +26,7 @@ export default class Calendar {
 				date: today_0,
 				gyms: [
 					{
-						id: '111',
+						id: 'antilopa',
 						name: hall1,
 						place: `${hall1} Place`,
 						courts: [
@@ -104,10 +106,16 @@ export default class Calendar {
 									},
 								],
 							},
+							{ id: '3', courtName: '3', slots: [] },
+							{ id: '4', courtName: '4', slots: [] },
+							{ id: '5', courtName: '5', slots: [] },
+							{ id: '6', courtName: '6', slots: [] },
+							{ id: '7', courtName: '7', slots: [] },
+							{ id: '8', courtName: '8', slots: [] },
 						],
 					},
 					{
-						id: '222',
+						id: 'sun-plaza',
 						name: hall2,
 						place: `${hall2} Place`,
 						courts: [
@@ -196,7 +204,7 @@ export default class Calendar {
 				date: today_1,
 				gyms: [
 					{
-						id: '111',
+						id: 'antilopa',
 						name: hall1,
 						place: `${hall1} Place`,
 						courts: [
@@ -280,7 +288,7 @@ export default class Calendar {
 						],
 					},
 					{
-						id: '222',
+						id: 'sun-plaza',
 						name: hall2,
 						place: `${hall2} Place`,
 						courts: [

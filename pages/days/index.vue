@@ -29,13 +29,13 @@ const calendar = ref(new Calendar())
 
 const gyms: Day['gyms'] = [
 	{
-		id: '111',
+		id: 'antilopa',
 		name: 'Antilopa',
 		place: 'Antilopa place',
 		courts: [],
 	},
 	{
-		id: '222',
+		id: 'sun-plaza',
 		name: 'Sun Plaza',
 		place: 'Sun Plaza place',
 		courts: [],
@@ -213,6 +213,7 @@ function selectCourt(index: number) {
 													 @toggle-picker="toggleCourtPicker"
 													 @select-court="selectCourt"
 													 :layout="courtLayout"
+													 :gym="gymSelected"
 													 :courts="courts"
 													 :current-court-index="courtIndex" />
 

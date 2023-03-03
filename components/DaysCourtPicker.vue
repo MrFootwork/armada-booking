@@ -2,11 +2,19 @@
 import { Day } from '@/model/TDay.model'
 
 const props = defineProps<{
+  gym: Day['gyms'][number],
   courts: Day['gyms'][number]['courts'],
   currentCourtIndex: number,
   layout: string
 }>()
 
+/*************************************************************
+ *  layout needs
+ * ***********************************************************
+ * 
+ *      
+ * 
+ ************************************************************/
 </script>
 
 <template>
@@ -24,9 +32,11 @@ const props = defineProps<{
         <div class="closer icon descending"></div>
       </button>
 
-      <div class="court-picker content">
+      <div class="court-picker content"
+           :class="gym.id">
 
         <button class="court wrapper"
+                :class="`court-${court.id}`"
                 v-for="court, i in courts"
                 :key="court.id"
                 @click="$emit('select-court', i)">
@@ -109,7 +119,30 @@ const props = defineProps<{
 
     .court-picker.content {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      // grid-template-columns: 1fr 1fr;
+
+      &.antilopa {
+        grid-template-areas:
+          "_______ court-2 court-5 _______"
+          "court-1 court-3 court-6 court-8"
+          "_______ court-4 court-7 _______";
+
+        // &:nth-child(n) {
+        //   grid-area: n
+        // }
+
+        button.court.wrapper.court-1 {
+          grid-area: court-1;
+        }
+
+        button.court.wrapper.court-2 {
+          grid-area: court-2;
+        }
+
+        button.court.wrapper.court-7 {
+          grid-area: court-7;
+        }
+      }
 
       button.court.wrapper {
         position: relative;
