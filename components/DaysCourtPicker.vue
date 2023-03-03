@@ -131,6 +131,9 @@ const props = defineProps<{
         //   grid-area: n
         // }
 
+        // BUG this creates 2x3 grid
+        // try out what happens if use grid-template
+
         button.court.wrapper.court-1 {
           grid-area: court-1;
         }
