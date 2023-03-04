@@ -122,28 +122,22 @@ const props = defineProps<{
       // grid-template-columns: 1fr 1fr;
 
       &.antilopa {
+        grid-template: repeat(3, 1fr) / repeat(4, 1fr);
         grid-template-areas:
-          "_______ court-2 court-5 _______"
+          "....... court-2 court-5 ......."
           "court-1 court-3 court-6 court-8"
-          "_______ court-4 court-7 _______";
+          "....... court-4 court-7 .......";
 
-        // &:nth-child(n) {
-        //   grid-area: n
-        // }
-
-        // BUG this creates 2x3 grid
-        // try out what happens if use grid-template
-
-        button.court.wrapper.court-1 {
-          grid-area: court-1;
+        @for $i from 1 through 8 {
+          button.court.wrapper.court-#{$i} {
+            grid-area: court-#{$i};
+          }
         }
 
-        button.court.wrapper.court-2 {
-          grid-area: court-2;
-        }
-
-        button.court.wrapper.court-7 {
-          grid-area: court-7;
+        @for $i from 2 through 7 {
+          button.court.wrapper.court-#{$i}>img.court {
+            transform: rotate(180deg);
+          }
         }
       }
 
