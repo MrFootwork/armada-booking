@@ -8,13 +8,6 @@ const props = defineProps<{
   layout: string
 }>()
 
-/*************************************************************
- *  layout needs
- * ***********************************************************
- * 
- *      
- * 
- ************************************************************/
 </script>
 
 <template>
@@ -119,10 +112,10 @@ const props = defineProps<{
 
     .court-picker.content {
       display: grid;
-      // grid-template-columns: 1fr 1fr;
 
       &.antilopa {
         grid-template: repeat(3, 1fr) / repeat(4, 1fr);
+        gap: .2rem;
         grid-template-areas:
           "....... court-2 court-5 ......."
           "court-1 court-3 court-6 court-8"
@@ -155,21 +148,17 @@ const props = defineProps<{
 
         .court {
           width: 8rem;
-          aspect-ratio: 1/1;
           transform: rotate(90deg);
         }
 
         label {
           position: absolute;
-          top: 0;
+          top: 2.2rem;
           left: 0;
           width: 8rem;
-          aspect-ratio: 1/1;
-          height: 100%;
-          text-align: center;
 
           color: var(--highlight-color);
-          font-size: 2.2rem;
+          font-size: 2.8rem;
           font-weight: 900;
 
           cursor: pointer;
