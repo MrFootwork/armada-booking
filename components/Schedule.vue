@@ -2,6 +2,8 @@
 import Calendar from '~~/model/MCalendar.model';
 import { Day } from '@/model/TDay.model'
 
+// FIXME read gym and court from day
+// gym and court should be filtered in this component
 defineProps<{
   day: Date,
   gym: Day['gyms'][number],
@@ -24,5 +26,6 @@ const calendar = new Calendar
 <style scoped lang="scss">
 .wrapper {
   @include appWidth();
+  padding: 1rem;
 }
 </style>
