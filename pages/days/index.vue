@@ -222,20 +222,20 @@ function selectCourt(index: number) {
 			</div>
 		</form>
 
-		<Schedule :day="daySelected"
-							:gym="gymSelected"
-							:court="courtSelected" />
+		<Schedule :current-day="daySelected"
+							:gym-id="gymSelected.id"
+							:court-id="courtSelected.id" />
 
 
 		<!-- <div>{{ courts }}</div>
 
-			<div>dummyDate: {{ useDate(daySelected).date }}</div>
-			<div>
-				Selection
-				<div>Date {{ daySelected }}</div>
-				<div>Gym {{ gymSelected }}</div>
-				<div>Court {{ courtSelected }}</div>
-			</div> -->
+						<div>dummyDate: {{ useDate(daySelected).date }}</div>
+						<div>
+							Selection
+							<div>Date {{ daySelected }}</div>
+							<div>Gym {{ gymSelected }}</div>
+							<div>Court {{ courtSelected }}</div>
+						</div> -->
 
 	</div>
 </template>
