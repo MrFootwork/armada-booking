@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Day } from '@/model/TDay.model'
+import { DaysDatePicker } from '~~/.nuxt/components';
 
 const props = defineProps<{
   gym: Day['gyms'][number],
@@ -7,6 +8,13 @@ const props = defineProps<{
   currentCourtIndex: number,
   layout: string
 }>()
+
+const emit = defineEmits(['toggle-picker', 'select-court'])
+
+function selectCourtAndClose(indexOfSelectedCourt: number) {
+  emit('select-court', indexOfSelectedCourt)
+  emit('toggle-picker')
+}
 
 </script>
 
@@ -32,7 +40,7 @@ const props = defineProps<{
                 :class="`court-${court.id}`"
                 v-for="court, i in courts"
                 :key="court.id"
-                @click="$emit('select-court', i)">
+                @click="selectCourtAndClose(i)">
           <img class="court"
                src="/court.png"
                :id="`court-${court.courtName}`">
