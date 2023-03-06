@@ -13,8 +13,10 @@ const props = defineProps<{
 const calendar = new Calendar
 
 const currCourt = computed(() => {
-  console.log(props.currentDay);
-  return calendar.days.filter(day => day.date.getDate() === props.currentDay.getDate())
+  return calendar
+    .days.filter(day => day.date.getDate() === props.currentDay.getDate())[0]
+    .gyms.filter(gym => gym.id === props.gymId)[0]
+    .courts.filter(court => court.id === props.courtId)[0]
 })
 
 </script>
