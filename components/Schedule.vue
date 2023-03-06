@@ -2,14 +2,13 @@
 import Calendar from '~~/model/MCalendar.model';
 import { Day } from '@/model/TDay.model'
 
-// FIXME read gym and court from day
-// gym and court should be filtered in this component
 const props = defineProps<{
   currentDay: Date,
   gymId: Day['gyms'][number]['id'],
   courtId: Day['gyms'][number]['courts'][number]['id'],
 }>()
 
+// FIXME make calendar a pinia store
 const calendar = new Calendar
 
 const currCourt = computed(() => {
@@ -31,7 +30,6 @@ const currCourt = computed(() => {
 
     <h1>Court Info</h1>
     <p>{{ currCourt }}</p>
-
 
   </div>
 </template>
