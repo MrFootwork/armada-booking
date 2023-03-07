@@ -4,6 +4,8 @@ export type Day = {
 		id: string
 		name: string
 		place: string
+		start?: number
+		end?: number
 		courts: {
 			id: string
 			courtName: string

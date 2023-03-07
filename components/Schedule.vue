@@ -18,6 +18,24 @@ const currCourt = computed(() => {
     .courts.filter(court => court.id === props.courtId)[0]
 })
 
+const currGym = computed(() => {
+  return calendar
+    .days.filter(day => day.date.getDate() === props.currentDay.getDate())[0]
+    .gyms.filter(gym => gym.id === props.gymId)[0]
+})
+
+/*******************************
+ *
+ *        calendar view
+ *
+ *******************************/
+const hourFirstDefault = 8
+const hourLastDefault = 23
+
+const hourFirst = computed(() => currGym.value.start || hourFirstDefault)
+const hourLast = computed(() => currGym.value.end || hourLastDefault)
+const hourCount = computed(() => hourLast.value - hourFirst.value)
+
 </script>
 
 <template>
@@ -30,6 +48,10 @@ const currCourt = computed(() => {
 
     <h1>Court Info</h1>
     <p>{{ currCourt }}</p>
+    <p>{{ hourFirst }}</p>
+    <p>{{ hourLast }}</p>
+    <p>{{ hourCount }}</p>
+
 
   </div>
 </template>
