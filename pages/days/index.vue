@@ -226,17 +226,6 @@ function selectCourt(index: number) {
 							:gym-id="gymSelected.id"
 							:court-id="courtSelected.id" />
 
-
-		<!-- <div>{{ courts }}</div>
-
-						<div>dummyDate: {{ useDate(daySelected).date }}</div>
-						<div>
-							Selection
-							<div>Date {{ daySelected }}</div>
-							<div>Gym {{ gymSelected }}</div>
-							<div>Court {{ courtSelected }}</div>
-						</div> -->
-
 	</div>
 </template>
 

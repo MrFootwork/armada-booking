@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { Day } from '@/model/TDay.model'
-import { DaysDatePicker } from '~~/.nuxt/components';
 
-const props = defineProps<{
+defineProps<{
   gym: Day['gyms'][number],
   courts: Day['gyms'][number]['courts'],
   currentCourtIndex: number,
