@@ -46,4 +46,7 @@ export default defineNuxtConfig({
 			external: true,
 		},
 	},
+	// avoiding [Vue warn]: Hydration node mismatch:
+	// https://github.com/nuxt/nuxt/issues/12266
+	ssr: process.env.NODE_ENV !== 'development',
 })

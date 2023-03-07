@@ -13,15 +13,22 @@ const calendar = new Calendar
 
 const currCourt = computed(() => {
   return calendar
-    .days.filter(day => day.date.getDate() === props.currentDay.getDate())[0]
-    .gyms.filter(gym => gym.id === props.gymId)[0]
-    .courts.filter(court => court.id === props.courtId)[0]
+    .days.find(day => day.date.getDate() === props.currentDay.getDate())
+    ?.gyms.find(gym => gym.id === props.gymId)
+    ?.courts.find(court => court.id === props.courtId)
+})
+
+const courts = computed(() => {
+  return calendar
+    .days.find(day => day.date.getDate() === props.currentDay.getDate())!
+    .gyms.find(gym => gym.id === props.gymId)!
+    .courts
 })
 
 const currGym = computed(() => {
   return calendar
-    .days.filter(day => day.date.getDate() === props.currentDay.getDate())[0]
-    .gyms.filter(gym => gym.id === props.gymId)[0]
+    .days.find(day => day.date.getDate() === props.currentDay.getDate())!
+    .gyms.find(gym => gym.id === props.gymId)!
 })
 
 /*******************************
@@ -41,24 +48,40 @@ const hourCount = computed(() => hourLast.value - hourFirst.value)
 <template>
   <div class="wrapper schedule">
 
-    <h1>Props</h1>
-    <p>currentDay: {{ currentDay }}</p>
-    <p>gymID: {{ gymId }}</p>
-    <p>courtID: {{ courtId }}</p>
+    <div class="court-selector">
 
-    <h1>Court Info</h1>
-    <p>{{ currCourt }}</p>
-    <p>{{ hourFirst }}</p>
-    <p>{{ hourLast }}</p>
-    <p>{{ hourCount }}</p>
+    </div>
 
+    <div class="hour-grid">
+
+    </div>
+
+    <div class="schedule content">
+
+    </div>
+
+    <div class="test">
+      <h1>Props</h1>
+      <p>currentDay: {{ currentDay }}</p>
+      <p>gymID: {{ gymId }}</p>
+      <p>courtID: {{ courtId }}</p>
+      <h1>Court Info</h1>
+      <p>{{ currCourt }}</p>
+      <p>{{ courts.map(court => court.courtName) }}</p>
+    </div>
 
   </div>
 </template>
 
 <style scoped lang="scss">
-.wrapper {
+.wrapper.schedule {
   @include appWidth();
   padding: 1rem;
+
+  .court-selector {}
+
+  .hour-grid {}
+
+  .schedule.content {}
 }
 </style>

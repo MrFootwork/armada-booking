@@ -208,7 +208,7 @@ function selectCourt(index: number) {
 						</SvgIcon>
 					</button>
 
-					<DaysCourtPicker v-if="showCourtPicker"
+					<DaysCourtPicker v-show="showCourtPicker"
 													 class="court-picker component"
 													 @toggle-picker="toggleCourtPicker"
 													 @select-court="selectCourt"
