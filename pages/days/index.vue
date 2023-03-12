@@ -207,19 +207,20 @@ function selectCourt(index: number) {
 										 @click="courtNext">
 						</SvgIcon>
 					</button>
-
-					<DaysCourtPicker v-show="showCourtPicker"
-													 class="court-picker component"
-													 @toggle-picker="toggleCourtPicker"
-													 @select-court="selectCourt"
-													 :layout="courtLayout"
-													 :gym="gymSelected"
-													 :courts="courts"
-													 :current-court-index="courtIndex" />
-
 				</div>
 
+
+				<DaysCourtPicker v-show="showCourtPicker"
+												 class="court-picker component"
+												 @toggle-picker="toggleCourtPicker"
+												 @select-court="selectCourt"
+												 :layout="courtLayout"
+												 :gym="gymSelected"
+												 :courts="courts"
+												 :current-court-index="courtIndex" />
+
 			</div>
+
 		</form>
 
 		<Schedule :current-day="daySelected"
@@ -325,15 +326,15 @@ function selectCourt(index: number) {
 					@include inputHeight();
 					cursor: pointer;
 				}
+			}
 
-				.court-picker.component {
-					position: absolute;
-					top: 4.5rem;
-					right: 0;
-					z-index: 10;
-				}
-
-
+			.court-picker.component {
+				position: absolute;
+				top: 4.5rem;
+				// top: 0;
+				right: 0;
+				z-index: 10;
+				// max-width: 400px;
 			}
 		}
 	}
