@@ -2,8 +2,8 @@
 @use "@/assets/scss/_variables.scss"as *;
 
 @mixin appWidth() {
-  width    : 95vw;
-  max-width: 600px;
+  width    : $dynamic-width;
+  max-width: $max-width;
 }
 
 @mixin cardStyle() {

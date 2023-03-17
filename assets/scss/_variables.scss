@@ -1,2 +1,7 @@
+// cards
 $round-corner: 1rem;
-$round-corner-small: calc($round-corner / 2)
+$round-corner-small: calc($round-corner / 2);
+
+// app dimensions
+$dynamic-width: 95vw;
+$max-width: 600px;

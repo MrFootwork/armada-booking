@@ -54,7 +54,8 @@ function selectCourtAndClose(indexOfSelectedCourt: number) {
 
 <style scoped lang="scss">
 .wrapper {
-  position: relative;
+  // position: relative;
+  position: absolute;
 
   .court-picker.blurry-background {
     position: fixed;
@@ -153,10 +154,9 @@ function selectCourtAndClose(indexOfSelectedCourt: number) {
           border-radius: .4rem;
         }
 
-        $court-width: calc(90vw / 5);
+        $court-width: calc(min($dynamic-width, $max-width) / 5);
 
         .court {
-          // width: 8rem;
           width: $court-width;
           transform: rotate(90deg);
         }
@@ -165,7 +165,6 @@ function selectCourtAndClose(indexOfSelectedCourt: number) {
           position: absolute;
           top: 2.2rem;
           left: 0;
-          // width: 8rem;
           width: $court-width;
 
           color: var(--highlight-color);
