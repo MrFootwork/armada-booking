@@ -43,6 +43,11 @@ const hourFirst = computed(() => currGym.value.start || hourFirstDefault)
 const hourLast = computed(() => currGym.value.end || hourLastDefault)
 const hourCount = computed(() => hourLast.value - hourFirst.value)
 
+let hours: number[] = Array.from(
+  { length: hourCount.value + 1 },    // +1 for additional border
+  (_, i) => i + hourFirstDefault      // values are mapped to the hour values
+)
+
 </script>
 
 <template>
@@ -53,13 +58,18 @@ const hourCount = computed(() => hourLast.value - hourFirst.value)
     </div>
 
     <div class="hour-grid">
-
+      <div class="hour"
+           v-for="hour in hours"
+           :id="hour.toString()">
+        <label for="hour">{{ hour }}:00</label>
+      </div>
     </div>
 
     <div class="schedule content">
 
     </div>
 
+    <div>{{ hours }}</div>
     <div class="test">
       <h1>Props</h1>
       <p>currentDay: {{ currentDay }}</p>
@@ -78,10 +88,42 @@ const hourCount = computed(() => hourLast.value - hourFirst.value)
   @include appWidth();
   padding: 1rem;
 
-  .court-selector {}
+  display: grid;
+  grid-template: 10vh 1fr / 10% 1fr;
+  gap: .2rem;
+  grid-template-areas:
+    "court-selector court-selector"
+    "hour-grid schedule";
 
-  .hour-grid {}
+  .court-selector {
+    grid-area: court-selector;
+    border: 1px solid red;
+  }
 
-  .schedule.content {}
+  .hour-grid {
+    grid-area: hour-grid;
+    border: 1px solid red;
+
+    .hour {
+      height: 2rem;
+      position: relative;
+
+      display: grid;
+      align-items: start;
+      justify-content: end;
+
+      label[for=hour] {
+        position: absolute;
+
+        justify-self: end;
+        top: -.5rem;
+      }
+    }
+  }
+
+  .schedule.content {
+    grid-area: schedule;
+    border: 1px solid red;
+  }
 }
 </style>

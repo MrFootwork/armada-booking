@@ -30,7 +30,7 @@ export default class Calendar {
 						name: hall1,
 						place: `${hall1} Place`,
 						start: 8,
-						end: 23,
+						end: 21,
 						courts: [
 							{
 								id: '1',
