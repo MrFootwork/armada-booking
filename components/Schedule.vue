@@ -124,6 +124,7 @@ let hours: number[] = Array.from(
     }
   }
 
+  // FIXME grid is totally wrong
   .wrapper.schedule.content {
     grid-area: schedule;
     border: 1px solid red;
