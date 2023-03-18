@@ -88,7 +88,6 @@ let hours: number[] = Array.from(
 
 <style scoped lang="scss">
 .wrapper.schedule {
-  // @include appWidth();
   width: 100%;
   padding: 1rem;
 
@@ -129,7 +128,15 @@ let hours: number[] = Array.from(
     grid-area: schedule;
     border: 1px solid red;
 
-    .schedule.hour {}
+    gap: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(auto-fill, 2rem);
+    padding: 0;
+
+    .schedule.hour {
+      height: 2rem;
+      border-top: 1px solid grey;
+    }
   }
 }
 </style>
