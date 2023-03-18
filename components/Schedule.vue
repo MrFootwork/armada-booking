@@ -57,16 +57,19 @@ let hours: number[] = Array.from(
 
     </div>
 
-    <div class="hour-grid">
-      <div class="hour"
+    <div class="wrapper hour-grid">
+      <div class="hour-grid hour"
            v-for="hour in hours"
            :id="hour.toString()">
         <label for="hour">{{ hour }}:00</label>
       </div>
     </div>
 
-    <div class="schedule content">
-
+    <div class="wrapper schedule content">
+      <div class="schedule hour"
+           v-for="hour in hours"
+           :id="hour.toString()">
+      </div>
     </div>
 
     <div>{{ hours }}</div>
@@ -85,7 +88,8 @@ let hours: number[] = Array.from(
 
 <style scoped lang="scss">
 .wrapper.schedule {
-  @include appWidth();
+  // @include appWidth();
+  width: 100%;
   padding: 1rem;
 
   display: grid;
@@ -100,11 +104,11 @@ let hours: number[] = Array.from(
     border: 1px solid red;
   }
 
-  .hour-grid {
+  .wrapper.hour-grid {
     grid-area: hour-grid;
     border: 1px solid red;
 
-    .hour {
+    .hour-grid.hour {
       height: 2rem;
       position: relative;
 
@@ -121,9 +125,11 @@ let hours: number[] = Array.from(
     }
   }
 
-  .schedule.content {
+  .wrapper.schedule.content {
     grid-area: schedule;
     border: 1px solid red;
+
+    .schedule.hour {}
   }
 }
 </style>

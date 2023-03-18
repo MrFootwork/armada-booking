@@ -242,6 +242,7 @@ function selectCourt(index: number) {
 .wrapper.day-page {
 	@include cardStyle();
 	@include appWidth();
+	padding: 1rem;
 
 	form.wrapper.selectors {
 		width: 100%;
@@ -334,7 +335,7 @@ function selectCourt(index: number) {
 				// top: 0;
 				right: 0;
 				z-index: 10;
-				// max-width: 400px;
+				// max-width: 100px;
 			}
 		}
 	}
