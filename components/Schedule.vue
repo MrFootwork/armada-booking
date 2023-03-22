@@ -65,7 +65,7 @@ let hours: number[] = Array.from(
       </div>
     </div>
 
-    <div class="wrapper schedule content">
+    <div class="wrapper schedule-content">
       <div class="schedule hour"
            v-for="hour in hours"
            :id="hour.toString()">
@@ -105,7 +105,6 @@ let hours: number[] = Array.from(
 
   .wrapper.hour-grid {
     grid-area: hour-grid;
-    border: 1px solid red;
 
     .hour-grid.hour {
       height: 2rem;
@@ -124,15 +123,14 @@ let hours: number[] = Array.from(
     }
   }
 
-  // FIXME grid is totally wrong
-  .wrapper.schedule.content {
+  .wrapper.schedule-content {
     grid-area: schedule;
-    border: 1px solid red;
 
     gap: 0;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(auto-fill, 2rem);
     padding: 0;
+    padding-right: 1rem;
 
     .schedule.hour {
       height: 2rem;
