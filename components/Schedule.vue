@@ -53,6 +53,8 @@ const hourHeight = computed(() => hourElements.value[0]?.style.width)
 
 console.log(hourElements.value[0]);
 console.log(hourHeight);
+
+// FIXME display the slots in the right place
 </script>
 
 <template>
