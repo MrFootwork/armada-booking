@@ -48,6 +48,11 @@ let hours: number[] = Array.from(
   (_, i) => i + hourFirstDefault      // values are mapped to the hour values
 )
 
+const hourElements = ref<HTMLDivElement[] | []>([])
+const hourHeight = computed(() => hourElements.value[0]?.style.width)
+
+console.log(hourElements.value[0]);
+console.log(hourHeight);
 </script>
 
 <template>
@@ -66,10 +71,24 @@ let hours: number[] = Array.from(
     </div>
 
     <div class="wrapper schedule-content">
+
       <div class="schedule hour"
            v-for="hour in hours"
+           ref="hourElements"
            :id="hour.toString()">
       </div>
+
+      <div class="wrapper slots">
+        <div>test</div>
+        <div>test {{ hourHeight }}</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+        <div>test</div>
+      </div>
+
     </div>
 
     <div>{{ hours }}</div>
@@ -124,17 +143,36 @@ let hours: number[] = Array.from(
   }
 
   .wrapper.schedule-content {
+    position: relative;
     grid-area: schedule;
 
+    $hour-height: 2rem;
+
+    display: grid;
     gap: 0;
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(auto-fill, 2rem);
+    grid-template-rows: repeat(auto-fill, $hour-height);
     padding: 0;
     padding-right: 1rem;
 
     .schedule.hour {
       height: 2rem;
       border-top: 1px solid grey;
+    }
+
+    .wrapper.slots {
+      position: absolute;
+      top: 0;
+      width: 100%;
+
+      display: grid;
+      gap: 0;
+      grid-template-columns: 1rem repeat(4, 1fr) 1rem;
+      // grid-template-columns: 1rem 1fr 1fr 1fr 1fr 1rem;
+      grid-template-rows: repeat(13, $hour-height);
+      padding: 0;
+      padding-right: 1rem;
+
     }
   }
 }
