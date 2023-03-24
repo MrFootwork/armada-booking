@@ -48,13 +48,25 @@ let hours: number[] = Array.from(
   (_, i) => i + hourFirstDefault      // values are mapped to the hour values
 )
 
-const hourElements = ref<HTMLDivElement[] | []>([])
-const hourHeight = computed(() => hourElements.value[0]?.style.width)
-
-console.log(hourElements.value[0]);
-console.log(hourHeight);
+// wrapper slots (grid) coordinates
+const startFirstPlayer = 2
+const startSecondPlayer = 3
+const startThirdPlayer = 4
+const startFourthPlayer = 5
+const endFourthPlayer = 5
 
 // FIXME display the slots in the right place
+const wrapperSlots = ref<HTMLElement | null>(null)
+const testSlot = document.createElement("div")
+testSlot.textContent = 'This works!'
+testSlot.style.backgroundColor = "red"
+testSlot.style.gridColumn = "2"
+testSlot.style.gridRow = "1 / span 2"
+
+onMounted(() => {
+  wrapperSlots.value?.appendChild(testSlot)
+
+})
 </script>
 
 <template>
@@ -80,15 +92,9 @@ console.log(hourHeight);
            :id="hour.toString()">
       </div>
 
-      <div class="wrapper slots">
-        <div>test</div>
-        <div>test {{ hourHeight }}</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
-        <div>test</div>
+      <div class="wrapper slots"
+           ref="wrapperSlots">
+        <div class="test">css test</div>
       </div>
 
     </div>
@@ -175,6 +181,12 @@ console.log(hourHeight);
       padding: 0;
       padding-right: 1rem;
 
+      .test {
+        grid-column: 4;
+        grid-row: span 4;
+
+        background-color: red;
+      }
     }
   }
 }
