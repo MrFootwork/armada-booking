@@ -63,9 +63,57 @@ testSlot.style.backgroundColor = "red"
 testSlot.style.gridColumn = "2"
 testSlot.style.gridRow = "1 / span 2"
 
-onMounted(() => {
-  wrapperSlots.value?.appendChild(testSlot)
+const currentSlots = computed(() => {
+  return currCourt.value?.slots
+})
 
+// const currentSlotsElements = currentSlots.value?.map(slot => {
+
+//   const slotElement = document.createElement("div")
+//   slotElement.textContent = `${slot.player[0].name}`
+//   slotElement.style.backgroundColor = "red"
+//   slotElement.style.gridColumn = "2"
+//   // slotElement.style.gridRow = "1 / span 2"
+//   slotElement.style.gridRow = ``
+//   return slotElement
+// })
+let currentSlotsElements: HTMLDivElement[] = [];
+
+function slotsDelete() {
+  while (wrapperSlots.value?.lastElementChild) {
+    wrapperSlots.value?.removeChild(wrapperSlots.value?.lastElementChild);
+  }
+  currentSlotsElements = []
+}
+
+function slotsFill() {
+  for (let slot = 0; slot < currentSlots.value!.length; slot++) {
+    for (let player = 0; player < currentSlots.value![slot].player.length; player++) {
+      const slotElement = document.createElement("div")
+      slotElement.textContent = `${currentSlots.value![slot].player[player].name}`
+      slotElement.style.backgroundColor = "red"
+      slotElement.style.gridColumn = `${player + startFirstPlayer}`
+      slotElement.style.gridRow = "1 / span 2"
+      // slotElement.style.gridRow = ``
+      currentSlotsElements.push(slotElement)
+    }
+  }
+}
+
+function slotsRender() {
+  currentSlotsElements?.forEach(slotElement => {
+    wrapperSlots.value?.appendChild(slotElement)
+  })
+}
+onMounted(() => {
+  slotsFill()
+  slotsRender()
+})
+
+onUpdated(() => {
+  slotsDelete()
+  slotsFill()
+  slotsRender()
 })
 </script>
 
@@ -101,6 +149,8 @@ onMounted(() => {
 
     <div>{{ hours }}</div>
     <div class="test">
+      <h1>Slots</h1>
+      <p>{{ currCourt?.slots }}</p>
       <h1>Props</h1>
       <p>currentDay: {{ currentDay }}</p>
       <p>gymID: {{ gymId }}</p>
