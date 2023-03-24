@@ -84,8 +84,7 @@ export default class Calendar {
 											today_0.getFullYear(),
 											today_0.getMonth(),
 											today_0.getDate(),
-											13,
-											59
+											14
 										),
 										bookingDate: new Date(
 											today_0.getFullYear(),
@@ -138,8 +137,7 @@ export default class Calendar {
 											today_1.getFullYear(),
 											today_1.getMonth(),
 											today_1.getDate(),
-											14,
-											59
+											15
 										),
 										bookingDate: new Date(
 											today_1.getFullYear(),
@@ -346,8 +344,7 @@ export default class Calendar {
 											today_1.getFullYear(),
 											today_1.getMonth(),
 											today_1.getDate(),
-											13,
-											59
+											14
 										),
 										bookingDate: new Date(
 											today_1.getFullYear(),

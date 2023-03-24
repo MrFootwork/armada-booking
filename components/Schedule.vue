@@ -48,14 +48,16 @@ let hours: number[] = Array.from(
   (_, i) => i + hourFirstDefault      // values are mapped to the hour values
 )
 
-// wrapper slots (grid) coordinates
+// grid coordinates columns: wrapper slots
 const startFirstPlayer = 2
-const startSecondPlayer = 3
-const startThirdPlayer = 4
-const startFourthPlayer = 5
-const endFourthPlayer = 5
+const startSecondPlayer = startFirstPlayer + 1
+const startThirdPlayer = startSecondPlayer + 1
+const startFourthPlayer = startThirdPlayer + 1
+const endFourthPlayer = startFourthPlayer + 1
 
-// FIXME display the slots in the right place
+// grid coordinates rows: hours
+// const start
+
 const wrapperSlots = ref<HTMLElement | null>(null)
 const testSlot = document.createElement("div")
 testSlot.textContent = 'This works!'
@@ -67,16 +69,6 @@ const currentSlots = computed(() => {
   return currCourt.value?.slots
 })
 
-// const currentSlotsElements = currentSlots.value?.map(slot => {
-
-//   const slotElement = document.createElement("div")
-//   slotElement.textContent = `${slot.player[0].name}`
-//   slotElement.style.backgroundColor = "red"
-//   slotElement.style.gridColumn = "2"
-//   // slotElement.style.gridRow = "1 / span 2"
-//   slotElement.style.gridRow = ``
-//   return slotElement
-// })
 let currentSlotsElements: HTMLDivElement[] = [];
 
 function slotsDelete() {
@@ -89,12 +81,14 @@ function slotsDelete() {
 function slotsFill() {
   for (let slot = 0; slot < currentSlots.value!.length; slot++) {
     for (let player = 0; player < currentSlots.value![slot].player.length; player++) {
+      const start = currentSlots.value![slot].start.getHours() - hourFirst.value + 1
+      const duration = currentSlots.value![slot].end.getHours() - currentSlots.value![slot].start.getHours()
+
       const slotElement = document.createElement("div")
+      slotElement.setAttribute("class", "slot")
       slotElement.textContent = `${currentSlots.value![slot].player[player].name}`
-      slotElement.style.backgroundColor = "red"
       slotElement.style.gridColumn = `${player + startFirstPlayer}`
-      slotElement.style.gridRow = "1 / span 2"
-      // slotElement.style.gridRow = ``
+      slotElement.style.gridRow = `${start} / span ${duration}`
       currentSlotsElements.push(slotElement)
     }
   }
@@ -142,7 +136,6 @@ onUpdated(() => {
 
       <div class="wrapper slots"
            ref="wrapperSlots">
-        <div class="test">css test</div>
       </div>
 
     </div>
@@ -162,6 +155,12 @@ onUpdated(() => {
 
   </div>
 </template>
+
+<style>
+.slot {
+  background-color: orange
+}
+</style>
 
 <style scoped lang="scss">
 .wrapper.schedule {
@@ -230,13 +229,6 @@ onUpdated(() => {
       grid-template-rows: repeat(13, $hour-height);
       padding: 0;
       padding-right: 1rem;
-
-      .test {
-        grid-column: 4;
-        grid-row: span 4;
-
-        background-color: red;
-      }
     }
   }
 }
