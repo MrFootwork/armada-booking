@@ -8,7 +8,6 @@ const props = defineProps<{
   courtId: Day['gyms'][number]['courts'][number]['id'],
 }>()
 
-// FIXME make calendar a pinia store
 const calendar = new Calendar
 
 const currCourt = computed(() => {
@@ -65,7 +64,7 @@ function slotsDelete() {
   currentSlotsElements = []
 }
 
-function slotsFill() {
+function slotsCreate() {
   for (let slot = 0; slot < currentSlots.value!.length; slot++) {
     for (let player = 0; player < currentSlots.value![slot].player.length; player++) {
       const start = currentSlots.value![slot].start.getHours() - hourFirst.value + 1
@@ -81,29 +80,25 @@ function slotsFill() {
   }
 }
 
-function slotsRender() {
+function slotsAppend() {
   currentSlotsElements?.forEach(slotElement => {
     wrapperSlots.value?.appendChild(slotElement)
   })
 }
 onMounted(() => {
-  slotsFill()
-  slotsRender()
+  slotsCreate()
+  slotsAppend()
 })
 
 onUpdated(() => {
   slotsDelete()
-  slotsFill()
-  slotsRender()
+  slotsCreate()
+  slotsAppend()
 })
 </script>
 
 <template>
   <div class="wrapper schedule">
-
-    <div class="court-selector">
-
-    </div>
 
     <div class="wrapper hour-grid">
       <div class="hour-grid hour"
@@ -127,30 +122,18 @@ onUpdated(() => {
 
     </div>
 
-    <div>{{ hours }}</div>
-    <div class="test">
-      <h1>Slots</h1>
-      <p>{{ currCourt?.slots }}</p>
-      <h1>Props</h1>
-      <p>currentDay: {{ currentDay }}</p>
-      <p>gymID: {{ gymId }}</p>
-      <p>courtID: {{ courtId }}</p>
-      <h1>Court Info</h1>
-      <p>{{ currCourt }}</p>
-      <p>{{ courts.map(court => court.courtName) }}</p>
-    </div>
-
   </div>
 </template>
 
 <style lang="scss">
 .slot {
-  border-radius: 5px;
-
+  color: white;
   background-color: var(--highlight-color);
+
   text-indent: .5rem;
   padding-top: .5rem;
 
+  border-radius: 5px;
   box-shadow:
     2px 2px 8px -2px var(--card-shadow-dark),
     -2px -2px 6px -3px var(--card-shadow-light);
@@ -163,10 +146,9 @@ onUpdated(() => {
   padding: 1rem;
 
   display: grid;
-  grid-template: 10vh 1fr / 10% 1fr;
+  grid-template: 1fr / 10% 1fr;
   gap: .2rem;
   grid-template-areas:
-    "court-selector court-selector"
     "hour-grid schedule";
 
   .court-selector {
@@ -218,10 +200,8 @@ onUpdated(() => {
       width: 100%;
 
       display: grid;
-      // gap: 1% / 0;
       column-gap: 1%;
       grid-template-columns: 1rem repeat(4, 1fr) 1rem;
-      // grid-template-columns: 1rem 1fr 1fr 1fr 1fr 1rem;
       grid-template-rows: repeat(13, $hour-height);
       padding: 0;
       padding-right: 1rem;
