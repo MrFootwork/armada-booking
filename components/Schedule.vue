@@ -49,21 +49,8 @@ let hours: number[] = Array.from(
 )
 
 // grid coordinates columns: wrapper slots
-const startFirstPlayer = 2
-const startSecondPlayer = startFirstPlayer + 1
-const startThirdPlayer = startSecondPlayer + 1
-const startFourthPlayer = startThirdPlayer + 1
-const endFourthPlayer = startFourthPlayer + 1
-
-// grid coordinates rows: hours
-// const start
-
+const columnFirstPlayer = 2
 const wrapperSlots = ref<HTMLElement | null>(null)
-const testSlot = document.createElement("div")
-testSlot.textContent = 'This works!'
-testSlot.style.backgroundColor = "red"
-testSlot.style.gridColumn = "2"
-testSlot.style.gridRow = "1 / span 2"
 
 const currentSlots = computed(() => {
   return currCourt.value?.slots
@@ -87,7 +74,7 @@ function slotsFill() {
       const slotElement = document.createElement("div")
       slotElement.setAttribute("class", "slot")
       slotElement.textContent = `${currentSlots.value![slot].player[player].name}`
-      slotElement.style.gridColumn = `${player + startFirstPlayer}`
+      slotElement.style.gridColumn = `${player + columnFirstPlayer}`
       slotElement.style.gridRow = `${start} / span ${duration}`
       currentSlotsElements.push(slotElement)
     }
@@ -156,9 +143,17 @@ onUpdated(() => {
   </div>
 </template>
 
-<style>
+<style lang="scss">
 .slot {
-  background-color: orange
+  border-radius: 5px;
+
+  background-color: var(--highlight-color);
+  text-indent: .5rem;
+  padding-top: .5rem;
+
+  box-shadow:
+    2px 2px 8px -2px var(--card-shadow-dark),
+    -2px -2px 6px -3px var(--card-shadow-light);
 }
 </style>
 
@@ -223,7 +218,8 @@ onUpdated(() => {
       width: 100%;
 
       display: grid;
-      gap: 0;
+      // gap: 1% / 0;
+      column-gap: 1%;
       grid-template-columns: 1rem repeat(4, 1fr) 1rem;
       // grid-template-columns: 1rem 1fr 1fr 1fr 1fr 1rem;
       grid-template-rows: repeat(13, $hour-height);
