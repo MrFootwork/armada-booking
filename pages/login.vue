@@ -9,9 +9,15 @@ function onLogin() {
 
 <template>
   <div class="wrapper">
-    <img class="logo" src="/logo.png" alt="logo">
-    <form class="login" @submit.prevent>
-      <input type="password" name="password" id="password" placeholder="Enter password here!">
+    <img class="logo"
+         src="/logo.png"
+         alt="logo">
+    <form class="login"
+          @submit.prevent>
+      <input type="password"
+             name="password"
+             id="password"
+             placeholder="Enter password here!">
       <button @click="onLogin">Login</button>
     </form>
   </div>
@@ -35,7 +41,7 @@ div.wrapper {
     @include cardStyle;
     outline: none;
 
-    width: clamp(10rem, 50vw, 20rem);
+    width: clamp(360px, 50vw, 400px);
 
     input {
       border: none;
