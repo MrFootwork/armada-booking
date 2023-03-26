@@ -4,7 +4,8 @@ function onLogin() {
   navigateTo('/days')
 
 }
-
+// FIXME use
+// https://nuxt.com/modules/nuxt-auth
 </script>
 
 <template>
