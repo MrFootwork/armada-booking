@@ -209,7 +209,6 @@ function selectCourt(index: number) {
 					</button>
 				</div>
 
-
 				<DaysCourtPicker v-show="showCourtPicker"
 												 class="court-picker component"
 												 @toggle-picker="toggleCourtPicker"
@@ -332,12 +331,17 @@ function selectCourt(index: number) {
 			}
 
 			.court-picker.component {
-				position: absolute;
-				top: 4.5rem;
-				// top: 0;
-				right: 0;
+				position: fixed;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 100%;
+
+				display: grid;
+				align-items: center;
+				justify-content: center;
+
 				z-index: 10;
-				// max-width: 100px;
 			}
 		}
 	}

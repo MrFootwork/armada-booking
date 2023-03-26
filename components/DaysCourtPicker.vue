@@ -54,15 +54,14 @@ function selectCourtAndClose(indexOfSelectedCourt: number) {
 
 <style scoped lang="scss">
 .wrapper {
-  // position: relative;
   position: absolute;
 
   .court-picker.blurry-background {
     position: fixed;
     top: 0;
     left: 0;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     backdrop-filter: blur(1px);
     z-index: -1;
   }
