@@ -326,6 +326,7 @@ function selectCourt(index: number) {
 					border-radius: 0;
 					border: none;
 					@include inputHeight();
+					width: 2rem;
 					cursor: pointer;
 				}
 			}
