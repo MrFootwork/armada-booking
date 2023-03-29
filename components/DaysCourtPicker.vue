@@ -148,6 +148,10 @@ function selectCourtAndClose(indexOfSelectedCourt: number) {
         border: none;
         padding: 0;
 
+        display: grid;
+        justify-content: center;
+        align-items: center;
+
         &:hover {
           outline: .4rem solid var(--highlight-color);
           border-radius: .4rem;
@@ -155,15 +159,13 @@ function selectCourtAndClose(indexOfSelectedCourt: number) {
 
         $court-width: calc(min($dynamic-width, $max-width) / 5);
 
-        .court {
+        img.court {
           width: $court-width;
           transform: rotate(90deg);
         }
 
         label {
           position: absolute;
-          top: 2.2rem;
-          left: 0;
           width: $court-width;
 
           color: var(--highlight-color);
