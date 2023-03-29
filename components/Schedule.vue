@@ -143,7 +143,6 @@ onUpdated(() => {
 <style scoped lang="scss">
 .wrapper.schedule {
   width: 100%;
-  padding: 1rem;
 
   display: grid;
   grid-template: 1fr / 10% 1fr;
@@ -187,7 +186,6 @@ onUpdated(() => {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(auto-fill, $hour-height);
     padding: 0;
-    padding-right: 1rem;
 
     .schedule.hour {
       height: 2rem;
@@ -201,10 +199,9 @@ onUpdated(() => {
 
       display: grid;
       column-gap: 1%;
-      grid-template-columns: 1rem repeat(4, 1fr) 1rem;
+      grid-template-columns: .5rem repeat(4, 1fr) .5rem;
       grid-template-rows: repeat(13, $hour-height);
       padding: 0;
-      padding-right: 1rem;
     }
   }
 }
