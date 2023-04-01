@@ -19,9 +19,10 @@ onMounted(() => {
 	if (languageStore.wasSet) return
 
 	// TEST
-	setLanguage('zh-TW')
+	// setLanguage('zh-TW')
 	// FIXME Prod
-	// setLanguage(navigator.language)
+	console.log(navigator.language);
+	setLanguage(navigator.language)
 })
 
 // model
@@ -70,6 +71,8 @@ function decreaseDay() {
 	daySelected.value.setDate(daySelected.value.getDate() - 1)
 	daySelected.value = new Date(daySelected.value)
 }
+
+// FIXME must translate imported languages from 'date-fns/locale' from useLanguage() store
 
 /*******************************
  *
@@ -153,9 +156,14 @@ function selectCourt(index: number) {
 
 					<Datepicker :class="'datepicker-input'"
 											v-model="daySelected"
-											:locale="zhCN"
+											:locale="ro"
 											:lower-limit="lowerLimit"
 											:upper-limit="upperLimit" />
+					<!-- <Datepicker :class="'datepicker-input'"
+																	v-model="daySelected"
+																	:locale="zhCN"
+																	:lower-limit="lowerLimit"
+																	:upper-limit="upperLimit" /> -->
 					<!-- TODO try out better date picker -->
 					<!-- https://vue3datepicker.com/ -->
 					<button class="right">
