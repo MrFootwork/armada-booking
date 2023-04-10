@@ -160,10 +160,10 @@ function selectCourt(index: number) {
 											:lower-limit="lowerLimit"
 											:upper-limit="upperLimit" />
 					<!-- <Datepicker :class="'datepicker-input'"
-																	v-model="daySelected"
-																	:locale="zhCN"
-																	:lower-limit="lowerLimit"
-																	:upper-limit="upperLimit" /> -->
+																			v-model="daySelected"
+																			:locale="zhCN"
+																			:lower-limit="lowerLimit"
+																			:upper-limit="upperLimit" /> -->
 					<!-- TODO try out better date picker -->
 					<!-- https://vue3datepicker.com/ -->
 					<button class="right">
@@ -279,7 +279,6 @@ function selectCourt(index: number) {
 			}
 		}
 
-		// random comment
 		.selector {
 			padding: 0.4rem;
 		}

@@ -4,8 +4,10 @@ function onLogin() {
   navigateTo('/days')
 
 }
-// FIXME use
-// https://nuxt.com/modules/nuxt-auth
+// FIXME implement authentication from nuxt-auth-example
+// 1. copy Credentials functionalities
+// 2. merge booking app db logic into this app
+// 3. implement Credential Handler function using db functionalities
 </script>
 
 <template>
