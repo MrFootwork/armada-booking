@@ -3,6 +3,7 @@ import type { IncomingMessage, ServerResponse } from 'http'
 import { MongoClient } from 'mongodb'
 import { config } from 'dotenv'
 
+// FIXME push sample data to database on first load
 export default fromNodeMiddleware(
 	async (req: IncomingMessage, res: ServerResponse) => {
 		const uri = process.env.MONGODB_URI || ''

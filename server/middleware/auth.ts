@@ -1,5 +1,6 @@
 import { MongoClient } from 'mongodb'
 
+// FIXME copy working middlware from armada-database
 export default defineEventHandler(async event => {
 	// console.log('auth is hit')
 	// const body = await readBody(event)
