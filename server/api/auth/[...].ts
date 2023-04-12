@@ -7,10 +7,11 @@ export default NuxtAuthHandler({
 	secret: process.env.NUXT_SECRET,
 	providers: [
 		// @ts-ignore Import is exported on .default during SSR, so we need to call it this way. May be fixed via Vite at some point
-		GithubProvider.default({
-			clientId: process.env.GITHUB_CLIENT_ID,
-			clientSecret: process.env.GITHUB_CLIENT_SECRET,
-		}),
+		// GithubProvider.default({
+		// 	clientId: process.env.GITHUB_CLIENT_ID,
+		// 	clientSecret: process.env.GITHUB_CLIENT_SECRET,
+		// }),
+
 		// @ts-ignore Import is exported on .default during SSR, so we need to call it this way. May be fixed via Vite at some point
 		CredentialsProvider.default({
 			// The name to display on the sign in form (e.g. 'Sign in with...')
