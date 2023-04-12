@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async event => {
-	console.log('server is hit')
+	console.log('server is hit to get gyms')
 	const query = getQuery(event)
 	// const body = await readBody(event)
 	const gyms = await fetchGyms()
