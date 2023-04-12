@@ -11,6 +11,7 @@
 	},
 	"devDependencies": {
 		"@pinia/nuxt": "^0.4.6",
+		"@sidebase/nuxt-auth": "^0.5.0-rc.0",
 		"eslint": "^8.34.0",
 		"eslint-config-prettier": "^8.6.0",
 		"eslint-plugin-nuxt": "^4.0.0",
@@ -23,6 +24,7 @@
 	"dependencies": {
 		"@jamescoyle/vue-icon": "^0.1.2",
 		"@mdi/js": "^7.1.96",
+		"next-auth": "4.21.1",
 		"normalize.css": "^8.0.1",
 		"vue3-datepicker": "^0.3.4"
 	}

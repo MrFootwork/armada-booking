@@ -31,9 +31,13 @@ export default defineNuxtConfig({
 		'@/assets/css/colors.css',
 		'@/assets/css/basic.css',
 	],
-	modules: ['@pinia/nuxt'],
+	modules: ['@pinia/nuxt', '@sidebase/nuxt-auth'],
 	// preset for deploying
 	// https://v3.nuxtjs.org/guide/deploy/presets/
+	auth: {
+		origin: process.env.ORIGIN,
+		enableGlobalAppMiddleware: true,
+	},
 	nitro: {
 		preset: 'node-server',
 	},
