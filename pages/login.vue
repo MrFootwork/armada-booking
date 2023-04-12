@@ -1,4 +1,6 @@
 <script setup lang="ts">
+definePageMeta({ auth: false })
+
 function onLogin() {
 
   navigateTo('/days')

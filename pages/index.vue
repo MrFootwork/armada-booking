@@ -1,4 +1,5 @@
 <script setup lang="ts">
+definePageMeta({ auth: false })
 
 const loadingText = ref('loading')
 
