@@ -5,9 +5,12 @@ function onLogin() {
 
 }
 // FIXME implement authentication from nuxt-auth-example
-// 1. copy Credentials functionalities
-// 2. merge booking app db logic into this app
-// 3. implement Credential Handler function using db functionalities
+// build login & logout button
+// don't restrict login page, call nuxt-auth login page on click
+// BUG right now the app directs user directly to login page
+// implement Credential Handler function using db functionalities
+
+
 </script>
 
 <template>
