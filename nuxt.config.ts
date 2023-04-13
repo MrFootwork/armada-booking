@@ -34,6 +34,15 @@ export default defineNuxtConfig({
 		'@/assets/css/colors.css',
 		'@/assets/css/basic.css',
 	],
+	// transpile date-fns: production build would always throw following error
+	// Directory import '/opt/render/project/src/.output/server/node_modules/date-fns/locale'
+	// is not supported resolving ES modules imported from
+	// /opt/render/project/src/.output/server/chunks/app/_nuxt/index-87dca981.mjs
+	// Did you mean to import date-fns/locale/index.js?
+	// solution: https://github.com/nuxt/nuxt/issues/13995
+	build: {
+		transpile: ['date-fns'],
+	},
 	modules: ['@pinia/nuxt', '@sidebase/nuxt-auth'],
 	// preset for deploying
 	// https://v3.nuxtjs.org/guide/deploy/presets/
