@@ -5,7 +5,8 @@ import { Day } from '@/model/TDay.model'
 import useDate from '@/composables/date'
 import Datepicker from 'vue3-datepicker'
 // FIXME throws ES-Module errors on first login...
-import { de, ro, zhCN } from 'date-fns/locale'
+// import { de, ro, zhCN } from 'date-fns/locale'
+import { de, ro, zhCN } from 'date-fns/locale/index.js'
 // import { de } from 'date-fns/locale/de/index.js'
 // import { ro } from 'date-fns/locale/ro/index.js'
 // import { zhCN } from 'date-fns/locale/zh-CN/index.js'
@@ -164,10 +165,10 @@ function selectCourt(index: number) {
 											:lower-limit="lowerLimit"
 											:upper-limit="upperLimit" />
 					<!-- <Datepicker :class="'datepicker-input'"
-																							v-model="daySelected"
-																							:locale="zhCN"
-																							:lower-limit="lowerLimit"
-																							:upper-limit="upperLimit" /> -->
+																								v-model="daySelected"
+																								:locale="zhCN"
+																								:lower-limit="lowerLimit"
+																								:upper-limit="upperLimit" /> -->
 					<!-- TODO try out better date picker -->
 					<!-- https://vue3datepicker.com/ -->
 					<button class="right">
