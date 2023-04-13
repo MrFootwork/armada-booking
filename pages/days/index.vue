@@ -4,12 +4,13 @@ import { useLanguage } from '@/store/language'
 import { Day } from '@/model/TDay.model'
 import useDate from '@/composables/date'
 import Datepicker from 'vue3-datepicker'
-// FIXME throws ES-Module errors on first login...
-// import { de, ro, zhCN } from 'date-fns/locale'
+
+// importing from 'date-fns/locale' would throw error in production after authenticating
+// https://github.com/nuxt/nuxt/issues/13591
 import { de, ro, zhCN } from 'date-fns/locale/index.js'
-// import { de } from 'date-fns/locale/de/index.js'
-// import { ro } from 'date-fns/locale/ro/index.js'
-// import { zhCN } from 'date-fns/locale/zh-CN/index.js'
+// TODO remove TS error
+// https://github.com/date-fns/date-fns/issues/2964#issuecomment-1409736680
+
 import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue'
 import { mdiMenuLeft, mdiMenuRight } from '@mdi/js'
 
@@ -165,10 +166,10 @@ function selectCourt(index: number) {
 											:lower-limit="lowerLimit"
 											:upper-limit="upperLimit" />
 					<!-- <Datepicker :class="'datepicker-input'"
-																								v-model="daySelected"
-																								:locale="zhCN"
-																								:lower-limit="lowerLimit"
-																								:upper-limit="upperLimit" /> -->
+																									v-model="daySelected"
+																									:locale="zhCN"
+																									:lower-limit="lowerLimit"
+																									:upper-limit="upperLimit" /> -->
 					<!-- TODO try out better date picker -->
 					<!-- https://vue3datepicker.com/ -->
 					<button class="right">
