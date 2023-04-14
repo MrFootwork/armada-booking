@@ -3,6 +3,10 @@ import GithubProvider from 'next-auth/providers/github'
 import { NuxtAuthHandler } from '#auth'
 
 export default NuxtAuthHandler({
+	pages: {
+		// Change the default behavior to use `/login` as the path for the sign-in page
+		signIn: '/login',
+	},
 	// secret needed to run nuxt-auth in production mode (used to encrypt data)
 	secret: process.env.NUXT_SECRET,
 	providers: [

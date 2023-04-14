@@ -13,41 +13,57 @@ const username = ref('')
 const password = ref('')
 
 // login
-function onLogin() {
+const signInError = ref('')
 
-  // navigateTo('/days')
+// FIXME pass credentials to [...] and handle real authentication handler there
+const signInHandler = async ({ username, password }: { username: string, password: string }) => {
 
-  signIn('credentials', { username: username.value, password: password.value })
+  const { error, url } = await signIn('credentials', { username, password, redirect: false })
 
+  if (error) {
+    // Do your custom error handling here
+    signInError.value = error
+  } else {
+    // No error, continue with the sign in, e.g., by following the returned redirect:
+    return navigateTo(url, { external: true })
+  }
 }
-// FIXME implement authentication from nuxt-auth-example
-// build login & logout button
-// don't restrict login page, call nuxt-auth login page on click
-// BUG right now the app directs user directly to login page
-// implement Credential Handler function using db functionalities
-
 
 </script>
 
 <template>
   <div class="wrapper">
+
     <img class="logo"
          src="/logo.png"
          alt="logo">
+
     <form class="login"
           @submit.prevent>
+
+      <div v-show="signInError">
+        <p v-show="signInError === 'CredentialsSignin'"
+           class="error-credentials-signin">
+          {{ signInError }}: Please check your credentials! They seem to be wrong.
+        </p>
+      </div>
+
       <input type="text"
              name="username"
              id="username"
-             placeholder="Enter Username here!"
+             placeholder="hint: jsmith"
              v-model="username">
+
       <input type="password"
              name="password"
              id="password"
-             placeholder="Enter Password here!"
+             placeholder="hint: hunter2"
              v-model="password">
-      <button @click="onLogin">Login</button>
+
+      <button @click="signInHandler({ username, password })">Login</button>
+
     </form>
+
   </div>
 </template>
 
@@ -70,6 +86,11 @@ div.wrapper {
     outline: none;
 
     width: clamp(360px, 50vw, 400px);
+
+    .error-credentials-signin {
+      padding: 1rem;
+      background-color: var(--highlight-color);
+    }
 
     input {
       border: none;
