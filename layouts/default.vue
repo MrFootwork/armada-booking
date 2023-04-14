@@ -78,7 +78,7 @@ onBeforeMount(() => {
 
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
 
     button.theme-toggler {
       border-radius: 50%;
@@ -125,6 +125,9 @@ onBeforeMount(() => {
         color: var(--button-font-hover);
         transform: translateY(2px);
       }
+
+      // different from login style
+      width: 30%;
     }
   }
 }
