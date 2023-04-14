@@ -1,9 +1,23 @@
 <script setup lang="ts">
-definePageMeta({ auth: false })
+// definePageMeta({ auth: false })
+definePageMeta({
+  auth: {
+    unauthenticatedOnly: true,
+    navigateAuthenticatedTo: '/days',
+  }
+})
+const { signIn } = useAuth()
 
+// input data
+const username = ref('')
+const password = ref('')
+
+// login
 function onLogin() {
 
-  navigateTo('/days')
+  // navigateTo('/days')
+
+  signIn('credentials', { username: username.value, password: password.value })
 
 }
 // FIXME implement authentication from nuxt-auth-example
@@ -22,10 +36,16 @@ function onLogin() {
          alt="logo">
     <form class="login"
           @submit.prevent>
+      <input type="text"
+             name="username"
+             id="username"
+             placeholder="Enter Username here!"
+             v-model="username">
       <input type="password"
              name="password"
              id="password"
-             placeholder="Enter password here!">
+             placeholder="Enter Password here!"
+             v-model="password">
       <button @click="onLogin">Login</button>
     </form>
   </div>

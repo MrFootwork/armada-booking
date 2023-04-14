@@ -2,19 +2,38 @@
 import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue';
 import { mdiBrightness6 } from '@mdi/js';
 
+// authentication
+const { signOut } = useAuth()
+
+function logout() {
+
+  signOut({ callbackUrl: '/login' })
+
+}
+
 // FIXME put this into composable and add it to a layout button
 function toggleDarkMode() {
+
   if (document.documentElement.classList.contains("light")) {
+
     document.documentElement.classList.remove("light")
     document.documentElement.classList.add("dark")
+
   } else if (document.documentElement.classList.contains("dark")) {
+
     document.documentElement.classList.remove("dark")
     document.documentElement.classList.add("light")
+
   } else {
+
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+
       document.documentElement.classList.add("dark")
+
     } else {
+
       document.documentElement.classList.add("light")
+
     }
   }
 }
@@ -30,8 +49,15 @@ onBeforeMount(() => {
   <div class="wrapper">
 
     <nav>
-      <button class="theme-toggler" @click="toggleDarkMode">
-        <SvgIcon class="icon" type="mdi" :path="mdiBrightness6"></SvgIcon>
+      <button class="theme-toggler"
+              @click="toggleDarkMode">
+        <SvgIcon class="icon"
+                 type="mdi"
+                 :path="mdiBrightness6"></SvgIcon>
+      </button>
+      <button class="logout"
+              @click="logout">
+        Logout
       </button>
     </nav>
 
@@ -69,6 +95,35 @@ onBeforeMount(() => {
 
       .icon {
         color: var(--font-color);
+      }
+    }
+
+    // FIXME use login style as SCSS mixin
+    // delete this style
+    button.logout {
+      border: none;
+      padding: .5rem;
+      border-radius: 5px;
+
+      width: 100%;
+      cursor: pointer;
+
+      color: var(--font-color);
+      text-align: center;
+
+      background-color: var(--card-color-primary);
+      @include buttonShadow();
+
+      &:hover,
+      &:focus {
+        background-color: var(--highlight-color);
+        color: var(--button-font-hover);
+      }
+
+      &:active {
+        background-color: var(--highlight-color);
+        color: var(--button-font-hover);
+        transform: translateY(2px);
       }
     }
   }
