@@ -14,8 +14,10 @@ const { signIn } = useAuth()
 // input data
 const username = ref('')
 const password = ref('')
-// triggers if error field is visible
-const signInError = ref('')
+// error message is set in case of any failures during sign-in
+// list of possible errors
+// https://github.com/nextauthjs/next-auth/blob/aad0b8db0e8a163b3c3ae7dec3e9158e20d368f4/packages/next-auth/src/core/pages/signin.tsx#L4-L19
+const signInErrorMessage = ref('')
 
 // FIXME pass credentials to [...] and handle real authentication handler there
 const signInHandler = async ({ username, password }: { username: string, password: string }) => {
@@ -23,7 +25,7 @@ const signInHandler = async ({ username, password }: { username: string, passwor
   const { error, url } = await signIn('credentials', { username, password, redirect: false })
 
   if (error) {
-    signInError.value = error
+    signInErrorMessage.value = error
   } else {
     // No error, continue with the sign in, e.g., by following the returned redirect:
     return navigateTo(url, { external: true })
@@ -42,10 +44,16 @@ const signInHandler = async ({ username, password }: { username: string, passwor
     <form class="login"
           @submit.prevent>
 
-      <div v-show="signInError">
-        <p v-show="signInError === 'CredentialsSignin'"
+      <div v-show="signInErrorMessage">
+        <p v-if="signInErrorMessage === 'CredentialsSignin'"
            class="error-credentials-signin">
-          {{ signInError }}: Please check your credentials! They seem to be wrong.
+          Please check your credentials! They seem to be wrong.
+          <br><br>Error Code: {{ signInErrorMessage }}
+        </p>
+        <p v-else
+           class="error-credentials-signin">
+          Something unexpected happened. Please advise an administrator!
+          <br><br>Error Code: {{ signInErrorMessage }}
         </p>
       </div>
 
@@ -90,7 +98,10 @@ div.wrapper {
 
     .error-credentials-signin {
       padding: 1rem;
+      margin: 0;
+      border-radius: .5rem;
       background-color: var(--highlight-color);
+      color: var(--font-color);
     }
 
     input {
