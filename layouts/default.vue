@@ -49,16 +49,23 @@ onBeforeMount(() => {
   <div class="wrapper">
 
     <nav>
+
       <button class="theme-toggler"
               @click="toggleDarkMode">
         <SvgIcon class="icon"
                  type="mdi"
                  :path="mdiBrightness6"></SvgIcon>
       </button>
+
+      <p class="auth-status">
+        this is auth
+      </p>
+
       <button class="logout"
               @click="logout">
         Logout
       </button>
+
     </nav>
 
     <slot />
@@ -78,7 +85,7 @@ onBeforeMount(() => {
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
 
     button.theme-toggler {
       border-radius: 50%;
@@ -96,6 +103,24 @@ onBeforeMount(() => {
       .icon {
         color: var(--font-color);
       }
+    }
+
+    p.auth-status {
+      border: none;
+      padding: .5rem;
+      border-radius: 5px;
+
+      width: 100%;
+      cursor: pointer;
+
+      color: var(--font-color);
+      text-align: center;
+
+      background-color: var(--card-color-primary);
+      @include buttonShadow();
+
+      // different from login style
+      width: 30%;
     }
 
     // FIXME use login style as SCSS mixin
