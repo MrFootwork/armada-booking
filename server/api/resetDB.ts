@@ -310,9 +310,6 @@ const kitekatWet = {
 	image:
 		'https://lh3.googleusercontent.com/HH41WS_RTGRLUPAQ1HhC43A0YZedqGUPnElxw1L-7a_cEVO0QRH0kaD8WFU9VCAWv6YMptfgsOzfQLyRt4nNvdnQg4lyk6tGEOv1graVCeYmLNtmY9hBA27AclgNQ38q5OfZeGjS-QE=w2400',
 }
-// FIXME add more brands
-// FIXME add colors for brands
-// TODO kg / lbs
 const dryFood = [
 	royalCaninCare,
 	royalCaninSterilised,
