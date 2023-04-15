@@ -101,7 +101,7 @@ div.wrapper {
       margin: 0;
       border-radius: .5rem;
       background-color: var(--highlight-color);
-      color: var(--font-color);
+      color: $font-color-dark;
     }
 
     input {

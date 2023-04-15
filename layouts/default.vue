@@ -7,8 +7,7 @@ const { signOut } = useAuth()
 
 function logout() {
 
-  // signOut({ callbackUrl: '/login' })
-  signOut()
+  signOut({ callbackUrl: '/login' })
 
 }
 
