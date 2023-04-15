@@ -21,7 +21,6 @@ const signInHandler = async ({ username, password }: { username: string, passwor
   const { error, url } = await signIn('credentials', { username, password, redirect: false })
 
   if (error) {
-    // Do your custom error handling here
     signInError.value = error
   } else {
     // No error, continue with the sign in, e.g., by following the returned redirect:
