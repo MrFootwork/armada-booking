@@ -1,5 +1,4 @@
 // FIXME implement get user api logic here
-+++++++++
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async event => {
