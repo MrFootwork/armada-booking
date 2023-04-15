@@ -36,11 +36,14 @@ export default NuxtAuthHandler({
 					placeholder: '(hint: hunter2)',
 				},
 			},
-			authorize(credentials: any) {
-				// You need to provide your own logic here that takes the credentials
+			async authorize(credentials: Credential) {
+				// FIXME: provide your own logic here that takes the credentials
 				// submitted and returns either a object representing a user or value
 				// that is false/null if the credentials are invalid.
 				// NOTE: THE BELOW LOGIC IS NOT SAFE OR PROPER FOR AUTHENTICATION!
+				const users = await $fetch('/api/users')
+				console.log('api/auth/... users: ', users)
+				console.log('api/auth/... credentials: ', credentials)
 
 				const user = {
 					id: '1',
