@@ -41,7 +41,9 @@ export default NuxtAuthHandler({
 				// submitted and returns either a object representing a user or value
 				// that is false/null if the credentials are invalid.
 				// NOTE: THE BELOW LOGIC IS NOT SAFE OR PROPER FOR AUTHENTICATION!
-				const users = await $fetch('/api/users')
+
+				// FIXME simply request user search directly from here! No api endpoint necessary
+				const users = await $fetch('/api/user')
 				console.log('api/auth/... users: ', users)
 				console.log('api/auth/... credentials: ', credentials)
 

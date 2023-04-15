@@ -1,8 +1,8 @@
 import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async event => {
-	if (!event.context.auth)
-		return { error: 'Unauthorized', message: 'User is not authenticated' }
+	// if (!event.context.auth)
+	// 	return { error: 'Unauthorized', message: 'User is not authenticated' }
 
 	const query = getQuery(event)
 	const users = await fetchUsers()
@@ -14,6 +14,7 @@ export default defineEventHandler(async event => {
 	}
 })
 
+// FIXME maybe I can only request the one user...
 async function fetchUsers() {
 	const { mongoURI } = useRuntimeConfig()
 	const mongoClient = new MongoClient(mongoURI)
