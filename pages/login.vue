@@ -80,14 +80,14 @@ const signInHandler = async ({ username, password }: { username: string, passwor
 div.wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-flow: column;
 
-  height: 100vh;
+  height: calc(100vh - 6rem);
 
   img.logo {
-    position: absolute;
     width: 12rem;
-    translate: 0 calc(-100vh / 3);
+    margin: 3rem;
   }
 
   form.login {

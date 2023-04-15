@@ -3,7 +3,7 @@ import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue';
 import { mdiBrightness6 } from '@mdi/js';
 
 // authentication
-const { signOut } = useAuth()
+const { status, data, signOut } = useAuth()
 
 function logout() {
 
@@ -57,9 +57,10 @@ onBeforeMount(() => {
                  :path="mdiBrightness6"></SvgIcon>
       </button>
 
-      <p class="auth-status">
-        this is auth
-      </p>
+      <div class="auth-status">
+        <p v-if="status === 'unauthenticated'">Please login! 🙏🏻</p>
+        <p v-if="status === 'authenticated'">Hi {{ data?.user?.name }} 👋🏻</p>
+      </div>
 
       <button class="logout"
               @click="logout">
@@ -105,22 +106,21 @@ onBeforeMount(() => {
       }
     }
 
-    p.auth-status {
+    div.auth-status {
       border: none;
       padding: .5rem;
       border-radius: 5px;
 
-      width: 100%;
       cursor: pointer;
 
       color: var(--font-color);
       text-align: center;
 
       background-color: var(--card-color-primary);
-      @include buttonShadow();
 
-      // different from login style
-      width: 30%;
+      p {
+        margin: 0
+      }
     }
 
     // FIXME use login style as SCSS mixin
@@ -130,7 +130,7 @@ onBeforeMount(() => {
       padding: .5rem;
       border-radius: 5px;
 
-      width: 100%;
+      // width: 100%;
       cursor: pointer;
 
       color: var(--font-color);
