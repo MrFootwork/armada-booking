@@ -1,18 +1,20 @@
 <script setup lang="ts">
-// definePageMeta({ auth: false })
+// page behavior 
 definePageMeta({
   auth: {
+    // guests can access this page
     unauthenticatedOnly: true,
+    // logged in users are redirected to
     navigateAuthenticatedTo: '/days',
   }
 })
+
 const { signIn } = useAuth()
 
 // input data
 const username = ref('')
 const password = ref('')
-
-// login
+// triggers if error field is visible
 const signInError = ref('')
 
 // FIXME pass credentials to [...] and handle real authentication handler there
