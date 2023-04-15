@@ -1,31 +1,8 @@
-import { MongoClient } from 'mongodb'
+import { getServerSession } from '#auth'
 
-// FIXME copy working middlware from armada-database
-export default defineEventHandler(async event => {
-	// console.log('auth is hit')
-	// const body = await readBody(event)
-	// // const passwords = await fetchPasswords()
-	// // console.log(passwords)
-	// // console.log(event.node.req)
-	// console.log(body)
-	// return {
-	// 	authenticated: false,
-	// }
+// FIXME implement server auth check here
+// https://sidebase.io/nuxt-auth/server-side/session-access-and-route-protection#server-middleware
+export default eventHandler(async event => {
+	const session = await getServerSession(event)
+	console.log('this is middleware/auth.ts speaking')
 })
-
-async function fetchPasswords() {
-	const { mongoURI } = useRuntimeConfig()
-	const mongoClient: MongoClient = new MongoClient(mongoURI)
-
-	try {
-		await mongoClient.connect()
-		const db = mongoClient.db('security')
-		const keys = await db.collection('keys').find({}).toArray()
-
-		return keys
-	} catch (e) {
-		console.error('could not read from database. ', e)
-	} finally {
-		await mongoClient.close()
-	}
-}
