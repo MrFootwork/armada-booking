@@ -22,13 +22,10 @@ const languageStore = useLanguage()
 const { setLanguage } = languageStore
 
 onMounted(() => {
-	if (languageStore.wasSet) return
 
-	// TEST
-	// setLanguage('zh-TW')
-	// FIXME Prod
-	console.log(navigator.language);
+	if (languageStore.wasSet) return
 	setLanguage(navigator.language)
+
 })
 
 // model
@@ -167,10 +164,10 @@ function selectCourt(index: number) {
 											:lower-limit="lowerLimit"
 											:upper-limit="upperLimit" />
 					<!-- <Datepicker :class="'datepicker-input'"
-																										v-model="daySelected"
-																										:locale="zhCN"
-																										:lower-limit="lowerLimit"
-																										:upper-limit="upperLimit" /> -->
+																												v-model="daySelected"
+																												:locale="zhCN"
+																												:lower-limit="lowerLimit"
+																												:upper-limit="upperLimit" /> -->
 					<!-- TODO try out better date picker -->
 					<!-- https://vue3datepicker.com/ -->
 					<button class="right">
