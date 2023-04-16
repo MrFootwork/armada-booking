@@ -44,6 +44,13 @@ export default defineNuxtConfig({
 		transpile: ['date-fns'],
 	},
 	modules: ['@pinia/nuxt', '@sidebase/nuxt-auth'],
+	pinia: {
+		autoImports: [
+			// automatically imports `defineStore`
+			'defineStore', // import { defineStore } from 'pinia'
+			['defineStore', 'definePiniaStore'], // import { defineStore as definePiniaStore } from 'pinia'
+		],
+	},
 	// preset for deploying
 	// https://v3.nuxtjs.org/guide/deploy/presets/
 	auth: {
