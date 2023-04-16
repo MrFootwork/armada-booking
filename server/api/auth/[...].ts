@@ -52,32 +52,27 @@ export default NuxtAuthHandler({
 				const { mongoURI } = useRuntimeConfig()
 				const mongoClient = new MongoClient(mongoURI)
 
-				let user = {}
+				let user = null
 
 				try {
 					await mongoClient.connect()
 					const db = mongoClient.db('security')
-					const userFound = await db
+					const foundUsers = await db
 						.collection('users')
-						.find({ username: credentials.username })
+						.find({
+							username: credentials.username,
+							password: credentials.password,
+						})
 						.toArray()
 
-					user = userFound[0]
-					console.log('found user: ', userFound)
-					// return users
+					if (foundUsers) user = foundUsers[0]
 				} catch (e) {
 					console.error('Could not read users from database. ', e)
 				} finally {
 					await mongoClient.close()
 				}
 
-				// const user = {
-				// 	id: '1',
-				// 	name: 'J Smith',
-				// 	username: 'jsmith',
-				// 	password: 'hunter2',
-				// 	image: 'https://avatars.githubusercontent.com/u/25911230?v=4',
-				// }
+				// FIXME provide users scheme or ts type
 
 				if (user) {
 					// Any object returned will be saved in `user` property of the JWT
