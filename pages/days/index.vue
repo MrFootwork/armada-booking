@@ -57,6 +57,10 @@ const month = today.getMonth()
 const day = today.getDate()
 
 const daySelected = ref(new Date(year, month, day))
+// reset court, if new day was selected
+watch(daySelected, (newDay, oldDay) => {
+	if (newDay.getDay !== oldDay.getDay) selectCourt(0)
+})
 
 const lowerLimit: Date = new Date(today)
 const upperLimit: Date = new Date(today.setDate(today.getDate() + 6))
@@ -64,12 +68,16 @@ const upperLimit: Date = new Date(today.setDate(today.getDate() + 6))
 function increaseDay() {
 	if (daySelected.value >= upperLimit) return
 
+	selectCourt(0)
+
 	daySelected.value.setDate(daySelected.value.getDate() + 1)
 	daySelected.value = new Date(daySelected.value)
 }
 
 function decreaseDay() {
 	if (daySelected.value <= lowerLimit) return
+
+	selectCourt(0)
 
 	daySelected.value.setDate(daySelected.value.getDate() - 1)
 	daySelected.value = new Date(daySelected.value)
@@ -83,7 +91,11 @@ function decreaseDay() {
  *
  *******************************/
 const gymSelected = ref(gyms[0])
+
 // BUG gym change must set court to 1
+watch(gymSelected, (newGym, oldGym) => {
+	if (newGym.id !== oldGym.id) selectCourt(0)
+})
 
 /*******************************
  *
@@ -164,10 +176,10 @@ function selectCourt(index: number) {
 											:lower-limit="lowerLimit"
 											:upper-limit="upperLimit" />
 					<!-- <Datepicker :class="'datepicker-input'"
-																			v-model="daySelected"
-																			:locale="zhCN"
-																			:lower-limit="lowerLimit"
-																			:upper-limit="upperLimit" /> -->
+																															v-model="daySelected"
+																															:locale="zhCN"
+																															:lower-limit="lowerLimit"
+																															:upper-limit="upperLimit" /> -->
 					<!-- TODO try out better date picker -->
 					<!-- https://vue3datepicker.com/ -->
 					<button class="right">

@@ -14,7 +14,7 @@ export default defineEventHandler(async event => {
 	}
 })
 
-// FIXME maybe I can only request the one user...
+// FIXME fetch users, but only necessary information
 async function fetchUsers() {
 	const { mongoURI } = useRuntimeConfig()
 	const mongoClient = new MongoClient(mongoURI)
