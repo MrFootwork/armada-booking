@@ -57,9 +57,9 @@ const month = today.getMonth()
 const day = today.getDate()
 
 const daySelected = ref(new Date(year, month, day))
-// reset court, if new day was selected
+// reset court, if new day is selected
 watch(daySelected, (newDay, oldDay) => {
-	if (newDay.getDay !== oldDay.getDay) selectCourt(0)
+	if (newDay.getDay() !== oldDay.getDay()) selectCourt(0)
 })
 
 const lowerLimit: Date = new Date(today)
@@ -176,10 +176,10 @@ function selectCourt(index: number) {
 											:lower-limit="lowerLimit"
 											:upper-limit="upperLimit" />
 					<!-- <Datepicker :class="'datepicker-input'"
-																															v-model="daySelected"
-																															:locale="zhCN"
-																															:lower-limit="lowerLimit"
-																															:upper-limit="upperLimit" /> -->
+																																					v-model="daySelected"
+																																					:locale="zhCN"
+																																					:lower-limit="lowerLimit"
+																																					:upper-limit="upperLimit" /> -->
 					<!-- TODO try out better date picker -->
 					<!-- https://vue3datepicker.com/ -->
 					<button class="right">
