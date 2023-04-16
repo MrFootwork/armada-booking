@@ -1,6 +1,7 @@
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GithubProvider from 'next-auth/providers/github'
 import { NuxtAuthHandler } from '#auth'
+import { MongoClient } from 'mongodb'
 
 export default NuxtAuthHandler({
 	pages: {
@@ -43,22 +44,42 @@ export default NuxtAuthHandler({
 				// NOTE: THE BELOW LOGIC IS NOT SAFE OR PROPER FOR AUTHENTICATION!
 
 				// FIXME simply request user search directly from here! No api endpoint necessary
-				const users = await $fetch('/api/user')
-				console.log('api/auth/... users: ', users)
-				console.log('api/auth/... credentials: ', credentials)
+				// const users = await $fetch('/api/user')
+				// console.log('api/auth/... users: ', users)
+				// console.log('api/auth/... credentials: ', credentials)
 
-				const user = {
-					id: '1',
-					name: 'J Smith',
-					username: 'jsmith',
-					password: 'hunter2',
-					image: 'https://avatars.githubusercontent.com/u/25911230?v=4',
+				// find user credentials in db
+				const { mongoURI } = useRuntimeConfig()
+				const mongoClient = new MongoClient(mongoURI)
+
+				let user = {}
+
+				try {
+					await mongoClient.connect()
+					const db = mongoClient.db('security')
+					const userFound = await db
+						.collection('users')
+						.find({ username: credentials.username })
+						.toArray()
+
+					user = userFound[0]
+					console.log('found user: ', userFound)
+					// return users
+				} catch (e) {
+					console.error('Could not read users from database. ', e)
+				} finally {
+					await mongoClient.close()
 				}
 
-				if (
-					credentials?.username === user.username &&
-					credentials?.password === user.password
-				) {
+				// const user = {
+				// 	id: '1',
+				// 	name: 'J Smith',
+				// 	username: 'jsmith',
+				// 	password: 'hunter2',
+				// 	image: 'https://avatars.githubusercontent.com/u/25911230?v=4',
+				// }
+
+				if (user) {
 					// Any object returned will be saved in `user` property of the JWT
 					return user
 				} else {
