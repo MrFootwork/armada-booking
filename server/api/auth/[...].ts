@@ -38,16 +38,6 @@ export default NuxtAuthHandler({
 				},
 			},
 			async authorize(credentials: Credential) {
-				// FIXME: provide your own logic here that takes the credentials
-				// submitted and returns either a object representing a user or value
-				// that is false/null if the credentials are invalid.
-				// NOTE: THE BELOW LOGIC IS NOT SAFE OR PROPER FOR AUTHENTICATION!
-
-				// FIXME simply request user search directly from here! No api endpoint necessary
-				// const users = await $fetch('/api/user')
-				// console.log('api/auth/... users: ', users)
-				// console.log('api/auth/... credentials: ', credentials)
-
 				// find user credentials in db
 				const { mongoURI } = useRuntimeConfig()
 				const mongoClient = new MongoClient(mongoURI)
@@ -63,6 +53,7 @@ export default NuxtAuthHandler({
 							username: credentials.username,
 							password: credentials.password,
 						})
+						.project({ password: false })
 						.toArray()
 
 					if (foundUsers) user = foundUsers[0]
@@ -77,6 +68,15 @@ export default NuxtAuthHandler({
 				if (user) {
 					// Any object returned will be saved in `user` property of the JWT
 					return user
+					// Workaround if I need to pass user data to session
+					// return {
+					// 	name: {
+					// 		id: user._id,
+					// 		name: user.name,
+					// 		username: user.username,
+					// 		mail: user.mail,
+					// 	},
+					// }
 				} else {
 					// eslint-disable-next-line no-console
 					console.error(
@@ -88,6 +88,30 @@ export default NuxtAuthHandler({
 
 					// You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
 				}
+			},
+			// TODO doc says I need these callbacks for adding custom data to session data
+			// these callbacks are never called... find out why!
+			// currently, session is { user: { name, email }, expires }}
+			callbacks: {
+				// Callback when the JWT is created / updated, see https://next-auth.js.org/configuration/callbacks#jwt-callback
+				async jwt({ token, user }) {
+					console.log('jwt callback: ', user)
+					const isSignIn = user ? true : false
+					if (isSignIn) {
+						console.log('jwt callback: ', user)
+						token.id = user ? user.id || '' : ''
+						token.username = user ? (user as any).username || '' : ''
+					}
+					// return Promise.resolve(token)
+					return token
+				},
+				// Callback whenever session is checked, see https://next-auth.js.org/configuration/callbacks#session-callback
+				async session({ session, token }) {
+					;(session as any).username = token.username
+					;(session as any).uid = token.id
+					// return Promise.resolve(session)
+					return session
+				},
 			},
 		}),
 	],

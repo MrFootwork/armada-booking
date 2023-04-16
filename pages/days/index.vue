@@ -2,12 +2,11 @@
 import Calendar from '@/model/MCalendar.model'
 import { useLanguage } from '@/store/language'
 import { Day } from '@/model/TDay.model'
-import useDate from '@/composables/date'
 import Datepicker from 'vue3-datepicker'
 
 // importing from 'date-fns/locale' would throw error in production after authenticating
 // https://github.com/nuxt/nuxt/issues/13591
-import { de, ro, zhCN } from 'date-fns/locale/index.js'
+import { en, de, ro, zhCN } from 'date-fns/locale/index.js'
 // TODO remove TS error
 // https://github.com/date-fns/date-fns/issues/2964#issuecomment-1409736680
 
@@ -172,14 +171,9 @@ function selectCourt(index: number) {
 
 					<Datepicker :class="'datepicker-input'"
 											v-model="daySelected"
-											:locale="ro"
+											:locale="en"
 											:lower-limit="lowerLimit"
 											:upper-limit="upperLimit" />
-					<!-- <Datepicker :class="'datepicker-input'"
-																																					v-model="daySelected"
-																																					:locale="zhCN"
-																																					:lower-limit="lowerLimit"
-																																					:upper-limit="upperLimit" /> -->
 					<!-- TODO try out better date picker -->
 					<!-- https://vue3datepicker.com/ -->
 					<button class="right">
