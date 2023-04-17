@@ -14,10 +14,12 @@ export const useDaysStore = defineStore('days', () => {
 		days.value = calendarSample.days
 	}
 
-	async function addSlot(input: string) {
+	async function addSlot({ day, gym, court, start, end }) {
 		// FIXME add new slot to DB
-		if (!days.value) days.value = []
-		days.value.push(input)
+		// if (!days.value) days.value = []
+		// days.value.push(input)
+
+		console.log({ day, gym, court, start, end })
 	}
 
 	return { days, fetchDays, addSlot }

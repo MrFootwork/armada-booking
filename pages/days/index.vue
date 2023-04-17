@@ -261,6 +261,14 @@ function selectCourt(index: number) {
 
 			</div>
 
+			<button @click="addSlot({
+				day: daySelected,
+				gym: gymSelected.id,
+				court: courtSelected.id,
+				start: 11,
+				end: 12
+			})">Test</button>
+
 		</form>
 
 		<div class="hint-wrapper">
