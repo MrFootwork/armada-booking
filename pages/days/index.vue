@@ -24,19 +24,14 @@ const iconSize = 30
 const languageStore = useLanguage()
 const { setLanguage } = languageStore
 
-onMounted(() => {
-
-	if (languageStore.wasSet) return
-	setLanguage(navigator.language)
-
-})
-
 // model
 const calendar = ref(new Calendar())
 // usage of the store
 const daysStore = useDaysStore()
 // reactive store properties
 const { days } = storeToRefs(daysStore)
+const { fetchDays, addSlot } = daysStore
+
 
 const gyms: Day['gyms'] = [
 	{
@@ -53,6 +48,18 @@ const gyms: Day['gyms'] = [
 	},
 ]
 
+onMounted(() => {
+
+	if (languageStore.wasSet) return
+	setLanguage(navigator.language)
+
+})
+
+onBeforeMount(() => {
+
+	if (!days.value) fetchDays()
+
+})
 /*******************************
  *
  *        date picker
@@ -115,9 +122,12 @@ const courtLayout = ''
 
 // FIXME fallback empty array
 const courts = computed(() => {
+	// if (!days.value) return []
+
 	const courts =
-		calendar.value.days
-			.find(day => day.date.getDate() === daySelected.value.getDate())
+		days.value
+			// calendar.value.days
+			?.find(day => day.date.getDate() === daySelected.value.getDate())
 			?.gyms.find(gym => gym.id === gymSelected.value.id)?.courts || []
 
 	return courts
@@ -127,8 +137,13 @@ const courtsNames = computed(() => {
 	return courts.value.map(court => court.courtName)
 })
 
-// BUG day change must update current court
 const courtSelected = ref(courts.value[0])
+// initialization after Pinia store useDaysStore is loaded
+onBeforeMount(() => {
+
+	courtSelected.value = courts.value[0]
+
+})
 
 const courtIndex = computed(() => {
 	return courtsNames.value.indexOf(courtSelected.value.courtName) || 0
