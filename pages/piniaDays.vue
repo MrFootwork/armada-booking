@@ -7,7 +7,7 @@ const daysStore = useDaysStore()
 // reactive store properties
 const { days } = storeToRefs(daysStore)
 // actions of the store
-const { addSlot } = daysStore
+const { fetchDays, addSlot } = daysStore
 
 const input = ref('default')
 
@@ -23,6 +23,7 @@ const input = ref('default')
            v-model="input"
            @keyup.enter="addSlot(input)">
     <button @click="addSlot(input)">Save</button>
+    <button @click="fetchDays()">Load</button>
   </div>
 </template>
 

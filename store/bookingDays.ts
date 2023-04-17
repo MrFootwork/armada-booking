@@ -1,17 +1,22 @@
 import { ref } from 'vue'
+import CalendarSample from '@/model/MCalendarSample.model'
+import { Day } from '@/model/TDay.model'
 
 export const useDaysStore = defineStore('days', () => {
 	// state
-	const days = ref([])
+	const days = ref<Day[] | null>(null)
 
 	// getters (computed())
 	// actions
 	async function fetchDays() {
 		// FIXME get days and save them here
+		const calendarSample = new CalendarSample()
+		days.value = calendarSample.days
 	}
 
 	async function addSlot(input: string) {
 		// FIXME add new slot to DB
+		if (!days.value) days.value = []
 		days.value.push(input)
 	}
 
