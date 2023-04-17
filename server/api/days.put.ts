@@ -2,28 +2,26 @@ import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async event => {
 	const query = getQuery(event)
-	// const body = await readBody(event)
-	const days = await fetchDays()
-
-	// console.table(passwords)
+	const body = await readBody(event)
+	const dayInserted = await insertDay(body)
 
 	return {
-		api: 'days.get',
-		in: query,
-		out: days,
+		api: 'days.put',
+		in: body,
+		out: dayInserted,
 	}
 })
 
-async function fetchDays() {
+async function insertDay(newDay) {
 	const { mongoURI } = useRuntimeConfig()
 	const mongoClient: MongoClient = new MongoClient(mongoURI)
 
 	try {
 		await mongoClient.connect()
 		const db = mongoClient.db('bookings')
-		const days = await db.collection('days').find({}).toArray()
+		const dayInserted = await db.collection('days').insertOne(newDay)
 
-		return days
+		return dayInserted
 	} catch (e) {
 		console.error('could not read from database. ', e)
 	} finally {
