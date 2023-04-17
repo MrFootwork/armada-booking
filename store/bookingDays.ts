@@ -14,12 +14,39 @@ export const useDaysStore = defineStore('days', () => {
 		days.value = calendarSample.days
 	}
 
-	async function addSlot({ day, gym, court, start, end }) {
+	async function addSlot({
+		day,
+		gymId,
+		courtId,
+		start,
+		end,
+	}: {
+		day: Date
+		gymId: Day['gyms'][number]['id']
+		courtId: Day['gyms'][number]['courts'][number]['id']
+		start: number
+		end: number
+	}) {
 		// FIXME add new slot to DB
-		// if (!days.value) days.value = []
-		// days.value.push(input)
+		const isDay = (storeDay: Date) => storeDay.date.getDate() === day.getDate()
+		const isGym = (storeGym: Day['gyms'][number]) => storeGym.id === gymId
+		const isCourt = (storeCourt: Day['gyms'][number]['courts'][number]) =>
+			storeCourt.id === courtId
 
-		console.log({ day, gym, court, start, end })
+		const daysIndex = days?.value?.findIndex(isDay)
+		const daysElement = days?.value?.find(isDay)
+
+		const gymsIndex = daysElement?.gyms.findIndex(isGym)
+		const gymsElement = daysElement?.gyms.find(isGym)
+
+		const courtsIndex = gymsElement?.courts.findIndex(isCourt)
+		const courtsElement = gymsElement?.courts.find(isCourt)
+
+		console.log('day: ', daysIndex, daysElement)
+		console.log('gym: ', gymsIndex, gymsElement)
+		console.log('court: ', courtsIndex, courtsElement)
+
+		// push to days
 	}
 
 	return { days, fetchDays, addSlot }

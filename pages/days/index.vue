@@ -2,11 +2,8 @@
 import { useLanguage } from '@/store/language'
 import Datepicker from 'vue3-datepicker'
 
-import Calendar from '@/model/MCalendar.model'
 import { Day } from '@/model/TDay.model'
-
 import { useDaysStore } from '@/store/bookingDays'
-import { storeToRefs } from 'pinia'
 
 // importing from 'date-fns/locale' would throw error in production after authenticating
 // https://github.com/nuxt/nuxt/issues/13591
@@ -24,14 +21,10 @@ const iconSize = 30
 const languageStore = useLanguage()
 const { setLanguage } = languageStore
 
-// model
-const calendar = ref(new Calendar())
-// usage of the store
+// days
 const daysStore = useDaysStore()
-// reactive store properties
 const { days } = storeToRefs(daysStore)
 const { fetchDays, addSlot } = daysStore
-
 
 const gyms: Day['gyms'] = [
 	{
@@ -122,11 +115,9 @@ const courtLayout = ''
 
 // FIXME fallback empty array
 const courts = computed(() => {
-	// if (!days.value) return []
 
 	const courts =
-		days.value
-			// calendar.value.days
+		daysStore?.days
 			?.find(day => day.date.getDate() === daySelected.value.getDate())
 			?.gyms.find(gym => gym.id === gymSelected.value.id)?.courts || []
 
@@ -226,6 +217,7 @@ function selectCourt(index: number) {
 				<label for="court">Court</label>
 
 				<div class="wrapper buttons">
+
 					<button class="left">
 						<SvgIcon class="icon court left"
 										 type="mdi"
@@ -248,6 +240,7 @@ function selectCourt(index: number) {
 										 @click="courtNext">
 						</SvgIcon>
 					</button>
+
 				</div>
 
 				<DaysCourtPicker v-show="showCourtPicker"
@@ -263,11 +256,11 @@ function selectCourt(index: number) {
 
 			<button @click="addSlot({
 				day: daySelected,
-				gym: gymSelected.id,
-				court: courtSelected.id,
+				gymId: gymSelected.id,
+				courtId: courtSelected.id,
 				start: 11,
 				end: 12
-			})">Test</button>
+			})">Add Slot</button>
 
 		</form>
 
