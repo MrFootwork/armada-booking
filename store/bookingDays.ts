@@ -11,11 +11,11 @@ export const useDays = defineStore('days', () => {
 		anyState.value = newState
 	}
 
-	function fetchDays() {
+	async function fetchDays() {
 		// FIXME get days and save them here
 	}
 
-	function addSlot() {
+	async function addSlot() {
 		// FIXME add new slot to DB
 	}
 

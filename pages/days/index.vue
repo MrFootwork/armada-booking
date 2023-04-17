@@ -240,6 +240,14 @@ function selectCourt(index: number) {
 
 		</form>
 
+		<div class="hint-wrapper">
+			<p class="hint-content">
+				{{ gymSelected.name }}: Please select any court and slot and
+				register your total playing time.
+				<br /><br />You can switch freely while you play.
+			</p>
+		</div>
+
 		<Schedule :current-day="daySelected"
 							:gym-id="gymSelected.id"
 							:court-id="courtSelected.id" />
@@ -260,6 +268,17 @@ function selectCourt(index: number) {
 	@include cardStyle();
 	@include appWidth();
 	padding: 1rem;
+
+	div.hint-wrapper {
+		width: 100%;
+		padding: .5rem;
+		border: .2rem solid var(--font-color);
+		border-radius: .3rem;
+
+		p.hint-content {
+			margin: 0;
+		}
+	}
 
 	form.wrapper.selectors {
 		width: 100%;
