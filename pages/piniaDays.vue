@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { useDaysStore } from '@/store/bookingDays'
+import { storeToRefs } from 'pinia'
 
+// usage of the store
 const daysStore = useDaysStore()
-const { setState } = daysStore
+// reactive store properties
+const { days } = storeToRefs(daysStore)
+// actions of the store
+const { addSlot } = daysStore
 
 const input = ref('default')
 
@@ -11,12 +16,13 @@ const input = ref('default')
 
 <template>
   <div>
-    <p>Value in Store: {{ daysStore.anyState }}</p>
+    <p>Value in Store: {{ days }}</p>
     <input type="text"
            name="state"
            id="state"
-           v-model="input">
-    <button @click="setState(input)">Save</button>
+           v-model="input"
+           @keyup.enter="addSlot(input)">
+    <button @click="addSlot(input)">Save</button>
   </div>
 </template>
 

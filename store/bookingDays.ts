@@ -3,21 +3,17 @@ import { ref } from 'vue'
 export const useDaysStore = defineStore('days', () => {
 	// state
 	const days = ref([])
-	const anyState = ref('this works')
 
 	// getters (computed())
 	// actions
-	function setState(newState: string) {
-		anyState.value = newState
-	}
-
 	async function fetchDays() {
 		// FIXME get days and save them here
 	}
 
-	async function addSlot() {
+	async function addSlot(input: string) {
 		// FIXME add new slot to DB
+		days.value.push(input)
 	}
 
-	return { days, anyState, setState }
+	return { days, fetchDays, addSlot }
 })
