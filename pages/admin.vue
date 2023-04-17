@@ -5,11 +5,13 @@ async function getDays() {
   const fetchedDays = await $fetch('/api/days', { method: 'GET' })
   fetchResult.value = fetchedDays
 }
+
 async function deleteDays(option: 'last' | 'all') {
   const url = `/api/days?option=${option}`
   const deleteResult = await $fetch(url, { method: 'DELETE' })
   fetchResult.value = deleteResult
 }
+
 async function addDay() {
   const newDay = {
     test1: 'value1',
@@ -18,6 +20,7 @@ async function addDay() {
   const insertedDay = await $fetch('/api/days', { method: 'PUT', body: newDay })
   fetchResult.value = insertedDay
 }
+
 async function resetDays() {
   // await $fetch('/api/days', { method: 'DELETE' })
   const fetchedDays = await $fetch('/api/days', { method: 'PUT' })
@@ -28,13 +31,16 @@ async function resetDays() {
 
 <template>
   <div>
+
     <button @click="getDays()">days.get</button>
     <button @click="deleteDays('all')">days.delete.all</button>
     <!-- BUG delete last doesn't work -->
     <!-- <button @click="deleteDays('last')">days.delete.last</button> -->
     <button @click="addDay()">days.put</button>
     <button @click="resetDays()">days.reset</button>
+
     <pre>{{ fetchResult }}</pre>
+
   </div>
 </template>
 
