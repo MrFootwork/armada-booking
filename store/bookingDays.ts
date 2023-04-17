@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 
-export const useDays = defineStore('days', () => {
+export const useDaysStore = defineStore('days', () => {
 	// state
 	const days = ref([])
 	const anyState = ref('this works')

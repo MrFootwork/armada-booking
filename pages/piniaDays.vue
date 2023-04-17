@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useDays } from '@/store/bookingDays'
+import { useDaysStore } from '@/store/bookingDays'
 
-const daysStore = useDays()
+const daysStore = useDaysStore()
 const { setState } = daysStore
 
 const input = ref('default')
