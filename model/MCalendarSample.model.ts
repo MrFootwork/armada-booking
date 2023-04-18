@@ -16,8 +16,8 @@ export default class CalendarSample {
 		const today_5 = new Date(year, month, firstDay + 5)
 		const today_6 = new Date(year, month, firstDay + 6)
 
-		const hallID1 = 'antilopa'
-		const hallID2 = 'sun-plaza'
+		const hallID1 = '63dfe7d99d49df953437b274'
+		const hallID2 = '63e01a8504594f501f829e51'
 		const hall1 = 'Antilopa'
 		const hall2 = 'Sun Plaza'
 
@@ -26,9 +26,9 @@ export default class CalendarSample {
 				date: today_0,
 				gyms: [
 					{
-						id: 'antilopa',
+						id: '63dfe7d99d49df953437b274',
 						name: hall1,
-						place: `${hall1} Place`,
+						place: 'Badminton Armada Arena',
 						start: 8,
 						end: 21,
 						courts: [
@@ -116,9 +116,9 @@ export default class CalendarSample {
 						],
 					},
 					{
-						id: 'sun-plaza',
+						id: '63e01a8504594f501f829e51',
 						name: hall2,
-						place: `${hall2} Place`,
+						place: 'Sala De Sport ELITE',
 						courts: [
 							{
 								id: '1',
@@ -204,9 +204,9 @@ export default class CalendarSample {
 				date: today_1,
 				gyms: [
 					{
-						id: 'antilopa',
+						id: '63dfe7d99d49df953437b274',
 						name: hall1,
-						place: `${hall1} Place`,
+						place: 'Badminton Armada Arena',
 						start: 8,
 						end: 21,
 						courts: [
@@ -294,9 +294,9 @@ export default class CalendarSample {
 						],
 					},
 					{
-						id: 'sun-plaza',
+						id: '63e01a8504594f501f829e51',
 						name: hall2,
-						place: `${hall2} Place`,
+						place: 'Sala De Sport ELITE',
 						courts: [
 							{
 								id: '1',
@@ -382,9 +382,9 @@ export default class CalendarSample {
 				date: today_1,
 				gyms: [
 					{
-						id: 'antilopa',
+						id: '63dfe7d99d49df953437b274',
 						name: hall1,
-						place: `${hall1} Place`,
+						place: 'Badminton Armada Arena',
 						courts: [
 							{
 								id: '1',
@@ -466,9 +466,9 @@ export default class CalendarSample {
 						],
 					},
 					{
-						id: 'sun-plaza',
+						id: '63e01a8504594f501f829e51',
 						name: hall2,
-						place: `${hall2} Place`,
+						place: 'Sala De Sport ELITE',
 						courts: [
 							{
 								id: '1',
@@ -553,9 +553,9 @@ export default class CalendarSample {
 				date: today_2,
 				gyms: [
 					{
-						id: 'antilopa',
+						id: '63dfe7d99d49df953437b274',
 						name: hall1,
-						place: `${hall1} Place`,
+						place: 'Badminton Armada Arena',
 						start: 8,
 						end: 21,
 						courts: [
@@ -643,9 +643,9 @@ export default class CalendarSample {
 						],
 					},
 					{
-						id: 'sun-plaza',
+						id: '63e01a8504594f501f829e51',
 						name: hall2,
-						place: `${hall2} Place`,
+						place: 'Sala De Sport ELITE',
 						courts: [
 							{
 								id: '1',
@@ -731,9 +731,9 @@ export default class CalendarSample {
 				date: today_3,
 				gyms: [
 					{
-						id: 'antilopa',
+						id: '63dfe7d99d49df953437b274',
 						name: hall1,
-						place: `${hall1} Place`,
+						place: 'Badminton Armada Arena',
 						start: 8,
 						end: 21,
 						courts: [
@@ -821,9 +821,9 @@ export default class CalendarSample {
 						],
 					},
 					{
-						id: 'sun-plaza',
+						id: '63e01a8504594f501f829e51',
 						name: hall2,
-						place: `${hall2} Place`,
+						place: 'Sala De Sport ELITE',
 						courts: [
 							{
 								id: '1',
@@ -909,9 +909,9 @@ export default class CalendarSample {
 				date: today_4,
 				gyms: [
 					{
-						id: 'antilopa',
+						id: '63dfe7d99d49df953437b274',
 						name: hall1,
-						place: `${hall1} Place`,
+						place: 'Badminton Armada Arena',
 						start: 8,
 						end: 21,
 						courts: [
@@ -999,9 +999,9 @@ export default class CalendarSample {
 						],
 					},
 					{
-						id: 'sun-plaza',
+						id: '63e01a8504594f501f829e51',
 						name: hall2,
-						place: `${hall2} Place`,
+						place: 'Sala De Sport ELITE',
 						courts: [
 							{
 								id: '1',
@@ -1087,9 +1087,9 @@ export default class CalendarSample {
 				date: today_5,
 				gyms: [
 					{
-						id: 'antilopa',
+						id: '63dfe7d99d49df953437b274',
 						name: hall1,
-						place: `${hall1} Place`,
+						place: 'Badminton Armada Arena',
 						start: 8,
 						end: 21,
 						courts: [
@@ -1177,9 +1177,9 @@ export default class CalendarSample {
 						],
 					},
 					{
-						id: 'sun-plaza',
+						id: '63e01a8504594f501f829e51',
 						name: hall2,
-						place: `${hall2} Place`,
+						place: 'Sala De Sport ELITE',
 						courts: [
 							{
 								id: '1',
@@ -1265,9 +1265,9 @@ export default class CalendarSample {
 				date: today_6,
 				gyms: [
 					{
-						id: 'antilopa',
+						id: '63dfe7d99d49df953437b274',
 						name: hall1,
-						place: `${hall1} Place`,
+						place: 'Badminton Armada Arena',
 						start: 8,
 						end: 21,
 						courts: [
@@ -1355,9 +1355,9 @@ export default class CalendarSample {
 						],
 					},
 					{
-						id: 'sun-plaza',
+						id: '63e01a8504594f501f829e51',
 						name: hall2,
-						place: `${hall2} Place`,
+						place: 'Sala De Sport ELITE',
 						courts: [
 							{
 								id: '1',

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import Datepicker from 'vue3-datepicker'
+import { en } from 'date-fns/locale/index.js'
+
 const fetchResult = ref()
 
 async function getDays() {
@@ -12,14 +15,24 @@ async function deleteDays(option: 'last' | 'all') {
   fetchResult.value = deleteResult
 }
 
-async function addDay() {
-  const newDay = {
-    test1: 'value1',
-    test2: 'value2'
-  }
-  const insertedDay = await $fetch('/api/days', { method: 'POST', body: newDay })
+async function addDay(newDate: Date) {
+  const year = newDate.getFullYear().toString()
+  const month = newDate.getMonth().toString()
+  const day = newDate.getDate().toString()
+
+  const dateComponents = { year, month, day }
+
+  const insertedDay = await $fetch(
+    `/api/days?${new URLSearchParams(dateComponents).toString()}`,
+    { method: 'POST' })
   fetchResult.value = insertedDay
 }
+
+const today = new Date()
+const year = today.getFullYear()
+const month = today.getMonth()
+const day = today.getDate()
+const daySelected = ref(new Date(year, month, day))
 
 async function resetDays() {
   // await $fetch('/api/days', { method: 'DELETE' })
@@ -36,8 +49,16 @@ async function resetDays() {
     <button @click="deleteDays('all')">days.delete.all</button>
     <!-- BUG delete last doesn't work -->
     <!-- <button @click="deleteDays('last')">days.delete.last</button> -->
-    <button @click="addDay()">days.put</button>
+    <button @click="addDay(daySelected)">days.put</button>
     <button @click="resetDays()">days.reset</button>
+
+    <Datepicker :class="'datepicker-input'"
+                v-model="daySelected"
+                :locale="en" />
+    <button @click="daySelected = new Date()">Today</button>
+    <br><span>ISO: {{ daySelected.toISOString() }}</span>
+    <br><span>String: {{ daySelected.toString() }}</span>
+    <br><span>UTC: {{ daySelected.toUTCString() }}</span>
 
     <pre>{{ fetchResult }}</pre>
 
