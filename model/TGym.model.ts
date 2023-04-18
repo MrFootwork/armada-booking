@@ -18,7 +18,7 @@ export type Gym = {
 		end?: Date
 		isActive: boolean
 	}[]
-	courts: {
+	courts?: {
 		id: string
 		courtName: string
 		slots: {

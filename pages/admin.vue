@@ -17,13 +17,13 @@ async function addDay() {
     test1: 'value1',
     test2: 'value2'
   }
-  const insertedDay = await $fetch('/api/days', { method: 'PUT', body: newDay })
+  const insertedDay = await $fetch('/api/days', { method: 'POST', body: newDay })
   fetchResult.value = insertedDay
 }
 
 async function resetDays() {
   // await $fetch('/api/days', { method: 'DELETE' })
-  const fetchedDays = await $fetch('/api/days', { method: 'PUT' })
+  const fetchedDays = await $fetch('/api/days', { method: 'POST' })
   fetchResult.value = fetchedDays
 }
 

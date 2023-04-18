@@ -3,13 +3,10 @@ import { MongoClient } from 'mongodb'
 export default defineEventHandler(async event => {
 	console.log('server is hit to get gyms')
 	const query = getQuery(event)
-	// const body = await readBody(event)
 	const gyms = await fetchGyms()
 
-	// console.table(passwords)
-
 	return {
-		api: 'works',
+		api: 'gyms.get',
 		in: query,
 		out: gyms,
 	}
@@ -26,7 +23,7 @@ async function fetchGyms() {
 
 		return gyms
 	} catch (e) {
-		console.error('could not read from database. ', e)
+		console.error('could not retrieve gyms from database. ', e)
 	} finally {
 		await mongoClient.close()
 	}

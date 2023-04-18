@@ -1,12 +1,14 @@
+import { Day } from '@/model/TDay.model'
 import { MongoClient } from 'mongodb'
 
+// populates the given day and pushes it to the database
 export default defineEventHandler(async event => {
 	const query = getQuery(event)
-	const body = await readBody(event)
+	const body: Day = await readBody(event)
 	const dayInserted = await insertDay(body)
 
 	return {
-		api: 'days.put',
+		api: 'days.post',
 		in: body,
 		out: dayInserted,
 	}
