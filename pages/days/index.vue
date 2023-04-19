@@ -28,15 +28,15 @@ const { fetchDays, addSlot } = daysStore
 
 const gyms: Day['gyms'] = [
 	{
-		id: 'antilopa',
+		id: '63dfe7d99d49df953437b274',
 		name: 'Antilopa',
-		place: 'Antilopa place',
+		place: 'Badminton Armada Arena',
 		courts: [],
 	},
 	{
-		id: 'sun-plaza',
+		id: '63e01a8504594f501f829e51',
 		name: 'Sun Plaza',
-		place: 'Sun Plaza place',
+		place: 'Sala De Sport ELITE',
 		courts: [],
 	},
 ]
@@ -137,7 +137,7 @@ onBeforeMount(() => {
 })
 
 const courtIndex = computed(() => {
-	return courtsNames.value.indexOf(courtSelected.value.courtName) || 0
+	return courtsNames.value.indexOf(courtSelected?.value?.courtName) || 0
 })
 
 function toggleCourtPicker() {
