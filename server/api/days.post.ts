@@ -6,7 +6,7 @@ import { MongoClient } from 'mongodb'
 // @param	{string}	year	YYYY
 // @param {string}	month	month 0-based
 // @param	{string}	day		day of month
-// @return {object}
+// @return {api, in out}	api object
 export default defineEventHandler(async event => {
 	const { year, month, day } = getQuery(event)
 
@@ -35,6 +35,10 @@ async function insertDay(newDay: Date) {
 	try {
 		await mongoClient.connect()
 		const db = mongoClient.db('bookings')
+
+		// FIXME read gyms and populate Day object
+		// FIXME read courts and populate Day object
+
 		const dayInserted = await db
 			.collection('days')
 			.insertOne({ date: newDay, gyms: [{ test: 'value' }] })
