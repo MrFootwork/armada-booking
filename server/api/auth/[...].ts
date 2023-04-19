@@ -89,6 +89,8 @@ export default NuxtAuthHandler({
 					// You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
 				}
 			},
+			// BUG first load from sleeping server creates second token
+			// Workaround: user must wait 2 days => set token expiration to 2 days
 			// TODO doc says I need these callbacks for adding custom data to session data
 			// these callbacks are never called... find out why!
 			// currently, session is { user: { name, email }, expires }}
