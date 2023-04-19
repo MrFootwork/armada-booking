@@ -18,8 +18,8 @@ export default class CalendarSample {
 
 		const hallID1 = '63dfe7d99d49df953437b274'
 		const hallID2 = '63e01a8504594f501f829e51'
-		const hall1 = 'Antilopa'
-		const hall2 = 'Sun Plaza'
+		const hall1 = 'antilopa'
+		const hall2 = 'sun-plaza'
 
 		this.days = [
 			{

@@ -26,16 +26,18 @@ const daysStore = useDaysStore()
 const { days } = storeToRefs(daysStore)
 const { fetchDays, addSlot } = daysStore
 
+// FIXME gyms must be read from Pinia gym store,
+// which is loaded from db
 const gyms: Day['gyms'] = [
 	{
 		id: '63dfe7d99d49df953437b274',
-		name: 'Antilopa',
+		name: 'antilopa',
 		place: 'Badminton Armada Arena',
 		courts: [],
 	},
 	{
 		id: '63e01a8504594f501f829e51',
-		name: 'Sun Plaza',
+		name: 'sun-plaza',
 		place: 'Sala De Sport ELITE',
 		courts: [],
 	},
