@@ -69,11 +69,24 @@ watch(daySelected, (newDay, oldDay) => {
 	if (newDay.getDay() !== oldDay.getDay()) selectCourt(0)
 })
 
+const dateDiffTodayToLast = 6
 const lowerLimit: Date = new Date(today)
-const upperLimit: Date = new Date(today.setDate(today.getDate() + 6))
+const upperLimit: Date = ((dateBase) => {
+	let upperLimit = new Date(dateBase.setDate(
+		dateBase.getDate()
+		+ dateDiffTodayToLast)
+	)
+	upperLimit.setHours(0)
+	upperLimit.setMinutes(0)
+	upperLimit.setSeconds(0)
+	upperLimit.setMilliseconds(0)
+
+	return upperLimit
+})(today)
 
 function increaseDay() {
-	if (daySelected.value >= upperLimit) return
+	// don't increase, if selected day reaches limit
+	if (daySelected.value.getDate() === upperLimit.getDate()) return
 
 	selectCourt(0)
 
