@@ -28,6 +28,11 @@ export const useDaysStore = defineStore('days', () => {
 		end: number
 	}) {
 		// FIXME add new slot to DB
+		if (true) {
+			alert('not ready, yet.')
+			return
+		}
+
 		const isDay = (storeDay: Date) => storeDay.date.getDate() === day.getDate()
 		const isGym = (storeGym: Day['gyms'][number]) => storeGym.id === gymId
 		const isCourt = (storeCourt: Day['gyms'][number]['courts'][number]) =>
