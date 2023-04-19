@@ -3,9 +3,10 @@ import { MongoClient } from 'mongodb'
 
 // populates the given day and pushes it to the database
 // query parameters, e.g. year=2023&month=1&day=24
-// year		{string}	YYYY
-// month 	{string}	month 0-based
-// day		{string}	day of month
+// @param	{string}	year	YYYY
+// @param {string}	month	month 0-based
+// @param	{string}	day		day of month
+// @return {object}
 export default defineEventHandler(async event => {
 	const { year, month, day } = getQuery(event)
 
