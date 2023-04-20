@@ -3,7 +3,8 @@ import { Court } from '@/model/TCourt.model'
 
 export type Gym = {
 	id: string
-	name: string
+	nameCode: string
+	nameShort: string
 	place: string
 	start?: number
 	end?: number

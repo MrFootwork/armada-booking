@@ -27,7 +27,7 @@ export default class CalendarSample {
 				gyms: [
 					{
 						id: '63dfe7d99d49df953437b274',
-						name: hall1,
+						nameCode: hall1,
 						place: 'Badminton Armada Arena',
 						start: 8,
 						end: 21,
@@ -117,7 +117,7 @@ export default class CalendarSample {
 					},
 					{
 						id: '63e01a8504594f501f829e51',
-						name: hall2,
+						nameCode: hall2,
 						place: 'Sala De Sport ELITE',
 						courts: [
 							{
@@ -205,7 +205,7 @@ export default class CalendarSample {
 				gyms: [
 					{
 						id: '63dfe7d99d49df953437b274',
-						name: hall1,
+						nameCode: hall1,
 						place: 'Badminton Armada Arena',
 						start: 8,
 						end: 21,
@@ -295,7 +295,7 @@ export default class CalendarSample {
 					},
 					{
 						id: '63e01a8504594f501f829e51',
-						name: hall2,
+						nameCode: hall2,
 						place: 'Sala De Sport ELITE',
 						courts: [
 							{
@@ -383,7 +383,7 @@ export default class CalendarSample {
 				gyms: [
 					{
 						id: '63dfe7d99d49df953437b274',
-						name: hall1,
+						nameCode: hall1,
 						place: 'Badminton Armada Arena',
 						courts: [
 							{
@@ -467,7 +467,7 @@ export default class CalendarSample {
 					},
 					{
 						id: '63e01a8504594f501f829e51',
-						name: hall2,
+						nameCode: hall2,
 						place: 'Sala De Sport ELITE',
 						courts: [
 							{
@@ -554,7 +554,7 @@ export default class CalendarSample {
 				gyms: [
 					{
 						id: '63dfe7d99d49df953437b274',
-						name: hall1,
+						nameCode: hall1,
 						place: 'Badminton Armada Arena',
 						start: 8,
 						end: 21,
@@ -644,7 +644,7 @@ export default class CalendarSample {
 					},
 					{
 						id: '63e01a8504594f501f829e51',
-						name: hall2,
+						nameCode: hall2,
 						place: 'Sala De Sport ELITE',
 						courts: [
 							{
@@ -732,7 +732,7 @@ export default class CalendarSample {
 				gyms: [
 					{
 						id: '63dfe7d99d49df953437b274',
-						name: hall1,
+						nameCode: hall1,
 						place: 'Badminton Armada Arena',
 						start: 8,
 						end: 21,
@@ -822,7 +822,7 @@ export default class CalendarSample {
 					},
 					{
 						id: '63e01a8504594f501f829e51',
-						name: hall2,
+						nameCode: hall2,
 						place: 'Sala De Sport ELITE',
 						courts: [
 							{
@@ -910,7 +910,7 @@ export default class CalendarSample {
 				gyms: [
 					{
 						id: '63dfe7d99d49df953437b274',
-						name: hall1,
+						nameCode: hall1,
 						place: 'Badminton Armada Arena',
 						start: 8,
 						end: 21,
@@ -1000,7 +1000,7 @@ export default class CalendarSample {
 					},
 					{
 						id: '63e01a8504594f501f829e51',
-						name: hall2,
+						nameCode: hall2,
 						place: 'Sala De Sport ELITE',
 						courts: [
 							{
@@ -1088,7 +1088,7 @@ export default class CalendarSample {
 				gyms: [
 					{
 						id: '63dfe7d99d49df953437b274',
-						name: hall1,
+						nameCode: hall1,
 						place: 'Badminton Armada Arena',
 						start: 8,
 						end: 21,
@@ -1178,7 +1178,7 @@ export default class CalendarSample {
 					},
 					{
 						id: '63e01a8504594f501f829e51',
-						name: hall2,
+						nameCode: hall2,
 						place: 'Sala De Sport ELITE',
 						courts: [
 							{
@@ -1266,7 +1266,7 @@ export default class CalendarSample {
 				gyms: [
 					{
 						id: '63dfe7d99d49df953437b274',
-						name: hall1,
+						nameCode: hall1,
 						place: 'Badminton Armada Arena',
 						start: 8,
 						end: 21,
@@ -1356,7 +1356,7 @@ export default class CalendarSample {
 					},
 					{
 						id: '63e01a8504594f501f829e51',
-						name: hall2,
+						nameCode: hall2,
 						place: 'Sala De Sport ELITE',
 						courts: [
 							{

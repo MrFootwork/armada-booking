@@ -32,12 +32,14 @@ const gyms: Day['gyms'] = [
 	{
 		id: '63dfe7d99d49df953437b274',
 		name: 'antilopa',
+		nameShort: 'Antilopa',
 		place: 'Badminton Armada Arena',
 		courts: [],
 	},
 	{
 		id: '63e01a8504594f501f829e51',
 		name: 'sun-plaza',
+		nameShort: 'Sun Plaza',
 		place: 'Sala De Sport ELITE',
 		courts: [],
 	},
@@ -223,7 +225,7 @@ function selectCourt(index: number) {
 								v-model="gymSelected">
 					<option v-for="(gym, i) in gyms"
 									:value="gyms[i]">
-						{{ gym.name }}
+						{{ gym.nameShort }}
 					</option>
 				</select>
 			</div>
@@ -281,7 +283,7 @@ function selectCourt(index: number) {
 
 		<div class="hint-wrapper">
 			<p class="hint-content">
-				{{ gymSelected.name }}: Please select any court and slot and
+				{{ gymSelected.place }}: Please select any court and slot and
 				register your total playing time.
 				<br /><br />You can switch freely while you play.
 			</p>

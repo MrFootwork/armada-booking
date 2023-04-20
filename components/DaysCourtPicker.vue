@@ -33,7 +33,7 @@ function selectCourtAndClose(indexOfSelectedCourt: number) {
       </button>
 
       <div class="court-picker content"
-           :class="gym.name">
+           :class="gym.nameCode">
 
         <button class="court wrapper"
                 :class="`court-${court.id}`"
