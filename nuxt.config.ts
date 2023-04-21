@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+	secret: process.env.NUXT_SECRET,
 	runtimeConfig: {
 		mongoURI: process.env.MONGODB_URI,
 	},
@@ -56,7 +57,6 @@ export default defineNuxtConfig({
 	// https://v3.nuxtjs.org/guide/deploy/presets/
 	auth: {
 		origin: process.env.ORIGIN,
-		secret: process.env.NUXT_SECRET,
 		enableGlobalAppMiddleware: true,
 	},
 	nitro: {
