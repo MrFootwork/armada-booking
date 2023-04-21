@@ -37,15 +37,17 @@ async function insertDay(newDay: Date) {
 		const db = mongoClient.db('bookings')
 
 		// FIXME read gyms and populate Day object
+
 		// FIXME read courts and populate Day object
 
+		// FIXME build whole day object and save it on DB
 		const dayInserted = await db
 			.collection('days')
 			.insertOne({ date: newDay, gyms: [{ test: 'value' }] })
 
 		return dayInserted
 	} catch (e) {
-		console.error('could not read from database. ', e)
+		console.error('Could not create day on database. ', e)
 	} finally {
 		await mongoClient.close()
 	}
