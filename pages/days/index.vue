@@ -135,8 +135,10 @@ const format = (date: Date) => {
 	const day = date.getDate()
 	const month = date.getMonth() + 1
 	const year = date.getFullYear()
+	const weekDay = date.toLocaleDateString('en-us', { weekday: "long" })
 
-	return `${day}.${month}.${year}`
+	// return `${day}.${month}.${year}`
+	return `${weekDay}`
 }
 
 // FIXME must translate imported languages from 'date-fns/locale' from useLanguage() store
@@ -242,7 +244,8 @@ function selectCourt(index: number) {
 												 :dark="themeStore.isDark"
 												 :clearable="false"
 												 :enable-time-picker="false"
-												 disable-month-year-select />
+												 disable-month-year-select
+												 input-class-name="dp-custom-input" />
 
 					<button class="right">
 						<SvgIcon class="icon right"
@@ -335,12 +338,20 @@ function selectCourt(index: number) {
 </template>
 
 <style lang="scss">
-// old date picker
-// .datepicker-input {
-// 	box-sizing: border-box;
-// 	width: 6rem;
-// 	@include inputHeight();
-// }
+:root {
+	--dp-button-icon-height: 40px;
+	--dp-input-padding: 0;
+}
+
+.dp__theme_dark,
+.dp__theme_light {
+	--dp-primary-color: var(--highlight-color);
+}
+
+.dp-custom-input {
+	@include inputHeight();
+	width: 8rem;
+}
 </style>
 
 <style scoped lang="scss">
@@ -406,6 +417,8 @@ function selectCourt(index: number) {
 			// --vdp-text-color: var(--font-color);
 			// --vdp-disabled-color: var(--datepicker-disabled-color);
 			// --vdp-elem-font-size: 0.9rem;
+
+
 
 			.wrapper.buttons {
 				display: flex;
