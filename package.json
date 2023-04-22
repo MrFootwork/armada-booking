@@ -27,7 +27,6 @@
 		"@mdi/js": "^7.1.96",
 		"@vuepic/vue-datepicker": "^4.5.0",
 		"next-auth": "4.21.1",
-		"normalize.css": "^8.0.1",
-		"vue3-datepicker": "^0.3.4"
+		"normalize.css": "^8.0.1"
 	}
 }

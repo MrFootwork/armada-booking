@@ -115,19 +115,10 @@ function decreaseDay() {
 }
 
 // datepicker functions
-
 // For demo purposes disables the next 2 days from the current date
-const disabledDates = computed(() => {
-	const today = new Date();
-
-	const tomorrow = new Date(today)
-	tomorrow.setDate(tomorrow.getDate() + 1)
-
-	const afterTomorrow = new Date(tomorrow);
-	afterTomorrow.setDate(tomorrow.getDate() + 1);
-
-	return [lowerLimit, upperLimit]
-})
+const disabledDates = (date: Date) => {
+	return date < lowerLimit || date > upperLimit
+}
 
 // date format for datepicker display
 const format = (date: Date) => {
@@ -235,21 +226,15 @@ function selectCourt(index: number) {
 										 @click="decreaseDay"></SvgIcon>
 					</button>
 
-					<!-- <Datepicker :class="'datepicker-input'"
-											v-model="daySelected"
-											:locale="en"
-											:lower-limit="lowerLimit"
-											:upper-limit="upperLimit" /> -->
-					<!-- TODO try out better date picker -->
-					<!-- https://vue3datepicker.com/ -->
-
 					<VueDatePicker v-model="daySelected"
 												 :disabled-dates="disabledDates"
 												 week-numbers="iso"
-												 :enable-time-picker="false"
 												 auto-apply
 												 :format="format"
-												 :dark="themeStore.isDark" />
+												 :dark="themeStore.isDark"
+												 :clearable="false"
+												 :enable-time-picker="false"
+												 disable-month-year-select />
 
 					<button class="right">
 						<SvgIcon class="icon right"

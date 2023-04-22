@@ -41,7 +41,7 @@ export default defineNuxtConfig({
 	// Did you mean to import date-fns/locale/index.js?
 	// solution: https://github.com/nuxt/nuxt/issues/13995
 	build: {
-		transpile: ['date-fns', '@vuepic/vue-datepicker'],
+		transpile: ['@vuepic/vue-datepicker'],
 	},
 	modules: ['@pinia/nuxt', '@sidebase/nuxt-auth'],
 	pinia: {
