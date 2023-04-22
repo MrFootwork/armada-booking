@@ -9,12 +9,17 @@ import { useDaysStore } from '@/store/bookingDays'
 
 // importing from 'date-fns/locale' would throw error in production after authenticating
 // https://github.com/nuxt/nuxt/issues/13591
-import { en, de, ro, zhCN } from 'date-fns/locale/index.js'
+// import { en, de, ro, zhCN } from 'date-fns/locale/index.js'
 // TODO remove TS error
 // https://github.com/date-fns/date-fns/issues/2964#issuecomment-1409736680
 
 import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue'
 import { mdiMenuLeft, mdiMenuRight } from '@mdi/js'
+
+import { useTheme } from '@/store/theme'
+
+// use theme store
+const themeStore = useTheme()
 
 // icon size
 const iconSize = 30
@@ -108,11 +113,6 @@ function decreaseDay() {
 	daySelected.value.setDate(daySelected.value.getDate() - 1)
 	daySelected.value = new Date(daySelected.value)
 }
-
-// FIXME create store for dark mode and watch store value
-const usingDarkTheme = onUpdated(() => {
-	return document.documentElement.classList.contains("dark")
-})
 
 // datepicker functions
 
@@ -249,7 +249,7 @@ function selectCourt(index: number) {
 												 :enable-time-picker="false"
 												 auto-apply
 												 :format="format"
-												 :dark="usingDarkTheme" />
+												 :dark="themeStore.isDark" />
 
 					<button class="right">
 						<SvgIcon class="icon right"

@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue';
 import { mdiBrightness6 } from '@mdi/js';
+import { useTheme } from '@/store/theme'
+
+// use theme store
+const themeStore = useTheme()
+const { toggleTheme } = themeStore
 
 // authentication
 const { status, data, signOut } = useAuth()
@@ -11,38 +16,7 @@ function logout() {
 
 }
 
-// FIXME put this into composable and add it to a layout button
-function toggleDarkMode() {
-
-  if (document.documentElement.classList.contains("light")) {
-
-    document.documentElement.classList.remove("light")
-    document.documentElement.classList.add("dark")
-
-  } else if (document.documentElement.classList.contains("dark")) {
-
-    document.documentElement.classList.remove("dark")
-    document.documentElement.classList.add("light")
-
-  } else {
-
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-
-      document.documentElement.classList.add("dark")
-
-    } else {
-
-      document.documentElement.classList.add("light")
-
-    }
-  }
-}
-
-onBeforeMount(() => {
-
-  toggleDarkMode()
-
-})
+onBeforeMount(() => toggleTheme())
 </script>
 
 <template>
@@ -51,7 +25,7 @@ onBeforeMount(() => {
     <nav>
 
       <button class="theme-toggler"
-              @click="toggleDarkMode">
+              @click="toggleTheme">
         <SvgIcon class="icon"
                  type="mdi"
                  :path="mdiBrightness6"></SvgIcon>
