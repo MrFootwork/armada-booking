@@ -81,7 +81,17 @@ watch(daySelected, (newDay, oldDay) => {
 })
 
 const dateDiffTodayToLast = 6
+
+// TODO today, lowerLimit and upperLimit should adjust at 24:00
 const lowerLimit: Date = new Date(today)
+lowerLimit.setFullYear(year)
+lowerLimit.setMonth(month)
+lowerLimit.setDate(day)
+lowerLimit.setHours(0)
+lowerLimit.setMinutes(0)
+lowerLimit.setSeconds(0)
+lowerLimit.setMilliseconds(0)
+
 const upperLimit: Date = ((dateBase) => {
 	let upperLimit = new Date(dateBase.setDate(
 		dateBase.getDate()
@@ -138,7 +148,6 @@ const format = (date: Date) => {
  *******************************/
 const gymSelected = ref(gyms[0])
 
-// BUG gym change must set court to 1
 watch(gymSelected, (newGym, oldGym) => {
 	if (newGym.id !== oldGym.id) selectCourt(0)
 })
@@ -152,7 +161,6 @@ const showCourtPicker = ref(false)
 
 const courtLayout = ''
 
-// FIXME fallback empty array
 const courts = computed(() => {
 
 	const courts =
@@ -394,10 +402,10 @@ function selectCourt(index: number) {
 			justify-content: center;
 			flex-flow: column;
 
-			--vdp-bg-color: var(--card-color-secondary);
-			--vdp-text-color: var(--font-color);
-			--vdp-disabled-color: var(--datepicker-disabled-color);
-			--vdp-elem-font-size: 0.9rem;
+			// --vdp-bg-color: var(--card-color-secondary);
+			// --vdp-text-color: var(--font-color);
+			// --vdp-disabled-color: var(--datepicker-disabled-color);
+			// --vdp-elem-font-size: 0.9rem;
 
 			.wrapper.buttons {
 				display: flex;
