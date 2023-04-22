@@ -132,12 +132,13 @@ const disabledDates = (date: Date) => {
 
 // date format for datepicker display
 const format = (date: Date) => {
-	const day = date.getDate()
-	const month = date.getMonth() + 1
-	const year = date.getFullYear()
-	const weekDay = date.toLocaleDateString('en-us', { weekday: "long" })
+	let weekDay = new Intl.DateTimeFormat("en-us", {
+		weekday: "long"
+	}).format(date)
 
-	// return `${day}.${month}.${year}`
+	if (date.getDay() === 0) weekDay = 'Today'
+	if (date.getDay() === 1) weekDay = 'Tomorrow'
+
 	return `${weekDay}`
 }
 
