@@ -1,17 +1,10 @@
 <script setup lang="ts">
 import { useLanguage } from '@/store/language'
-import Datepicker from 'vue3-datepicker'
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
 import { Day } from '@/model/TDay.model'
 import { useDaysStore } from '@/store/bookingDays'
-
-// importing from 'date-fns/locale' would throw error in production after authenticating
-// https://github.com/nuxt/nuxt/issues/13591
-// import { en, de, ro, zhCN } from 'date-fns/locale/index.js'
-// TODO remove TS error
-// https://github.com/date-fns/date-fns/issues/2964#issuecomment-1409736680
 
 import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue'
 import { mdiMenuLeft, mdiMenuRight } from '@mdi/js'
