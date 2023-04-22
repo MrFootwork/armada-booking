@@ -344,6 +344,7 @@ function selectCourt(index: number) {
 	--dp-input-padding: 0;
 }
 
+// TODO improve coloring
 .dp__theme_dark,
 .dp__theme_light {
 	--dp-primary-color: var(--highlight-color);
