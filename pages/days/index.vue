@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useLanguage } from '@/store/language'
 import Datepicker from 'vue3-datepicker'
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 import { Day } from '@/model/TDay.model'
 import { useDaysStore } from '@/store/bookingDays'
@@ -204,13 +206,16 @@ function selectCourt(index: number) {
 										 @click="decreaseDay"></SvgIcon>
 					</button>
 
-					<Datepicker :class="'datepicker-input'"
+					<!-- <Datepicker :class="'datepicker-input'"
 											v-model="daySelected"
 											:locale="en"
 											:lower-limit="lowerLimit"
-											:upper-limit="upperLimit" />
+											:upper-limit="upperLimit" /> -->
 					<!-- TODO try out better date picker -->
 					<!-- https://vue3datepicker.com/ -->
+
+					<VueDatePicker v-model="daySelected"></VueDatePicker>
+
 					<button class="right">
 						<SvgIcon class="icon right"
 										 type="mdi"
@@ -276,12 +281,12 @@ function selectCourt(index: number) {
 			</div>
 
 			<button @click="addSlot({
-				day: daySelected,
-				gymId: gymSelected.id,
-				courtId: courtSelected.id,
-				start: 11,
-				end: 12
-			})">Add Slot</button>
+					day: daySelected,
+					gymId: gymSelected.id,
+					courtId: courtSelected.id,
+					start: 11,
+					end: 12
+				})">Add Slot</button>
 
 		</form>
 
