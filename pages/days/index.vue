@@ -109,6 +109,35 @@ function decreaseDay() {
 	daySelected.value = new Date(daySelected.value)
 }
 
+// FIXME create store for dark mode and watch store value
+const usingDarkTheme = onUpdated(() => {
+	return document.documentElement.classList.contains("dark")
+})
+
+// datepicker functions
+
+// For demo purposes disables the next 2 days from the current date
+const disabledDates = computed(() => {
+	const today = new Date();
+
+	const tomorrow = new Date(today)
+	tomorrow.setDate(tomorrow.getDate() + 1)
+
+	const afterTomorrow = new Date(tomorrow);
+	afterTomorrow.setDate(tomorrow.getDate() + 1);
+
+	return [lowerLimit, upperLimit]
+})
+
+// date format for datepicker display
+const format = (date: Date) => {
+	const day = date.getDate()
+	const month = date.getMonth() + 1
+	const year = date.getFullYear()
+
+	return `${day}.${month}.${year}`
+}
+
 // FIXME must translate imported languages from 'date-fns/locale' from useLanguage() store
 
 /*******************************
@@ -214,7 +243,13 @@ function selectCourt(index: number) {
 					<!-- TODO try out better date picker -->
 					<!-- https://vue3datepicker.com/ -->
 
-					<VueDatePicker v-model="daySelected"></VueDatePicker>
+					<VueDatePicker v-model="daySelected"
+												 :disabled-dates="disabledDates"
+												 week-numbers="iso"
+												 :enable-time-picker="false"
+												 auto-apply
+												 :format="format"
+												 :dark="usingDarkTheme" />
 
 					<button class="right">
 						<SvgIcon class="icon right"
@@ -307,11 +342,12 @@ function selectCourt(index: number) {
 </template>
 
 <style lang="scss">
-.datepicker-input {
-	box-sizing: border-box;
-	width: 6rem;
-	@include inputHeight();
-}
+// old date picker
+// .datepicker-input {
+// 	box-sizing: border-box;
+// 	width: 6rem;
+// 	@include inputHeight();
+// }
 </style>
 
 <style scoped lang="scss">

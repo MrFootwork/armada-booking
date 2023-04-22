@@ -10,6 +10,8 @@
 		}
 	},
 
+	"javascript.format.semicolons": "remove",
+
 	"[vue]": {
 		"editor.defaultFormatter": "Vue.volar",
 		"editor.formatOnSave": true
