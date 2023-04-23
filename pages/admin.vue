@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import Datepicker from 'vue3-datepicker'
-import { en } from 'date-fns/locale/index.js'
+// import Datepicker from 'vue3-datepicker'
+// import { en } from 'date-fns/locale/index.js'
 
 const fetchResult = ref()
 
@@ -52,9 +52,9 @@ async function resetDays() {
     <button @click="addDay(daySelected)">days.put</button>
     <button @click="resetDays()">days.reset</button>
 
-    <Datepicker :class="'datepicker-input'"
+    <!-- <Datepicker :class="'datepicker-input'"
                 v-model="daySelected"
-                :locale="en" />
+                :locale="en" /> -->
     <button @click="daySelected = new Date()">Today</button>
     <br><span>ISO: {{ daySelected.toISOString() }}</span>
     <br><span>String: {{ daySelected.toString() }}</span>
