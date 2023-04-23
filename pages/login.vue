@@ -53,7 +53,8 @@ const signInHandler = async ({ username, password }: { username: string, passwor
         <p v-else
            class="error-credentials-signin">
           Something unexpected happened. Please advise an administrator!
-          <br><br>Error Code: {{ signInErrorMessage }}
+          <br><br>Error Code:
+          <br>{{ signInErrorMessage }}
         </p>
       </div>
 
