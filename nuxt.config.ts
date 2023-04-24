@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
 	runtimeConfig: {
 		mongoURI: process.env.MONGODB_URI,
+		nuxtSecret: process.env.NUXT_SECRET,
 	},
 	app: {
 		head: {
@@ -72,5 +73,6 @@ export default defineNuxtConfig({
 	},
 	// avoiding [Vue warn]: Hydration node mismatch:
 	// https://github.com/nuxt/nuxt/issues/12266
-	ssr: process.env.NODE_ENV !== 'development',
+	// ssr: process.env.NODE_ENV !== 'development',
+	ssr: false,
 })
