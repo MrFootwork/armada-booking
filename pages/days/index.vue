@@ -62,6 +62,7 @@ onBeforeMount(() => {
  *        date picker
  *
  *******************************/
+const VALUE_OF_ONE_DAY = 24 * 60 * 60 * 1000
 const today = new Date()
 const year = today.getFullYear()
 const month = today.getMonth()
@@ -76,20 +77,13 @@ watch(daySelected, (newDay, oldDay) => {
 const dateDiffTodayToLast = 6
 
 // TODO today, lowerLimit and upperLimit should adjust at 24:00
-const lowerLimit: Date = new Date(today)
-lowerLimit.setFullYear(year)
-lowerLimit.setMonth(month)
-lowerLimit.setDate(day)
-lowerLimit.setHours(0)
-lowerLimit.setMinutes(0)
-lowerLimit.setSeconds(0)
-lowerLimit.setMilliseconds(0)
+const lowerLimit: Date = new Date(year, month, day)
 
 const upperLimit: Date = ((dateBase) => {
-	let upperLimit = new Date(dateBase.setDate(
-		dateBase.getDate()
-		+ dateDiffTodayToLast)
+	let upperLimit = new Date(
+		dateBase.valueOf() + dateDiffTodayToLast * VALUE_OF_ONE_DAY
 	)
+
 	upperLimit.setHours(0)
 	upperLimit.setMinutes(0)
 	upperLimit.setSeconds(0)
@@ -109,7 +103,7 @@ function increaseDay() {
 }
 
 function decreaseDay() {
-	if (daySelected.value <= lowerLimit) return
+	if (daySelected.value.getDate() === lowerLimit.getDate()) return
 
 	selectCourt(0)
 
@@ -120,22 +114,22 @@ function decreaseDay() {
 // datepicker functions
 // For demo purposes disables the next 2 days from the current date
 const disabledDates = (date: Date) => {
-	return date < lowerLimit || date > upperLimit
+	return date < lowerLimit || upperLimit < date
 }
 
 // date format for datepicker display
 const format = (date: Date) => {
+	if (date.getDay() === today.getDay()) return 'Today'
+	if (date.getDay() === today.getDay() + 1) return 'Tomorrow'
+
 	let weekDay = new Intl.DateTimeFormat("en-us", {
 		weekday: "long"
 	}).format(date)
 
-	if (date.getDay() === 0) weekDay = 'Today'
-	if (date.getDay() === 1) weekDay = 'Tomorrow'
-
 	return `${weekDay}`
 }
 
-// FIXME must translate imported languages from 'date-fns/locale' from useLanguage() store
+// TODO must translate imported languages from 'date-fns/locale' from useLanguage() store
 
 /*******************************
  *
@@ -408,13 +402,6 @@ function selectCourt(index: number) {
 			justify-content: center;
 			flex-flow: column;
 
-			// --vdp-bg-color: var(--card-color-secondary);
-			// --vdp-text-color: var(--font-color);
-			// --vdp-disabled-color: var(--datepicker-disabled-color);
-			// --vdp-elem-font-size: 0.9rem;
-
-
-
 			.wrapper.buttons {
 				display: flex;
 				align-items: center;
@@ -430,6 +417,8 @@ function selectCourt(index: number) {
 			select.gym-picker {
 				width: auto;
 				@include inputHeight;
+				cursor: pointer;
+
 			}
 		}
 
