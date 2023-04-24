@@ -2,12 +2,11 @@ import { MongoClient } from 'mongodb'
 
 export default defineEventHandler(async event => {
 	console.log('server is hit to get gyms')
-	const query = getQuery(event)
 	const gyms = await fetchGyms()
 
 	return {
 		api: 'gyms.get',
-		in: query,
+		in: '',
 		out: gyms,
 	}
 })

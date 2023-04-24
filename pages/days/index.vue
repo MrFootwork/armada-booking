@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { useLanguage } from '@/store/language'
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
-import { Day } from '@/model/TDay.model'
+import { useLanguage } from '@/store/language'
+import { useTheme } from '@/store/theme'
 import { useDaysStore } from '@/store/bookingDays'
+
+import { Gym } from '@/model/TGym.model'
+import { Day } from '@/model/TDay.model'
 
 import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue'
 import { mdiMenuLeft, mdiMenuRight } from '@mdi/js'
-
-import { useTheme } from '@/store/theme'
 
 // use theme store
 const themeStore = useTheme()
@@ -26,8 +27,6 @@ const daysStore = useDaysStore()
 const { days } = storeToRefs(daysStore)
 const { fetchDays, addSlot } = daysStore
 
-// FIXME gyms must be read from Pinia gym store,
-// which is loaded from db
 const gyms: Day['gyms'] = [
 	{
 		id: '63dfe7d99d49df953437b274',
@@ -44,6 +43,14 @@ const gyms: Day['gyms'] = [
 		courts: [],
 	},
 ]
+
+// FIXME loading gyms from db doesn't work...
+// try to use a store instead and see if it loads correctly before this page is built
+// const gyms = ref<Gym[]>()
+// beforeCreate(async () => {
+// 	const fetchedGyms = await useFetch('/api/gyms', { method: 'GET' })
+// 	gyms.value = fetchedGyms.data.value?.out
+// })
 
 onMounted(() => {
 
@@ -156,7 +163,7 @@ const courts = computed(() => {
 	const courts =
 		daysStore?.days
 			?.find(day => day.date.getDate() === daySelected.value.getDate())
-			?.gyms.find(gym => gym.id === gymSelected.value.id)?.courts || []
+			?.gyms.find(gym => gym.id === gymSelected?.value.id)?.courts || []
 
 	return courts
 })

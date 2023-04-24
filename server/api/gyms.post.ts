@@ -1,19 +1,19 @@
 import { MongoClient } from 'mongodb'
+import { GymInput } from '@/model/TGym.model'
 
 export default defineEventHandler(async event => {
 	console.log('server is hit to get gyms')
-	// FIXME send body with gym object
-	const query = getQuery(event)
-	const gyms = await postGym()
+	const body: GymInput = await readBody(event)
+	const gyms = await postGym(body)
 
 	return {
 		api: 'gyms.get',
-		in: query,
+		in: body,
 		out: gyms,
 	}
 })
 
-async function postGym() {
+async function postGym(newGym) {
 	const { mongoURI } = useRuntimeConfig()
 	const mongoClient: MongoClient = new MongoClient(mongoURI)
 
@@ -22,11 +22,9 @@ async function postGym() {
 		const db = mongoClient.db('bookings')
 
 		// FIXME post gym to database
-		const dayInserted = await db
-			.collection('gyms')
-			.insertOne({ date: newDay, gyms: [{ test: 'value' }] })
+		const gymInserted = await db.collection('gyms').insertOne({ ...newGym })
 
-		return dayInserted
+		return gymInserted
 	} catch (e) {
 		console.error('Could not create gym on database. ', e)
 	} finally {

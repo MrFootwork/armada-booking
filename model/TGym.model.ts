@@ -1,6 +1,11 @@
 import { Exception } from '@/model/TException.model'
 import { Court } from '@/model/TCourt.model'
 
+export type GymInput = Pick<
+	Gym,
+	'nameCode' | 'nameShort' | 'place' | 'start' | 'end'
+>
+
 export type Gym = {
 	id: string
 	nameCode: string
