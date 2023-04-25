@@ -19,7 +19,6 @@ const password = ref('')
 // https://github.com/nextauthjs/next-auth/blob/aad0b8db0e8a163b3c3ae7dec3e9158e20d368f4/packages/next-auth/src/core/pages/signin.tsx#L4-L19
 const signInErrorMessage = ref('')
 
-// FIXME pass credentials to [...] and handle real authentication handler there
 const signInHandler = async ({ username, password }: { username: string, password: string }) => {
 
   const { error, url } = await signIn('credentials', { username, password, redirect: false })

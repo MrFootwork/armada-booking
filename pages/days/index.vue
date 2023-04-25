@@ -193,9 +193,7 @@ function selectCourt(index: number) {
 	courtSelected.value = courts.value[index]
 }
 
-// FIXME add toggler info text using VueUse
-// install: https://vueuse.org/guide/
-// implementation: https://vueuse.org/shared/useToggle/#usetoggle
+// gym hint, e.g. switch courts freely
 const [showGymHint, toggleGymHint] = useToggle()
 
 </script>

@@ -47,7 +47,7 @@ async function resetDays() {
 
     <button @click="getDays()">days.get</button>
     <button @click="deleteDays('all')">days.delete.all</button>
-    BUG delete last doesn't work
+    <!-- BUG delete last doesn't work -->
     <button @click="deleteDays('last')">days.delete.last</button>
     <button @click="addDay(daySelected)">days.put</button>
     <button @click="resetDays()">days.reset</button>
