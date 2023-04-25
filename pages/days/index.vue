@@ -302,7 +302,7 @@ const [showGymHint, toggleGymHint] = useToggle()
 
 		<div class="hint-wrapper"
 				 @click="toggleGymHint()">
-			<p class="hint-content head">
+			<h4 class="hint-content head">
 
 				<span v-show="!showGymHint">
 					<SvgIcon class="icon down"
@@ -317,10 +317,10 @@ const [showGymHint, toggleGymHint] = useToggle()
 				</span>
 
 				{{ gymSelected.place }}
-			</p>
+			</h4>
 			<p v-show="showGymHint"
 				 class="hint-content body">
-				<br>Please select any court and slot and
+				Please select any court and slot and
 				register your total playing time.
 				<br /><br />You can switch freely while you play in the gym.
 			</p>
@@ -356,17 +356,6 @@ const [showGymHint, toggleGymHint] = useToggle()
 	@include cardStyle();
 	@include appWidth();
 	padding: 1rem;
-
-	div.hint-wrapper {
-		width: 100%;
-		padding: .5rem;
-		border: .2rem solid var(--font-color);
-		border-radius: .3rem;
-
-		p.hint-content {
-			margin: 0;
-		}
-	}
 
 	form.wrapper.selectors {
 		width: 100%;
@@ -468,10 +457,17 @@ const [showGymHint, toggleGymHint] = useToggle()
 		}
 	}
 
-	.hint-wrapper {
+	div.hint-wrapper {
 		cursor: pointer;
+		padding: .8rem;
+
+		width: 100%;
+		border: .2rem solid var(--font-color);
+		border-radius: .3rem;
 
 		.hint-content {
+			margin: 0;
+			line-height: normal;
 
 			&.head {
 				.icon {
@@ -479,7 +475,10 @@ const [showGymHint, toggleGymHint] = useToggle()
 				}
 			}
 
-			&.body {}
+			&.body {
+				padding: .4rem;
+				margin: .3rem 0;
+			}
 		}
 	}
 }
