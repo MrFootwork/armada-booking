@@ -235,6 +235,7 @@ const [showGymHint, toggleGymHint] = useToggle()
 				</div>
 			</div>
 
+			<!-- TODO change background color on theme change -->
 			<div class="selector gym-picker">
 				<label for="gyms">Gym</label>
 				<select class="gym-picker"

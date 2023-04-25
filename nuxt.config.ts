@@ -28,7 +28,6 @@ export default defineNuxtConfig({
 						@use "@/assets/scss/_colors.scss" as *;
 						@use "@/assets/scss/_variables.scss" as *;  
 					 	@use "@/assets/scss/_mixins.scss" as *;`,
-					// '@use "@/assets/scss/_colors.scss" as *; @use "@/assets/scss/_variables.scss" as *;  @use "@/assets/scss/_mixins.scss" as *;',
 				},
 			},
 		},
@@ -51,7 +50,7 @@ export default defineNuxtConfig({
 		],
 	},
 	// preset for deploying
-	// https://v3.nuxtjs.org/guide/deploy/presets/
+	// https://nuxt.com/docs/getting-started/deployment#presets
 	auth: {
 		origin: process.env.ORIGIN,
 		enableGlobalAppMiddleware: true,
