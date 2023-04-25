@@ -339,15 +339,35 @@ const [showGymHint, toggleGymHint] = useToggle()
 	--dp-input-padding: 0;
 }
 
-// TODO improve coloring
 .dp__theme_dark,
 .dp__theme_light {
 	--dp-primary-color: var(--highlight-color);
 }
 
+.dp__theme_dark {
+	--dp-background-color: hsl(240, 10%, 35%);
+	--dp-secondary-color: hsl(240, 10%, 45%);
+}
+
+.dp__theme_light {
+	--dp-background-color: hsl(240, 10%, 93%);
+	--dp-secondary-color: hsl(240, 10%, 80%);
+}
+
 .dp-custom-input {
 	@include inputHeight();
 	width: 8rem;
+	border: 0;
+
+	border-radius: 0;
+
+	color: var(--font-color);
+
+	&:hover,
+	&:focus {
+		border-top: 1px solid var(--font-color);
+		border-bottom: 1px solid var(--font-color);
+	}
 }
 </style>
 
