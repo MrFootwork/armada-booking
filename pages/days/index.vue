@@ -32,8 +32,8 @@ const { days } = storeToRefs(dayStore)
 const { fetchDays, addSlot } = dayStore
 
 // TODO improve initial data fetch
-// maybe combine db connection and fetch all together
-// maybe a composable could do that
+// 1. maybe a composable could do that
+// 2. try serverPrefetch()
 // initial data fetch
 onBeforeMount(async () => {
 	const fetchingDays = await fetchDays()
