@@ -33,20 +33,21 @@ const dayStore = useDaysStore()
 const { days } = storeToRefs(dayStore)
 const { fetchDays, addSlot } = dayStore
 
-onMounted(() => {
-
-	if (languageStore.wasSet) return
-	setLanguage(navigator.language)
-
+// TODO improve initial data fetch
+// maybe combine db connection and fetch all together
+// maybe a composable could do that
+// initial data fetch
+onBeforeMount(async () => {
+	const fetchingDays = await fetchDays()
+	const fetchingGyms = await fetchGyms()
+	Promise.all([fetchingDays, fetchingGyms]).then(() => {
+		gymSelected.value = gyms.value[0]
+	})
 })
 
-onBeforeMount(async () => {
-
-	await fetchDays()
-	await fetchGyms()
-	// FIXME prpomise all
-	gymSelected.value = gyms.value[0]
-
+onMounted(() => {
+	if (languageStore.wasSet) return
+	setLanguage(navigator.language)
 })
 /*******************************
  *
