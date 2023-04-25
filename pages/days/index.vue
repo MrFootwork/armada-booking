@@ -375,7 +375,6 @@ const [showGymHint, toggleGymHint] = useToggle()
 			border: none;
 			border: 1px solid var(--font-color);
 
-
 			&.left {
 				border-radius: 15px 0 0 15px;
 			}
@@ -464,6 +463,8 @@ const [showGymHint, toggleGymHint] = useToggle()
 		width: 100%;
 		border: .2rem solid var(--font-color);
 		border-radius: .3rem;
+
+		@include unselectable();
 
 		.hint-content {
 			margin: 0;
