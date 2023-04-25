@@ -198,10 +198,16 @@ function selectCourt(index: number) {
 // FIXME add toggler info text using VueUse
 // install: https://vueuse.org/guide/
 // implementation: https://vueuse.org/shared/useToggle/#usetoggle
+const [value, toggle] = useToggle()
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
+
 </script>
 
 <template>
 	<div class="wrapper day-page">
+		<div>{{ isDark }}</div>
+		<button @click="toggleDark()">{{ isDark ? 'Light' : 'Dark' }}</button>
 		<form class="wrapper selectors"
 					@submit.prevent>
 			<div class="selector date-picker">

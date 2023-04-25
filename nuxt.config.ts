@@ -47,7 +47,7 @@ export default defineNuxtConfig({
 	build: {
 		transpile: ['@vuepic/vue-datepicker'],
 	},
-	modules: ['@pinia/nuxt', '@sidebase/nuxt-auth'],
+	modules: ['@pinia/nuxt', '@sidebase/nuxt-auth', '@vueuse/nuxt'],
 	pinia: {
 		autoImports: [
 			// automatically imports `defineStore`

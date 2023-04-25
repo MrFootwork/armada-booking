@@ -12,6 +12,8 @@
 	"devDependencies": {
 		"@pinia/nuxt": "^0.4.6",
 		"@sidebase/nuxt-auth": "^0.5.0-rc.0",
+		"@vueuse/core": "^10.1.0",
+		"@vueuse/nuxt": "^10.1.0",
 		"eslint": "^8.34.0",
 		"eslint-config-prettier": "^8.6.0",
 		"eslint-plugin-nuxt": "^4.0.0",
