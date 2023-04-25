@@ -3,7 +3,6 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
 import { useLanguage } from '@/store/language'
-import { useTheme } from '@/store/theme'
 import { useDaysStore } from '@/store/bookingDays'
 import { useGym } from '@/store/gym'
 
@@ -13,11 +12,11 @@ import { Day } from '@/model/TDay.model'
 import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue'
 import { mdiMenuLeft, mdiMenuRight } from '@mdi/js'
 
-// use theme store
-const themeStore = useTheme()
-
 // icon size
 const iconSize = 30
+
+// dark (e.g. for date picker)
+const isDark = useDark()
 
 // language
 const languageStore = useLanguage()
@@ -199,15 +198,11 @@ function selectCourt(index: number) {
 // install: https://vueuse.org/guide/
 // implementation: https://vueuse.org/shared/useToggle/#usetoggle
 const [value, toggle] = useToggle()
-const isDark = useDark()
-const toggleDark = useToggle(isDark)
 
 </script>
 
 <template>
 	<div class="wrapper day-page">
-		<div>{{ isDark }}</div>
-		<button @click="toggleDark()">{{ isDark ? 'Light' : 'Dark' }}</button>
 		<form class="wrapper selectors"
 					@submit.prevent>
 			<div class="selector date-picker">
@@ -228,7 +223,7 @@ const toggleDark = useToggle(isDark)
 												 auto-apply
 												 :locale="languageStore.preferred"
 												 :format="format"
-												 :dark="themeStore.isDark"
+												 :dark="isDark"
 												 :clearable="false"
 												 :enable-time-picker="false"
 												 input-class-name="dp-custom-input" />

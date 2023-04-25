@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue';
 import { mdiBrightness6 } from '@mdi/js';
-import { useTheme } from '@/store/theme'
 
-// use theme store
-const themeStore = useTheme()
-const { toggleTheme } = themeStore
+// dark from vueuse
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
 
 // authentication
 const { status, data, signOut } = useAuth()
@@ -16,7 +15,6 @@ function logout() {
 
 }
 
-onBeforeMount(() => toggleTheme())
 </script>
 
 <template>
@@ -25,7 +23,7 @@ onBeforeMount(() => toggleTheme())
     <nav>
 
       <button class="theme-toggler"
-              @click="toggleTheme">
+              @click="toggleDark()">
         <SvgIcon class="icon"
                  type="mdi"
                  :path="mdiBrightness6"></SvgIcon>
