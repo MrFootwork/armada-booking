@@ -7,10 +7,9 @@ import { useDaysStore } from '@/store/bookingDays'
 import { useGym } from '@/store/gym'
 
 import { Gym } from '@/model/TGym.model'
-import { Day } from '@/model/TDay.model'
 
 import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue'
-import { mdiMenuLeft, mdiMenuRight } from '@mdi/js'
+import { mdiMenuLeft, mdiMenuRight, mdiMenuDown, mdiMenuUp } from '@mdi/js'
 
 // icon size
 const iconSize = 30
@@ -197,7 +196,7 @@ function selectCourt(index: number) {
 // FIXME add toggler info text using VueUse
 // install: https://vueuse.org/guide/
 // implementation: https://vueuse.org/shared/useToggle/#usetoggle
-const [value, toggle] = useToggle()
+const [showGymHint, toggleGymHint] = useToggle()
 
 </script>
 
@@ -302,9 +301,26 @@ const [value, toggle] = useToggle()
 
 		</form>
 
-		<div class="hint-wrapper">
-			<p class="hint-content">
-				{{ gymSelected.place }}:
+		<div class="hint-wrapper"
+				 @click="toggleGymHint()">
+			<p class="hint-content head">
+
+				<span v-show="!showGymHint">
+					<SvgIcon class="icon down"
+									 type="mdi"
+									 :path="mdiMenuDown"></SvgIcon>
+				</span>
+
+				<span v-show="showGymHint">
+					<SvgIcon class="icon up"
+									 type="mdi"
+									 :path="mdiMenuUp"></SvgIcon>
+				</span>
+
+				{{ gymSelected.place }}
+			</p>
+			<p v-show="showGymHint"
+				 class="hint-content body">
 				<br>Please select any court and slot and
 				register your total playing time.
 				<br /><br />You can switch freely while you play in the gym.
@@ -450,6 +466,21 @@ const [value, toggle] = useToggle()
 
 				z-index: 10;
 			}
+		}
+	}
+
+	.hint-wrapper {
+		cursor: pointer;
+
+		.hint-content {
+
+			&.head {
+				.icon {
+					transform: translate(0, .3rem);
+				}
+			}
+
+			&.body {}
 		}
 	}
 }
