@@ -42,9 +42,10 @@ onMounted(() => {
 
 onBeforeMount(async () => {
 
-	fetchDays()
-	fetchGyms()
-
+	await fetchDays()
+	await fetchGyms()
+	// FIXME prpomise all
+	gymSelected.value = gyms.value[0]
 
 })
 /*******************************

@@ -2,30 +2,17 @@ import { Gym } from '@/model/TGym.model'
 
 export const useGym = defineStore('gym', () => {
 	// state
-	const gyms: Gym[] = ref([
+	// days page reads id of initial gym
+	const gymsInitial = [
 		{
 			id: '63dfe7d99d49df953437b274',
 			nameCode: 'test',
-			nameShort: 'Test',
+			nameShort: 'Antilopa',
 			place: 'Badminton Armada Arena Test',
 			courts: [],
 		},
-		// {
-		// 	id: '63dfe7d99d49df953437b274',
-		// 	nameCode: 'antilopa',
-		// 	nameShort: 'Antilopa',
-		// 	place: 'Badminton Armada Arena',
-		// 	courts: [],
-		// },
-		// {
-		// 	id: '63e01a8504594f501f829e51',
-		// 	nameCode: 'sun-plaza',
-		// 	nameShort: 'Sun Plaza',
-		// 	place: 'Sala De Sport ELITE',
-		// 	courts: [],
-		// },
-	])
-	// const gyms = ref([])
+	]
+	const gyms: Gym[] = ref(gymsInitial)
 	// getters (computed())
 	// actions
 	async function fetchGyms() {
