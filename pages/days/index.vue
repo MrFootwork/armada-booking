@@ -220,11 +220,11 @@ function selectCourt(index: number) {
 												 :disabled-dates="disabledDates"
 												 week-numbers="iso"
 												 auto-apply
+												 :locale="languageStore.preferred"
 												 :format="format"
 												 :dark="themeStore.isDark"
 												 :clearable="false"
 												 :enable-time-picker="false"
-												 disable-month-year-select
 												 input-class-name="dp-custom-input" />
 
 					<button class="right">
