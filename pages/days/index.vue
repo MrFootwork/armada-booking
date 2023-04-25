@@ -29,18 +29,9 @@ const { gyms } = storeToRefs(gymStore)
 const { fetchGyms } = gymStore
 
 // days
-const daysStore = useDaysStore()
-const { days } = storeToRefs(daysStore)
-const { fetchDays, addSlot } = daysStore
-
-// FIXME loading gyms from db doesn't work...
-// try to use a store instead and see if it loads correctly before this page is built
-// const gyms = ref()
-// onBeforeMount(async () => {
-// 	const fetchedGyms = await useFetch('/api/gyms', { method: 'GET' })
-// 	gyms.value = await fetchedGyms?.data.value?.out
-// 	console.table(gyms.value);
-// })
+const dayStore = useDaysStore()
+const { days } = storeToRefs(dayStore)
+const { fetchDays, addSlot } = dayStore
 
 onMounted(() => {
 
@@ -49,9 +40,11 @@ onMounted(() => {
 
 })
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
 
-	if (!days.value) fetchDays()
+	fetchDays()
+	fetchGyms()
+
 
 })
 /*******************************
@@ -151,7 +144,7 @@ const courtLayout = ''
 const courts = computed(() => {
 
 	const courts =
-		daysStore?.days
+		days.value
 			?.find(day => day.date.getDate() === daySelected.value.getDate())
 			?.gyms.find(gym => gym.id === gymSelected?.value.id)?.courts || []
 

@@ -4,7 +4,14 @@ import { Day } from '@/model/TDay.model'
 
 export const useDaysStore = defineStore('days', () => {
 	// state
-	const days = ref<Day[] | null>(null)
+	// initiated minimal data for days page to render
+	const daysInitial = [
+		{
+			date: new Date(),
+			gyms: [],
+		},
+	]
+	const days = ref<Day[]>(daysInitial)
 
 	// getters (computed())
 	// actions
