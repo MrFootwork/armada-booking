@@ -27,30 +27,33 @@ const daysStore = useDaysStore()
 const { days } = storeToRefs(daysStore)
 const { fetchDays, addSlot } = daysStore
 
-const gyms: Day['gyms'] = [
-	{
-		id: '63dfe7d99d49df953437b274',
-		nameCode: 'antilopa',
-		nameShort: 'Antilopa',
-		place: 'Badminton Armada Arena',
-		courts: [],
-	},
-	{
-		id: '63e01a8504594f501f829e51',
-		nameCode: 'sun-plaza',
-		nameShort: 'Sun Plaza',
-		place: 'Sala De Sport ELITE',
-		courts: [],
-	},
-]
+// const gyms: Day['gyms'] = [
+// 	{
+// 		id: '63dfe7d99d49df953437b274',
+// 		nameCode: 'antilopa',
+// 		nameShort: 'Antilopa',
+// 		place: 'Badminton Armada Arena',
+// 		courts: [],
+// 	},
+// 	{
+// 		id: '63e01a8504594f501f829e51',
+// 		nameCode: 'sun-plaza',
+// 		nameShort: 'Sun Plaza',
+// 		place: 'Sala De Sport ELITE',
+// 		courts: [],
+// 	},
+// ]
 
 // FIXME loading gyms from db doesn't work...
 // try to use a store instead and see if it loads correctly before this page is built
-// const gyms = ref<Gym[]>()
-// beforeCreate(async () => {
-// 	const fetchedGyms = await useFetch('/api/gyms', { method: 'GET' })
-// 	gyms.value = fetchedGyms.data.value?.out
-// })
+const gyms = ref()
+// const fetchedGyms = await useFetch('/api/gyms', { method: 'GET' })
+// gyms.value = fetchedGyms.data.value?.out
+onBeforeMount(async () => {
+	const fetchedGyms = await useFetch('/api/gyms', { method: 'GET' })
+	gyms.value = await fetchedGyms?.data.value?.out
+	console.table(gyms.value);
+})
 
 onMounted(() => {
 

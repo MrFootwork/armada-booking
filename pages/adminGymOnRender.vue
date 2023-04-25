@@ -7,6 +7,23 @@ async function fetchGyms() {
   // fetchResult.value = fetchedGyms
   const fetchedGyms = await useFetch('/api/gyms', { method: 'GET' })
   fetchResult.value = fetchedGyms.data.value?.out
+
+  // type GymsRaw = {
+  //   "_id": string
+  //   "nameCode": string
+  //   "nameShort": string
+  //   "place": string
+  //   "start": number
+  //   "exceptions"?: []
+  //   "courts"?: []
+  // }
+
+  // const fetchedGyms = await useFetch('/api/gyms', {
+  //   method: 'GET',
+  //   transform: () => {
+
+  //   }
+  // })
 }
 </script>
 
