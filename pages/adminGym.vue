@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GymInput } from '@/model/TGym.model'
+import { Gym, GymInput } from '@/model/TGym.model'
 // FIXME test gym push, and get all gyms
 
 const fetchResult = ref()
@@ -20,10 +20,21 @@ async function addGym(gymToAdd: GymInput) {
 }
 
 async function fetchGyms() {
-  // const fetchedGyms = await $fetch('/api/gyms', { method: 'GET' })
-  // fetchResult.value = fetchedGyms
   const fetchedGyms = await useFetch('/api/gyms', { method: 'GET' })
   fetchResult.value = fetchedGyms.data.value?.out
+}
+
+async function deleteGym() {
+  // determine id of last gym and delete it
+  if (!fetchResult.value) await fetchGyms()
+  const gymIdLast: Gym['id'] = fetchResult.value.at(-1).id
+
+  const deleteGym = await useFetch('/api/gyms', {
+    method: 'DELETE',
+    body: { deleteGymWithId: gymIdLast }
+  })
+
+  fetchResult.value = deleteGym.data.value?.out
 }
 
 </script>
@@ -32,6 +43,7 @@ async function fetchGyms() {
   <div class="wrapper">
     <button @click="addGym(newGym)">Add Gym</button>
     <button @click="fetchGyms()">Fetch Gyms</button>
+    <button @click="deleteGym()">Delete Gym</button>
 
     <pre>{{ fetchResult }}</pre>
 
@@ -42,5 +54,11 @@ async function fetchGyms() {
 .wrapper {
   display: flex;
   flex-flow: column;
+
+  pre {
+    background-color: var(--card-color-primary);
+    border-radius: 15px;
+    padding: 1rem;
+  }
 }
 </style>

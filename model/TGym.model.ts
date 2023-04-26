@@ -11,6 +11,7 @@ export type Gym = {
 	nameCode: string
 	nameShort: string
 	place: string
+	courtCount: number
 	start?: number
 	end?: number
 	exceptions?: {

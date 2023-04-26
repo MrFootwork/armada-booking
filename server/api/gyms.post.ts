@@ -2,7 +2,8 @@ import { MongoClient } from 'mongodb'
 import { GymInput } from '@/model/TGym.model'
 
 export default defineEventHandler(async event => {
-	console.log('server is hit to get gyms')
+	console.log('server is hit to post gyms')
+
 	const body: GymInput = await readBody(event)
 	const gyms = await postGym(body)
 
