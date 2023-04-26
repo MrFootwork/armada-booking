@@ -40,6 +40,9 @@ async function insertDay(newDay: Date) {
 		const gyms = await fetchGyms(mongoClient)
 
 		// FIXME read courts and populate Day object
+		// gyms.forEach(gym => {
+		// 	const courtCount = gym.courtCount
+		// })
 
 		// FIXME build whole day object and save it on DB
 		const dayInserted = await db

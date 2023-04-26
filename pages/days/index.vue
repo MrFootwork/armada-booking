@@ -290,13 +290,13 @@ const [showGymHint, toggleGymHint] = useToggle()
 
 			</div>
 
-			<button @click="addSlot({
+			<!-- <button @click="addSlot({
 					day: daySelected,
 					gymId: gymSelected.id,
 					courtId: courtSelected.id,
 					start: 11,
 					end: 12
-				})">Add Slot</button>
+				})">Add Slot</button> -->
 
 		</form>
 
