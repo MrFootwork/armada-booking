@@ -1,5 +1,6 @@
 import { Day } from '@/model/TDay.model'
 import { MongoClient } from 'mongodb'
+import fetchGyms from '@/server/utils/mongo/gyms'
 
 // populates the given day and pushes it to the database
 // query parameters, e.g. year=2023&month=1&day=24
@@ -36,14 +37,14 @@ async function insertDay(newDay: Date) {
 		await mongoClient.connect()
 		const db = mongoClient.db('bookings')
 
-		// FIXME read gyms and populate Day object
+		const gyms = await fetchGyms(mongoClient)
 
 		// FIXME read courts and populate Day object
 
 		// FIXME build whole day object and save it on DB
 		const dayInserted = await db
 			.collection('days')
-			.insertOne({ date: newDay, gyms: [{ test: 'value' }] })
+			.insertOne({ date: newDay, gyms })
 
 		return dayInserted
 	} catch (e) {

@@ -46,10 +46,8 @@ async function resetDays() {
   <div>
 
     <button @click="getDays()">days.get</button>
-    <button @click="deleteDays('all')">days.delete.all</button>
-    <!-- BUG delete last doesn't work -->
-    <button @click="deleteDays('last')">days.delete.last</button>
     <button @click="addDay(daySelected)">days.put</button>
+    <button @click="deleteDays('all')">days.delete.all</button>
     <button @click="resetDays()">days.reset</button>
 
     <VueDatePicker v-model="daySelected"
@@ -96,5 +94,11 @@ button {
     color: var(--button-font-hover);
     transform: translateY(2px);
   }
+}
+
+pre {
+  background-color: var(--card-color-primary);
+  border-radius: 15px;
+  padding: 1rem;
 }
 </style>

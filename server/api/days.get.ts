@@ -1,4 +1,5 @@
 import { MongoClient } from 'mongodb'
+import replaceId from '@/server/utils/mongo/replaceId'
 
 export default defineEventHandler(async event => {
 	const query = getQuery(event)
@@ -22,6 +23,7 @@ async function fetchDays() {
 		await mongoClient.connect()
 		const db = mongoClient.db('bookings')
 		const days = await db.collection('days').find({}).toArray()
+		const daysTransformed = replaceId(days)
 
 		return days
 	} catch (e) {

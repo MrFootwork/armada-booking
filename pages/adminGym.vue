@@ -25,6 +25,7 @@ async function fetchGyms() {
   const fetchedGyms = await useFetch('/api/gyms', { method: 'GET' })
   fetchResult.value = fetchedGyms.data.value?.out
 }
+
 </script>
 
 <template>
