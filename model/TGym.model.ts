@@ -25,24 +25,5 @@ export type Gym = {
 		end?: Date
 		isActive: boolean
 	}[]
-	courts?: {
-		id: string
-		courtName: string
-		slots: {
-			id: string
-			hourIndex: number
-			coach?: {
-				id: string
-				name: string
-			}
-			start: Date
-			end: Date
-			bookingDate: Date
-			player: {
-				id: string
-				name: string
-				bookedBy: string
-			}[]
-		}[]
-	}[]
+	courts?: Court[]
 }

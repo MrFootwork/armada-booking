@@ -9,6 +9,7 @@ async function getDays() {
   fetchResult.value = fetchedDays
 }
 
+// FIXME delete one day or all days
 async function deleteDays(option: 'last' | 'all') {
   const url = `/api/days?option=${option}`
   const deleteResult = await $fetch(url, { method: 'DELETE' })

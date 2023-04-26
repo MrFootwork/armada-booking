@@ -1,4 +1,5 @@
 import { Day } from '@/model/TDay.model'
+import { Court } from '@/model/TCourt.model'
 import { MongoClient } from 'mongodb'
 import fetchGyms from '@/server/utils/mongo/gyms'
 
@@ -39,12 +40,19 @@ async function insertDay(newDay: Date) {
 
 		const gyms = await fetchGyms(mongoClient)
 
-		// FIXME read courts and populate Day object
-		// gyms.forEach(gym => {
-		// 	const courtCount = gym.courtCount
-		// })
+		const gymsWithCourts = gyms.map(gym => {
+			const courtCount = gym.courtCount
 
-		// FIXME build whole day object and save it on DB
+			for (let i = 1; i <= courtCount; i++) {
+				const newCourt = {
+					id: i,
+					courtName: i,
+					slots: [],
+				}
+				gym.courts.push(newCourt)
+			}
+		})
+
 		const dayInserted = await db
 			.collection('days')
 			.insertOne({ date: newDay, gyms })
