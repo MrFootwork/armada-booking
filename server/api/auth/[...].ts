@@ -25,18 +25,6 @@ export default NuxtAuthHandler({
 			// You can specify whatever fields you are expecting to be submitted.
 			// e.g. domain, username, password, 2FA token, etc.
 			// You can pass any HTML attribute to the <input> tag through the object.
-			credentials: {
-				username: {
-					label: 'Username',
-					type: 'text',
-					placeholder: '(hint: jsmith)',
-				},
-				password: {
-					label: 'Password',
-					type: 'password',
-					placeholder: '(hint: hunter2)',
-				},
-			},
 			async authorize(credentials: Credential) {
 				// find user credentials in db
 				const { mongoURI } = useRuntimeConfig()
@@ -67,16 +55,17 @@ export default NuxtAuthHandler({
 
 				if (user) {
 					// Any object returned will be saved in `user` property of the JWT
-					return user
+					// return user
 					// Workaround if I need to pass user data to session
-					// return {
-					// 	name: {
-					// 		id: user._id,
-					// 		name: user.name,
-					// 		username: user.username,
-					// 		mail: user.mail,
-					// 	},
-					// }
+					return {
+						name: {
+							id: user._id,
+							firstName: user.firstName,
+							lastName: user.lastName,
+							username: user.username,
+						},
+						email: user.email,
+					}
 				} else {
 					// eslint-disable-next-line no-console
 					console.error(

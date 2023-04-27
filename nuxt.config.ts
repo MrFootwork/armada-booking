@@ -49,12 +49,12 @@ export default defineNuxtConfig({
 			'storeToRefs',
 		],
 	},
-	// preset for deploying
-	// https://nuxt.com/docs/getting-started/deployment#presets
 	auth: {
 		origin: process.env.ORIGIN,
 		enableGlobalAppMiddleware: true,
 	},
+	// preset for deploying
+	// https://nuxt.com/docs/getting-started/deployment#presets
 	nitro: {
 		preset: 'node-server',
 	},

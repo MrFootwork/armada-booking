@@ -8,6 +8,8 @@ const toggleDark = useToggle(isDark)
 
 // authentication
 const { status, data, signOut } = useAuth()
+const username = data.value?.user?.name?.username as string
+
 
 function logout() {
 
@@ -30,8 +32,8 @@ function logout() {
       </button>
 
       <div class="auth-status">
-        <p v-if="status === 'unauthenticated'">Please login! 🙏🏻</p>
-        <p v-if="status === 'authenticated'">Hi {{ data?.user?.name }} 👋🏻</p>
+        <p v-show="status === 'unauthenticated'">Please login! 🙏🏻</p>
+        <p v-show="status === 'authenticated'">Hi {{ username }} 👋🏻</p>
       </div>
 
       <button class="logout"

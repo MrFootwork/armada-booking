@@ -4,6 +4,11 @@ import { getServerSession } from '#auth'
 export default eventHandler(async event => {
 	const session = await getServerSession(event)
 
-	if (session) event.context.auth = true
+	// console.log('auth middleware: ', session)
+
+	if (session) {
+		// console.table(session.name)
+		event.context.auth = true
+	}
 	if (!session) event.context.auth = false
 })
