@@ -36,17 +36,15 @@ const { fetchDays, addSlot } = dayStore
 // 2. try serverPrefetch()
 // initial data fetch
 onBeforeMount(async () => {
-	try {
-		await fetchDays()
-		console.log(days.value);
-		daySelected.value = days.value[0].date
+	await fetchDays()
+	console.log(days.value);
+	console.log(dayStore.days);
+	daySelected.value = days.value[0].date
 
-		await fetchGyms()
-		console.log(gyms.value);
-		gymSelected.value = gyms.value[0]
-	} catch (e) {
-		console.error(`Couldn't fetch days or gyms: `, e)
-	}
+	await fetchGyms()
+	console.log(gyms.value);
+	console.log(gymStore.gyms);
+	gymSelected.value = gyms.value[0]
 })
 // onBeforeMount(async () => {
 // 	try {
@@ -346,7 +344,8 @@ day: daySelected,
 			</p>
 		</div>
 
-		<Schedule :current-day="daySelected"
+		<Schedule v-if="days && gyms"
+							:current-day="daySelected"
 							:gym-id="gymSelected.id"
 							:court-id="courtSelected.id" />
 

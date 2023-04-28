@@ -13,6 +13,7 @@ const { fetchDays } = dayStore
 async function getDays() {
   await fetchDays()
   fetchResult.value = days
+  // FIXME investigate data type of mongos date! 🤔
 }
 
 // FIXME delete one day or all days
@@ -70,12 +71,35 @@ async function resetDays() {
     <br><span>String: {{ daySelected.toString() }}</span>
     <br><span>UTC: {{ daySelected.toUTCString() }}</span>
 
+    <div class="days-wrapper">
+      <div class="day-item"
+           v-for="day in days">
+        <!-- {{ day.date.toLocaleString("en_US", { weekday: "long" }) }} -->
+        TEST
+      </div>
+    </div>
+
     <pre>{{ fetchResult }}</pre>
 
   </div>
 </template>
 
 <style scoped lang="scss">
+div.days-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  div.day-item {
+    @include buttonShadow;
+    background-color: $card-color-secondary-light;
+    border-radius: 10px;
+    padding: 1rem;
+
+  }
+
+}
+
 button {
   border: none;
   padding: .5rem;
