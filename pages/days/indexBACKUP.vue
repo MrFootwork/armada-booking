@@ -36,18 +36,13 @@ const { fetchDays, addSlot } = dayStore
 // 2. try serverPrefetch()
 // initial data fetch
 onBeforeMount(async () => {
-	try {
-		const fetchingDays = await fetchDays()
-		const fetchingGyms = await fetchGyms()
-		Promise.all([fetchingDays, fetchingGyms]).then(() => {
-			gymSelected.value = gyms.value[0]
-		})
-	} catch (e) {
-		console.error(`Couldn't fetch days or gyms: `, e)
-	}
+	const fetchingDays = await fetchDays()
+	const fetchingGyms = await fetchGyms()
+	Promise.all([fetchingDays, fetchingGyms]).then(() => {
+		gymSelected.value = gyms.value[0]
+	})
 })
 
-// FIXME move this to onBeforeMount()
 onMounted(() => {
 	if (languageStore.wasSet) return
 	setLanguage(navigator.language)

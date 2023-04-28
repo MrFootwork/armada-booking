@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import { useDaysStore } from '@/store/bookingDays'
 
 const fetchResult = ref()
 
+// days
+const dayStore = useDaysStore()
+const { days } = storeToRefs(dayStore)
+const { fetchDays } = dayStore
+
 async function getDays() {
-  const fetchedDays = await $fetch('/api/days', { method: 'GET' })
-  fetchResult.value = fetchedDays
+  await fetchDays()
+  fetchResult.value = days
 }
 
 // FIXME delete one day or all days

@@ -9,6 +9,4 @@ export default class Calendar {
 		const calendarSample = new CalendarSample()
 		this.days = calendarSample.days
 	}
-
-	// FIXME turn this into Pinia store
 }
