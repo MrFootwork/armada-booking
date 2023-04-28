@@ -31,21 +31,36 @@ const dayStore = useDaysStore()
 const { days } = storeToRefs(dayStore)
 const { fetchDays, addSlot } = dayStore
 
-// TODO improve initial data fetch
+// FIXME improve initial data fetch
 // 1. maybe a composable could do that
 // 2. try serverPrefetch()
 // initial data fetch
 onBeforeMount(async () => {
 	try {
-		const fetchingDays = await fetchDays()
-		const fetchingGyms = await fetchGyms()
-		Promise.all([fetchingDays, fetchingGyms]).then(() => {
-			gymSelected.value = gyms.value[0]
-		})
+		await fetchDays()
+		console.log(days.value);
+		daySelected.value = days.value[0].date
+
+		await fetchGyms()
+		console.log(gyms.value);
+		gymSelected.value = gyms.value[0]
 	} catch (e) {
 		console.error(`Couldn't fetch days or gyms: `, e)
 	}
 })
+// onBeforeMount(async () => {
+// 	try {
+// 		const fetchingDays = await fetchDays()
+// 		const fetchingGyms = await fetchGyms()
+// 		Promise.all([fetchingDays, fetchingGyms]).then(() => {
+// 			console.log(days.value);
+// 			daySelected.value = days.value[0].date
+// 			gymSelected.value = gyms.value[0]
+// 		})
+// 	} catch (e) {
+// 		console.error(`Couldn't fetch days or gyms: `, e)
+// 	}
+// })
 
 // FIXME move this to onBeforeMount()
 onMounted(() => {
@@ -296,11 +311,11 @@ const [showGymHint, toggleGymHint] = useToggle()
 			</div>
 
 			<!-- <button @click="addSlot({
-					day: daySelected,
-					gymId: gymSelected.id,
-					courtId: courtSelected.id,
-					start: 11,
-					end: 12
+day: daySelected,
+	gymId: gymSelected.id,
+		courtId: courtSelected.id,
+			start: 11,
+				end: 12
 				})">Add Slot</button> -->
 
 		</form>
