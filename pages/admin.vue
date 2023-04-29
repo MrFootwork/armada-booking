@@ -75,7 +75,8 @@ async function resetDays() {
       <div class="day-item"
            v-for="day in days">
         <!-- {{ day.date.toLocaleString("en_US", { weekday: "long" }) }} -->
-        TEST
+        {{ day.date }}
+        {{ typeof day.date }}
       </div>
     </div>
 
@@ -87,7 +88,7 @@ async function resetDays() {
 <style scoped lang="scss">
 div.days-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
 
   div.day-item {
