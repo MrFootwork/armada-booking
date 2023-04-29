@@ -3,10 +3,9 @@ import replaceId from '@/server/utils/mongo/replaceId'
 
 export default defineEventHandler(async event => {
 	const query = getQuery(event)
-	// const body = await readBody(event)
 	const days = await fetchDays()
 
-	// console.table(passwords)
+	console.log(days)
 
 	return {
 		api: 'days.get',
@@ -25,7 +24,13 @@ async function fetchDays() {
 		const days = await db.collection('days').find({}).toArray()
 		const daysTransformed = replaceId(days)
 
-		return days
+		// FIXME transformation: all dates must be turned to Date type
+		daysTransformed?.map(day => {
+			day.date = new Date(day.date)
+			console.log(typeof day.date)
+		})
+
+		return daysTransformed
 	} catch (e) {
 		console.error('could not read from database. ', e)
 	} finally {

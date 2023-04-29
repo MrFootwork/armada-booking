@@ -13,7 +13,6 @@ const { fetchDays } = dayStore
 async function getDays() {
   await fetchDays()
   fetchResult.value = days
-  // FIXME investigate data type of mongos date! 🤔
 }
 
 // FIXME delete one day or all days
@@ -75,6 +74,7 @@ async function resetDays() {
       <div class="day-item"
            v-for="day in days">
         <!-- {{ day.date.toLocaleString("en_US", { weekday: "long" }) }} -->
+        {{ new Date(day.date) }} <br>
         {{ day.date }}
         {{ typeof day.date }}
       </div>
