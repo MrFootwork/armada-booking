@@ -15,14 +15,13 @@ export const useDaysStore = defineStore('days', () => {
 
 	// getters (computed())
 	// actions
-	// async function fetchDays() {
-	// 	// FIXME get days and save them here
-	// 	// const calendarSample = new CalendarSample()
-	// 	days.value = calendarSample.days
-	// }
 	async function fetchDays() {
 		const fetchedDays = await useFetch('/api/days', { method: 'GET' })
-		days.value = fetchedDays.data.value?.out
+		days.value = fetchedDays.data.value?.out as Day[]
+		// this would work. But I prefer this transformation
+		// to be done in in the API handler days.get.ts
+		// days.value[0].date = new Date(days.value[0].date)
+		return days.value
 	}
 
 	async function addSlot({

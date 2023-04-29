@@ -7,7 +7,7 @@
  * @param   {Array}  objects an array of objects
  * @return  {Array}  an array of objects with altered id properties
  */
-export default function (objects) {
+export default function (objects: Day[]) {
 	return objects.map(object => {
 		object.id = object._id
 		delete object._id

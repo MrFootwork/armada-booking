@@ -11,8 +11,7 @@ const { days } = storeToRefs(dayStore)
 const { fetchDays } = dayStore
 
 async function getDays() {
-  await fetchDays()
-  fetchResult.value = days
+  fetchResult.value = await fetchDays()
 }
 
 // FIXME delete one day or all days
@@ -66,6 +65,7 @@ async function resetDays() {
                    input-class-name="dp-custom-input" />
 
     <button @click="daySelected = new Date()">Today</button>
+    <br><span>JS Date: {{ daySelected }}</span>
     <br><span>ISO: {{ daySelected.toISOString() }}</span>
     <br><span>String: {{ daySelected.toString() }}</span>
     <br><span>UTC: {{ daySelected.toUTCString() }}</span>
@@ -74,9 +74,8 @@ async function resetDays() {
       <div class="day-item"
            v-for="day in days">
         <!-- {{ day.date.toLocaleString("en_US", { weekday: "long" }) }} -->
-        {{ new Date(day.date) }} <br>
         {{ day.date }}
-        {{ typeof day.date }}
+        <br> type: {{ typeof day.date }}
       </div>
     </div>
 
