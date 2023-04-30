@@ -7,6 +7,7 @@ export const useDaysStore = defineStore('days', () => {
 	// initiated minimal data for days page to render
 	const daysInitial = [
 		{
+			id: 'initial day',
 			date: new Date(),
 			gyms: [],
 		},

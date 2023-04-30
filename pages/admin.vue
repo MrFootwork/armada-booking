@@ -74,7 +74,8 @@ async function resetDays() {
       <div class="day-item"
            v-for="day in days">
         <!-- {{ day.date.toLocaleString("en_US", { weekday: "long" }) }} -->
-        {{ day.date }}
+        {{ day.id }}
+        <br> {{ day.date }}
         <br> type: {{ typeof day.date }}
       </div>
     </div>

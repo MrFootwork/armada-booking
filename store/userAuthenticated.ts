@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 // FIXME get current user ID after authentication
-export const useLanguage = defineStore('language', () => {
+export const useUserStore = defineStore('user', () => {
 	// state
 	const preferred = ref('zh-CH')
 	const wasSet = ref(false)

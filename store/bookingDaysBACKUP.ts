@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import CalendarSample from '@/model/MCalendarSample.model'
 import { Day } from '@/model/TDay.model'
 
-export const useDaysStore = defineStore('days', () => {
+export const useDaysStore = defineStore('daysBackup', () => {
 	// state
 	// initiated minimal data for days page to render
 	const daysInitial = [
@@ -17,7 +17,7 @@ export const useDaysStore = defineStore('days', () => {
 	// actions
 	async function fetchDays() {
 		// FIXME get days and save them here
-		const calendarSample = new CalendarSample()
+		// const calendarSample = new CalendarSample()
 		days.value = calendarSample.days
 	}
 
