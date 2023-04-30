@@ -4,6 +4,7 @@ import { useLanguage } from '@/store/language'
 const languageStore = useLanguage()
 // milliseconds of one day
 const VALUE_OF_ONE_DAY = 24 * 60 * 60 * 1000
+const DAYS_VISIBLE_RANGE = 6
 
 export default function useDate(objDate: Date) {
 	const weekday = objDate.toLocaleDateString(languageStore.preferred, {
@@ -48,7 +49,9 @@ export default function useDate(objDate: Date) {
 		return dateTransformed
 	}
 
-	const addDays = (dayCountToAdd: number) => {
+	const addDays = (dayCountToAdd?: number) => {
+		if (!dayCountToAdd) dayCountToAdd = DAYS_VISIBLE_RANGE
+
 		let datePlusDays = new Date(
 			objDate.valueOf() + dayCountToAdd * VALUE_OF_ONE_DAY
 		)

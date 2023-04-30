@@ -24,6 +24,7 @@ async function fetchDaysFromDB() {
 		await mongoClient.connect()
 		const db = mongoClient.db('bookings')
 
+		// FIXME how to filter mongo query?
 		const daysFetched = (await db
 			.collection('days')
 			.find({})

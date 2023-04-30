@@ -73,11 +73,6 @@ onMounted(() => {
  *        date picker
  *
  *******************************/
-const VALUE_OF_ONE_DAY = 24 * 60 * 60 * 1000
-// e.g. today = Mon to Wed would be 2
-// const DAY_DIFF_TODAY_LAST = dayBookableRange.value
-const DAY_DIFF_TODAY_LAST = 6
-
 const today = new Date()
 const year = today.getFullYear()
 const month = today.getMonth()
@@ -91,25 +86,9 @@ watch(daySelected, (newDay, oldDay) => {
 
 // TODO today, lowerLimit and upperLimit should adjust at 24:00
 const lowerLimit: Date = new Date(year, month, day)
-
-// const upperLimit: Date = ((dateBase) => {
-// 	let upperLimit = new Date(
-// 		dateBase.valueOf() + DAY_DIFF_TODAY_LAST * VALUE_OF_ONE_DAY
-// 	)
-
-// 	upperLimit.setHours(0)
-// 	upperLimit.setMinutes(0)
-// 	upperLimit.setSeconds(0)
-// 	upperLimit.setMilliseconds(0)
-
-// 	return upperLimit
-// })(today)
-
-// FIXME test if this works and delete above if yes
-const upperLimit = useDate(new Date()).addDays(DAY_DIFF_TODAY_LAST)
+const upperLimit = useDate(new Date()).addDays()
 
 function increaseDay() {
-	// don't increase, if selected day reaches limit
 	if (daySelected.value.getDate() === upperLimit.getDate()) return
 
 	selectCourt(0)

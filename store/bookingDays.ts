@@ -15,8 +15,6 @@ export const useDaysStore = defineStore('days', () => {
 
 	const days = ref<Day[]>(daysInitial)
 
-	const dayBookableRange = ref(3)
-
 	// getters (computed())
 	// actions
 	async function fetchDays() {
@@ -46,7 +44,7 @@ export const useDaysStore = defineStore('days', () => {
 
 	function getDateRange() {
 		const firstDate = useDate(new Date()).resetTime()
-		const lastDate = useDate(new Date()).resetTime()
+		const lastDate = useDate(new Date()).addDays(6)
 		return { firstDate, lastDate }
 	}
 
@@ -90,6 +88,5 @@ export const useDaysStore = defineStore('days', () => {
 		// push to days
 	}
 
-	return { days, dayBookableRange, fetchDays, addSlot }
-	// return { days, fetchDays, addSlot }
+	return { days, fetchDays, addSlot }
 })
