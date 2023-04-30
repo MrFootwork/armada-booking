@@ -2,6 +2,8 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useLanguage } from '@/store/language'
 
 const languageStore = useLanguage()
+// milliseconds of one day
+const VALUE_OF_ONE_DAY = 24 * 60 * 60 * 1000
 
 export default function useDate(objDate: Date) {
 	const weekday = objDate.toLocaleDateString(languageStore.preferred, {
@@ -20,11 +22,11 @@ export default function useDate(objDate: Date) {
 		minute: '2-digit',
 	})
 
-	const dateStart = (dateToReset: Date) => {
+	const resetTime = () => {
 		const { year, month, day } = {
-			year: dateToReset.getFullYear(),
-			month: dateToReset.getMonth(),
-			day: dateToReset.getDate(),
+			year: objDate.getFullYear(),
+			month: objDate.getMonth(),
+			day: objDate.getDate(),
 		}
 
 		const dateTransformed = new Date()
@@ -45,5 +47,18 @@ export default function useDate(objDate: Date) {
 
 		return dateTransformed
 	}
-	return { weekday, date, time, dateISO, dateStart }
+
+	const addDays = (dayCountToAdd: number) => {
+		let datePlusDays = new Date(
+			objDate.valueOf() + dayCountToAdd * VALUE_OF_ONE_DAY
+		)
+
+		datePlusDays.setHours(0)
+		datePlusDays.setMinutes(0)
+		datePlusDays.setSeconds(0)
+		datePlusDays.setMilliseconds(0)
+
+		return datePlusDays
+	}
+	return { weekday, date, time, dateISO, resetTime, addDays }
 }

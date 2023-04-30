@@ -2,6 +2,7 @@
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import { useDaysStore } from '@/store/bookingDays'
+import useDate from '@/composables/date'
 
 const fetchResult = ref()
 
@@ -53,7 +54,6 @@ async function resetDays() {
 
 <template>
   <div>
-
     <button @click="getDays()">days.get</button>
     <button @click="addDay(daySelected)">days.put</button>
     <button @click="deleteDays('all')">days.delete.all</button>
@@ -68,6 +68,9 @@ async function resetDays() {
                    input-class-name="dp-custom-input" />
 
     <button @click="daySelected = new Date()">Today</button>
+
+    <span>test {{ useDate(new Date()).addDays(2) }}</span>
+
     <br><span>JS Date: {{ daySelected }}</span>
     <br><span>ISO: {{ daySelected.toISOString() }}</span>
     <br><span>String: {{ daySelected.toString() }}</span>

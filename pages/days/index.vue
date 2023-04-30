@@ -11,6 +11,8 @@ import { Gym } from '@/model/TGym.model'
 import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue'
 import { mdiMenuLeft, mdiMenuRight, mdiMenuDown, mdiMenuUp } from '@mdi/js'
 
+import useDate from '@/composables/date'
+
 // icon size
 const iconSize = 30
 
@@ -28,7 +30,8 @@ const { fetchGyms } = gymStore
 
 // days
 const dayStore = useDaysStore()
-const { days, dayRange } = storeToRefs(dayStore)
+// const { days, dayBookableRange } = storeToRefs(dayStore)
+const { days } = storeToRefs(dayStore)
 const { fetchDays, addSlot } = dayStore
 
 // FIXME improve initial data fetch
@@ -72,7 +75,8 @@ onMounted(() => {
  *******************************/
 const VALUE_OF_ONE_DAY = 24 * 60 * 60 * 1000
 // e.g. today = Mon to Wed would be 2
-const DAY_DIFF_TODAY_LAST = dayRange.value
+// const DAY_DIFF_TODAY_LAST = dayBookableRange.value
+const DAY_DIFF_TODAY_LAST = 6
 
 const today = new Date()
 const year = today.getFullYear()
@@ -88,18 +92,21 @@ watch(daySelected, (newDay, oldDay) => {
 // TODO today, lowerLimit and upperLimit should adjust at 24:00
 const lowerLimit: Date = new Date(year, month, day)
 
-const upperLimit: Date = ((dateBase) => {
-	let upperLimit = new Date(
-		dateBase.valueOf() + DAY_DIFF_TODAY_LAST * VALUE_OF_ONE_DAY
-	)
+// const upperLimit: Date = ((dateBase) => {
+// 	let upperLimit = new Date(
+// 		dateBase.valueOf() + DAY_DIFF_TODAY_LAST * VALUE_OF_ONE_DAY
+// 	)
 
-	upperLimit.setHours(0)
-	upperLimit.setMinutes(0)
-	upperLimit.setSeconds(0)
-	upperLimit.setMilliseconds(0)
+// 	upperLimit.setHours(0)
+// 	upperLimit.setMinutes(0)
+// 	upperLimit.setSeconds(0)
+// 	upperLimit.setMilliseconds(0)
 
-	return upperLimit
-})(today)
+// 	return upperLimit
+// })(today)
+
+// FIXME test if this works and delete above if yes
+const upperLimit = useDate(new Date()).addDays(DAY_DIFF_TODAY_LAST)
 
 function increaseDay() {
 	// don't increase, if selected day reaches limit

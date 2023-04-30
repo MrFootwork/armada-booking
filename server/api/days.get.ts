@@ -3,14 +3,15 @@ import replaceId from '@/server/utils/mongo/replaceId'
 import { Day } from '@/model/TDay.model'
 
 export default defineEventHandler(async event => {
-	// FIXME receive body with a range of dates to fetch
-	const requestBody = await readBody(event)
-	console.log('requestBody: ', requestBody)
+	// FIXME readBody can only be used with post method
+	// https://nuxt.com/docs/guide/directory-structure/server#handling-requests-with-body
+	const query = getQuery(event)
+	console.log(query)
 	const days = await fetchDaysFromDB()
 
 	return {
 		api: 'days.get',
-		in: requestBody,
+		in: query,
 		out: days,
 	}
 })

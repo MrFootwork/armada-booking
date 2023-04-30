@@ -1,9 +1,6 @@
 import { ref } from 'vue'
-import CalendarSample from '@/model/MCalendarSample.model'
 import { Day } from '@/model/TDay.model'
 import useDate from '@/composables/date'
-
-const { dateStart } = useDate(new Date())
 
 export const useDaysStore = defineStore('days', () => {
 	// state
@@ -18,20 +15,28 @@ export const useDaysStore = defineStore('days', () => {
 
 	const days = ref<Day[]>(daysInitial)
 
-	const dayRange = ref(3)
+	const dayBookableRange = ref(3)
 
 	// getters (computed())
 	// actions
 	async function fetchDays() {
 		const { firstDate, lastDate } = getDateRange()
-		console.log(firstDate)
 
-		const fetchedDays = await useFetch('/api/days', {
-			method: 'GET',
-			body: { firstDate, lastDate },
-		})
+		// FIXME Test if timezone is really correct
+		const queryObject = {
+			firstDateYear: firstDate.getFullYear().toString(),
+			firstDateMonth: firstDate.getMonth().toString(),
+			firstDateDate: firstDate.getDate().toString(),
+			lastDateYear: lastDate.getFullYear().toString(),
+			lastDateMonth: lastDate.getMonth().toString(),
+			lastDateDate: lastDate.getDate().toString(),
+		}
 
-		days.value = fetchedDays.data.value?.out as Day[]
+		const { data, error } = await useFetch(
+			`/api/days?${new URLSearchParams(queryObject).toString()}`,
+			{ method: 'GET' }
+		)
+		days.value = data.value?.out as Day[]
 
 		// FIXME date transformation mus be done here
 		// api gets date types from MongoDB
@@ -40,8 +45,8 @@ export const useDaysStore = defineStore('days', () => {
 	}
 
 	function getDateRange() {
-		const firstDate = dateStart(new Date())
-		const lastDate = dateStart(new Date())
+		const firstDate = useDate(new Date()).resetTime()
+		const lastDate = useDate(new Date()).resetTime()
 		return { firstDate, lastDate }
 	}
 
@@ -85,5 +90,6 @@ export const useDaysStore = defineStore('days', () => {
 		// push to days
 	}
 
-	return { days, dayRange, fetchDays, addSlot }
+	return { days, dayBookableRange, fetchDays, addSlot }
+	// return { days, fetchDays, addSlot }
 })
