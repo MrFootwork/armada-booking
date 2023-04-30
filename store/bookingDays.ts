@@ -1,6 +1,9 @@
 import { ref } from 'vue'
 import CalendarSample from '@/model/MCalendarSample.model'
 import { Day } from '@/model/TDay.model'
+import useDate from '@/composables/date'
+
+const { dateStart } = useDate(new Date())
 
 export const useDaysStore = defineStore('days', () => {
 	// state
@@ -12,18 +15,34 @@ export const useDaysStore = defineStore('days', () => {
 			gyms: [],
 		},
 	]
+
 	const days = ref<Day[]>(daysInitial)
+
+	const dayRange = ref(3)
 
 	// getters (computed())
 	// actions
 	async function fetchDays() {
-		const fetchedDays = await useFetch('/api/days', { method: 'GET' })
+		const { firstDate, lastDate } = getDateRange()
+		console.log(firstDate)
+
+		const fetchedDays = await useFetch('/api/days', {
+			method: 'GET',
+			body: { firstDate, lastDate },
+		})
+
 		days.value = fetchedDays.data.value?.out as Day[]
-		// this would work. But I prefer this transformation
-		// to be done in in the API handler days.get.ts
-		// days.value[0].date = new Date(days.value[0].date)
-		console.log('daysStore: ', days.value[0].date)
+
+		// FIXME date transformation mus be done here
+		// api gets date types from MongoDB
+		// console.log('daysStore: ', typeof days.value[0].date, days.value[0].date)
 		return days.value
+	}
+
+	function getDateRange() {
+		const firstDate = dateStart(new Date())
+		const lastDate = dateStart(new Date())
+		return { firstDate, lastDate }
 	}
 
 	async function addSlot({
@@ -66,5 +85,5 @@ export const useDaysStore = defineStore('days', () => {
 		// push to days
 	}
 
-	return { days, fetchDays, addSlot }
+	return { days, dayRange, fetchDays, addSlot }
 })

@@ -18,6 +18,7 @@ async function getDays() {
 async function deleteDays(option: 'last' | 'all') {
   const url = `/api/days?option=${option}`
   const deleteResult = await $fetch(url, { method: 'DELETE' })
+
   fetchResult.value = deleteResult
 }
 
@@ -31,6 +32,7 @@ async function addDay(newDate: Date) {
   const insertedDay = await $fetch(
     `/api/days?${new URLSearchParams(dateComponents).toString()}`,
     { method: 'POST' })
+
   fetchResult.value = insertedDay
 }
 
@@ -43,6 +45,7 @@ const daySelected = ref(new Date(year, month, day))
 async function resetDays() {
   // await $fetch('/api/days', { method: 'DELETE' })
   const fetchedDays = await $fetch('/api/days', { method: 'POST' })
+
   fetchResult.value = fetchedDays
 }
 

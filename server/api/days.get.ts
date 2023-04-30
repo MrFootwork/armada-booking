@@ -1,21 +1,16 @@
 import { MongoClient } from 'mongodb'
 import replaceId from '@/server/utils/mongo/replaceId'
+import { Day } from '@/model/TDay.model'
 
 export default defineEventHandler(async event => {
 	// FIXME receive body with a range of dates to fetch
-	console.log('***********************')
-	console.log('* Data Fetch starts')
-	console.log('***********************')
-
-	const query = getQuery(event)
+	const requestBody = await readBody(event)
+	console.log('requestBody: ', requestBody)
 	const days = await fetchDaysFromDB()
-
-	console.log('days were fetched')
-	console.log('api type: ', typeof days[0].date)
 
 	return {
 		api: 'days.get',
-		in: query,
+		in: requestBody,
 		out: days,
 	}
 })
@@ -32,21 +27,11 @@ async function fetchDaysFromDB() {
 			.collection('days')
 			.find({})
 			.toArray()) as Day[]
-		console.log('fetched from MongoDB')
 
 		const daysIdTransformed = await replaceId(daysFetched)
-		console.log('ID replaced')
 
-		const daysDateTransformed = await daysIdTransformed!.map(day => {
-			day.date = new Date(day.date)
-			return day
-		})
-		// FIXME test if Date methods are available
-		// terminal shows type object
-		// but UI shows type string
-		console.log('dates transformed')
-
-		return daysDateTransformed
+		// days holds date types
+		return daysIdTransformed
 	} catch (e) {
 		console.error('could not read from database. ', e)
 	} finally {

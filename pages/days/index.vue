@@ -28,7 +28,7 @@ const { fetchGyms } = gymStore
 
 // days
 const dayStore = useDaysStore()
-const { days } = storeToRefs(dayStore)
+const { days, dayRange } = storeToRefs(dayStore)
 const { fetchDays, addSlot } = dayStore
 
 // FIXME improve initial data fetch
@@ -71,6 +71,9 @@ onMounted(() => {
  *
  *******************************/
 const VALUE_OF_ONE_DAY = 24 * 60 * 60 * 1000
+// e.g. today = Mon to Wed would be 2
+const DAY_DIFF_TODAY_LAST = dayRange.value
+
 const today = new Date()
 const year = today.getFullYear()
 const month = today.getMonth()
@@ -82,14 +85,12 @@ watch(daySelected, (newDay, oldDay) => {
 	if (newDay.getDay() !== oldDay.getDay()) selectCourt(0)
 })
 
-const dateDiffTodayToLast = 6
-
 // TODO today, lowerLimit and upperLimit should adjust at 24:00
 const lowerLimit: Date = new Date(year, month, day)
 
 const upperLimit: Date = ((dateBase) => {
 	let upperLimit = new Date(
-		dateBase.valueOf() + dateDiffTodayToLast * VALUE_OF_ONE_DAY
+		dateBase.valueOf() + DAY_DIFF_TODAY_LAST * VALUE_OF_ONE_DAY
 	)
 
 	upperLimit.setHours(0)
