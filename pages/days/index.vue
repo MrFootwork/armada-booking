@@ -112,6 +112,8 @@ const disabledDates = (date: Date) => {
 	return date < lowerLimit || upperLimit < date
 }
 
+// BUG tomorrow: 1 === 31 + 1 = 32
+// if tomorrow is 1st of month, it won't be recognized
 // date format for datepicker display
 const format = (date: Date) => {
 	if (date.getDay() === today.getDay()) return 'Today'
