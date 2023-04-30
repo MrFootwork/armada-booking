@@ -22,6 +22,7 @@ export const useDaysStore = defineStore('days', () => {
 		// this would work. But I prefer this transformation
 		// to be done in in the API handler days.get.ts
 		// days.value[0].date = new Date(days.value[0].date)
+		console.log('daysStore: ', days.value[0].date)
 		return days.value
 	}
 

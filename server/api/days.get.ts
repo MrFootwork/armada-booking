@@ -3,24 +3,20 @@ import replaceId from '@/server/utils/mongo/replaceId'
 
 export default defineEventHandler(async event => {
 	// FIXME receive body with a range of dates to fetch
-	// const query = getQuery(event)
+	console.log('***********************')
+	console.log('* Data Fetch starts')
+	console.log('***********************')
+
+	const query = getQuery(event)
 	const days = await fetchDaysFromDB()
 
-	const daysInitial = [
-		{
-			id: 'initial day',
-			date: new Date(),
-			gyms: [],
-		},
-	]
-
-	console.log(days)
-	console.log('this works')
+	console.log('days were fetched')
+	console.log('api type: ', typeof days[0].date)
 
 	return {
 		api: 'days.get',
 		in: query,
-		out: daysInitial,
+		out: days,
 	}
 })
 
@@ -31,20 +27,26 @@ async function fetchDaysFromDB() {
 	try {
 		await mongoClient.connect()
 		const db = mongoClient.db('bookings')
-		// const daysFetched = (await db.collection('days').find({}).toArray()) as Day[]
-		console.log('who is this?')
-		// BUG Somehow this doesn't work
-		// const daysIdTransformed = await replaceId(daysFetched)
 
-		// FIXME transformation: all dates must be turned to Date type
-		// const daysDateTransformed = await daysIdTransformed!.map(day => {
-		// 	// day.date = new Date(day.date)
-		// 	day.date = 'test'
-		// 	console.log('API days.get: ', typeof day.date)
-		// 	return day
-		// })
+		const daysFetched = (await db
+			.collection('days')
+			.find({})
+			.toArray()) as Day[]
+		console.log('fetched from MongoDB')
 
-		return { id: 'blabla', date: new Date(), gyms: [{ test: 'value' }] }
+		const daysIdTransformed = await replaceId(daysFetched)
+		console.log('ID replaced')
+
+		const daysDateTransformed = await daysIdTransformed!.map(day => {
+			day.date = new Date(day.date)
+			return day
+		})
+		// FIXME test if Date methods are available
+		// terminal shows type object
+		// but UI shows type string
+		console.log('dates transformed')
+
+		return daysDateTransformed
 	} catch (e) {
 		console.error('could not read from database. ', e)
 	} finally {
