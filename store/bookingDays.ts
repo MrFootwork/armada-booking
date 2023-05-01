@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { Day } from '@/model/TDay.model'
-import useDate from '@/composables/date'
+import useDate from '~~/composables/date'
 
 export const useDaysStore = defineStore('days', () => {
 	// state
@@ -17,17 +17,17 @@ export const useDaysStore = defineStore('days', () => {
 
 	// getters (computed())
 	// actions
-	async function fetchDays() {
-		const { firstDate, lastDate } = getDateRange()
+	async function fetchDays(from: Date) {
+		const { firstDate, lastDate } = getDateRange(from)
 
 		// FIXME Test if timezone is really correct
+		// FIXME use vueuse date format and send query like GitHub
+		// wrap it in the composable date.ts
+		// from=2023-05-01 &
+		// to=2023-05-01
 		const queryObject = {
-			firstDateYear: firstDate.getFullYear().toString(),
-			firstDateMonth: firstDate.getMonth().toString(),
-			firstDateDate: firstDate.getDate().toString(),
-			lastDateYear: lastDate.getFullYear().toString(),
-			lastDateMonth: lastDate.getMonth().toString(),
-			lastDateDate: lastDate.getDate().toString(),
+			from: useDate(firstDate).dateISO,
+			to: useDate(lastDate).dateISO,
 		}
 
 		const { data, error } = await useFetch(
@@ -42,9 +42,17 @@ export const useDaysStore = defineStore('days', () => {
 		return days.value
 	}
 
-	function getDateRange() {
-		const firstDate = useDate(new Date()).resetTime()
+	function getDateRange(from: Date) {
+		const fromYear = from.getFullYear()
+		const fromMonth = from.getMonth()
+		const fromDate = from.getDate()
+
+		const firstDate = useDate(
+			new Date(fromYear, fromMonth, fromDate)
+		).resetTime()
+
 		const lastDate = useDate(new Date()).addDays(6)
+
 		return { firstDate, lastDate }
 	}
 

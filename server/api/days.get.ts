@@ -1,13 +1,15 @@
 import { MongoClient } from 'mongodb'
 import replaceId from '@/server/utils/mongo/replaceId'
+import { dateISOToFullISO } from '@/server/utils/typeConversions/date'
 import { Day } from '@/model/TDay.model'
+import { ISODateString } from 'next-auth'
 
 export default defineEventHandler(async event => {
-	// FIXME readBody can only be used with post method
-	// https://nuxt.com/docs/guide/directory-structure/server#handling-requests-with-body
 	const query = getQuery(event)
-	console.log(query)
-	const days = await fetchDaysFromDB()
+
+	// FIXME transform query dates and give them to MongoDB
+	// required format: ISo Date
+	const days = await fetchDaysFromDB(query)
 
 	return {
 		api: 'days.get',
@@ -16,7 +18,10 @@ export default defineEventHandler(async event => {
 	}
 })
 
-async function fetchDaysFromDB() {
+async function fetchDaysFromDB(query: {
+	to: ISODateString
+	from: ISODateString
+}) {
 	const { mongoURI } = useRuntimeConfig()
 	const mongoClient: MongoClient = new MongoClient(mongoURI)
 
@@ -24,10 +29,15 @@ async function fetchDaysFromDB() {
 		await mongoClient.connect()
 		const db = mongoClient.db('bookings')
 
-		// FIXME how to filter mongo query?
+		console.log('query before fetch: ', query)
+
+		// FIXME query must be ISO string
 		const daysFetched = (await db
 			.collection('days')
-			.find({})
+			.find({
+				// date: { $lte: dateISOToFullISO(query.to) },
+				// date: { $lte: query.to },
+			})
 			.toArray()) as Day[]
 
 		const daysIdTransformed = await replaceId(daysFetched)

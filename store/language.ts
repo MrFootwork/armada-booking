@@ -1,6 +1,6 @@
 export const useLanguage = defineStore('language', () => {
 	// state
-	const preferred = ref('zh-CH')
+	const preferred = ref('en-US')
 	const wasSet = ref(false)
 	// getters (computed())
 	// actions

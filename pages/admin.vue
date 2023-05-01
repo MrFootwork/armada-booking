@@ -11,8 +11,8 @@ const dayStore = useDaysStore()
 const { days } = storeToRefs(dayStore)
 const { fetchDays } = dayStore
 
-async function getDays() {
-  fetchResult.value = await fetchDays()
+async function getDays(from: Date) {
+  fetchResult.value = await fetchDays(from)
 }
 
 // FIXME delete one day or all days
@@ -54,7 +54,7 @@ async function resetDays() {
 
 <template>
   <div>
-    <button @click="getDays()">days.get</button>
+    <button @click="getDays(daySelected)">days.get</button>
     <button @click="addDay(daySelected)">days.put</button>
     <button @click="deleteDays('all')">days.delete.all</button>
     <button @click="resetDays()">days.reset</button>
@@ -69,12 +69,11 @@ async function resetDays() {
 
     <button @click="daySelected = new Date()">Today</button>
 
-    <span>test {{ useDate(new Date()).addDays(2) }}</span>
-
     <br><span>JS Date: {{ daySelected }}</span>
     <br><span>ISO: {{ daySelected.toISOString() }}</span>
     <br><span>String: {{ daySelected.toString() }}</span>
     <br><span>UTC: {{ daySelected.toUTCString() }}</span>
+    <br><span>useDate(): {{ useDate(daySelected).resetTime() }}</span>
 
     <div class="days-wrapper">
       <div class="day-item"
