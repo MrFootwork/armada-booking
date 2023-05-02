@@ -12,6 +12,7 @@ const { days } = storeToRefs(dayStore)
 const { fetchDays } = dayStore
 
 async function getDays(from: Date) {
+  console.log('page from: ', from);
   fetchResult.value = await fetchDays(from)
 }
 

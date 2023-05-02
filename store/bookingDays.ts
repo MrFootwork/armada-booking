@@ -18,17 +18,17 @@ export const useDaysStore = defineStore('days', () => {
 	// getters (computed())
 	// actions
 	async function fetchDays(from: Date) {
+		console.log('store from: ', from)
 		const { firstDate, lastDate } = getDateRange(from)
+		console.log('store range: ', { firstDate, lastDate })
 
-		// FIXME Test if timezone is really correct
-		// FIXME use vueuse date format and send query like GitHub
-		// wrap it in the composable date.ts
-		// from=2023-05-01 &
-		// to=2023-05-01
+		// FIXME reset times of both dates before ISO creation
+
 		const queryObject = {
 			from: useDate(firstDate).dateISO,
 			to: useDate(lastDate).dateISO,
 		}
+		console.log('store queryObject: ', queryObject)
 
 		const { data, error } = await useFetch(
 			`/api/days?${new URLSearchParams(queryObject).toString()}`,

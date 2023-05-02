@@ -12,6 +12,7 @@ import fetchGyms from '@/server/utils/mongo/gyms'
 export default defineEventHandler(async event => {
 	const { year, month, day } = getQuery(event)
 
+	// FIXME try out if I can use date composable to transform
 	const newDate = new Date()
 	newDate.setUTCFullYear(year)
 	newDate.setUTCMonth(month)
