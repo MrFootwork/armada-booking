@@ -13,3 +13,33 @@ export function dateISOToFullISO(
 	const dateDay = dateISO.substring(8, 9)
 	return new Date(dateYear, dateMonth, dateDay).toISOString()
 }
+
+/**
+ *
+ * @param {string} year	- year e.g. 2016
+ * @param {string} month	- 0-based month e.g. 1 = February
+ * @param {string} day	- day e.g. 30
+ * @returns	{Date} A Date object
+ */
+export function dateComponentToJSDate({
+	year,
+	month,
+	day,
+}: {
+	year: string
+	month: string
+	day: string
+}) {
+	const jsDate = new Date()
+	jsDate.setUTCFullYear(year)
+	jsDate.setUTCMonth(month)
+	jsDate.setUTCDate(day)
+	jsDate.setUTCHours(0)
+	jsDate.setUTCMinutes(0)
+	jsDate.setUTCSeconds(0)
+	jsDate.setUTCMilliseconds(0)
+
+	console.log('this worked 🎉')
+
+	return jsDate
+}

@@ -35,10 +35,10 @@ async function fetchDaysFromDB(query: {
 		const daysFetched = (await db
 			.collection('days')
 			.find({
-				// working in MongoDB Atlas: 
+				// working in MongoDB Atlas:
 				// {date: { $gte: ISODate("2023-05-02") }}
 				// date: { $lte: dateISOToFullISO(query.to) },
-				date: { $gte: {new Date(query.to)} },
+				// date: { $gte: {new Date(query.to)} },
 			})
 			.toArray()) as Day[]
 
