@@ -38,20 +38,13 @@ export default function useDate(objDate: Date = new Date()) {
 
 		// FIXME test if this time also is saved on mongoDB
 		const dateTransformed = new Date()
-		// dateTransformed.setFullYear(year)
-		// dateTransformed.setMonth(month)
-		// dateTransformed.setDate(day)
-		// dateTransformed.setHours(0)
-		// dateTransformed.setMinutes(0)
-		// dateTransformed.setSeconds(0)
-		// dateTransformed.setMilliseconds(0)
-		dateTransformed.setUTCFullYear(year)
-		dateTransformed.setUTCMonth(month)
-		dateTransformed.setUTCDate(day)
-		dateTransformed.setUTCHours(0)
-		dateTransformed.setUTCMinutes(0)
-		dateTransformed.setUTCSeconds(0)
-		dateTransformed.setUTCMilliseconds(0)
+		dateTransformed.setFullYear(year)
+		dateTransformed.setMonth(month)
+		dateTransformed.setDate(day)
+		dateTransformed.setHours(0)
+		dateTransformed.setMinutes(0)
+		dateTransformed.setSeconds(0)
+		dateTransformed.setMilliseconds(0)
 
 		return dateTransformed
 	}

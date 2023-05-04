@@ -18,23 +18,30 @@ export const useDaysStore = defineStore('days', () => {
 	// getters (computed())
 	// actions
 	async function fetchDays(from: Date) {
+		console.log('store from: ', from)
 		const { firstDate, lastDate } = getDateRange(from)
+		console.log('store firstDate: ', firstDate)
 
-		// FIXME reset times of both dates before ISO creation
-
+		// working with ISO to keep timezone information
+		// 2023-05-03T22:00:00.000Z
+		// = Thu May 04 2023 00:00:00 GMT+0200
 		const queryObject = {
-			from: useDate(firstDate).dateISO,
-			to: useDate(lastDate).dateISO,
+			from: firstDate.toISOString(),
+			to: lastDate.toISOString(),
 		}
+
+		console.log('store queryObject: ', queryObject)
 
 		const { data, error } = await useFetch(
 			`/api/days?${new URLSearchParams(queryObject).toString()}`,
 			{ method: 'GET' }
 		)
 
+		// fetched data contains ISO dates
+		// and must be transformed into JS dates
 		const dataTransformed = (data.value?.out as Day[]).map(day => {
 			const newDay = day
-			newDay.date = new Date(day.date)
+			newDay.date = useDate(new Date(day.date)).resetTime()
 			return newDay
 		})
 
@@ -52,7 +59,7 @@ export const useDaysStore = defineStore('days', () => {
 			new Date(fromYear, fromMonth, fromDate)
 		).resetTime()
 
-		const lastDate = useDate(new Date()).addDays(6)
+		const lastDate = useDate(new Date(fromYear, fromMonth, fromDate)).addDays(6)
 
 		return { firstDate, lastDate }
 	}

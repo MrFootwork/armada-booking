@@ -6,9 +6,6 @@ import { ISODateString } from 'next-auth'
 
 export default defineEventHandler(async event => {
 	const query = getQuery(event)
-
-	// FIXME transform query dates and give them to MongoDB
-	// required format: ISo Date
 	const days = await fetchDaysFromDB(query)
 
 	return {
@@ -25,20 +22,17 @@ async function fetchDaysFromDB(query: {
 	const { mongoURI } = useRuntimeConfig()
 	const mongoClient: MongoClient = new MongoClient(mongoURI)
 
+	console.log('days.get query: ', query.from)
+
 	try {
 		await mongoClient.connect()
 		const db = mongoClient.db('bookings')
 
-		console.log('query before fetch: ', query)
-
-		// FIXME query must be ISO string
 		const daysFetched = (await db
 			.collection('days')
 			.find({
-				// working in MongoDB Atlas:
-				// {date: { $gte: ISODate("2023-05-02") }}
-				// date: { $lte: dateISOToFullISO(query.to) },
-				// date: { $gte: {new Date(query.to)} },
+				date: { $gte: new Date(query.from) },
+				date: { $lte: new Date(query.to) },
 			})
 			.toArray()) as Day[]
 

@@ -31,13 +31,13 @@ export function dateComponentToJSDate({
 	day: string
 }) {
 	const jsDate = new Date()
-	jsDate.setUTCFullYear(year)
-	jsDate.setUTCMonth(month)
-	jsDate.setUTCDate(day)
-	jsDate.setUTCHours(0)
-	jsDate.setUTCMinutes(0)
-	jsDate.setUTCSeconds(0)
-	jsDate.setUTCMilliseconds(0)
+	jsDate.setFullYear(year)
+	jsDate.setMonth(month)
+	jsDate.setDate(day)
+	jsDate.setHours(0)
+	jsDate.setMinutes(0)
+	jsDate.setSeconds(0)
+	jsDate.setMilliseconds(0)
 
 	return jsDate
 }

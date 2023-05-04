@@ -74,13 +74,14 @@ async function resetDays() {
     <br><span>ISO: {{ daySelected.toISOString() }}</span>
     <br><span>String: {{ daySelected.toString() }}</span>
     <br><span>UTC: {{ daySelected.toUTCString() }}</span>
-    <br><span>useDate(): {{ useDate(daySelected).resetTime() }}</span>
+    <br><span>useDate().resetTime(): {{ useDate(daySelected).resetTime() }}</span>
 
     <div class="days-wrapper">
       <div class="day-item"
            v-for="day in days">
         {{ day.date.toLocaleString('de-DE', { dateStyle: 'long' }) }}
         <br> {{ day.date }}
+        <br> {{ day.date.toISOString() }}
         <br>{{ day.id }}
         <br> type: {{ typeof day.date }}
       </div>
