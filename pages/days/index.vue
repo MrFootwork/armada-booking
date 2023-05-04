@@ -39,7 +39,7 @@ const { fetchDays, addSlot } = dayStore
 // 2. try serverPrefetch()
 // initial data fetch
 onBeforeMount(async () => {
-	await fetchDays()
+	await fetchDays(new Date())
 	console.log(days.value);
 	console.log(dayStore.days);
 	daySelected.value = days.value[0].date

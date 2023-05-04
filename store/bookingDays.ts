@@ -18,9 +18,7 @@ export const useDaysStore = defineStore('days', () => {
 	// getters (computed())
 	// actions
 	async function fetchDays(from: Date) {
-		console.log('store from: ', from)
 		const { firstDate, lastDate } = getDateRange(from)
-		console.log('store firstDate: ', firstDate)
 
 		// working with ISO to keep timezone information
 		// 2023-05-03T22:00:00.000Z
@@ -29,8 +27,6 @@ export const useDaysStore = defineStore('days', () => {
 			from: firstDate.toISOString(),
 			to: lastDate.toISOString(),
 		}
-
-		console.log('store queryObject: ', queryObject)
 
 		const { data, error } = await useFetch(
 			`/api/days?${new URLSearchParams(queryObject).toString()}`,

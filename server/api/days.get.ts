@@ -22,8 +22,6 @@ async function fetchDaysFromDB(query: {
 	const { mongoURI } = useRuntimeConfig()
 	const mongoClient: MongoClient = new MongoClient(mongoURI)
 
-	console.log('days.get query: ', query.from)
-
 	try {
 		await mongoClient.connect()
 		const db = mongoClient.db('bookings')
