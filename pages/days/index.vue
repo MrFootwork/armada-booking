@@ -34,10 +34,7 @@ const dayStore = useDaysStore()
 const { days } = storeToRefs(dayStore)
 const { fetchDays, addSlot } = dayStore
 
-// FIXME improve initial data fetch
-// 1. maybe a composable could do that
-// 2. try serverPrefetch()
-// initial data fetch
+// FIXME research data fetch in composable before render
 onBeforeMount(async () => {
 	await fetchDays(new Date())
 	console.log(days.value);
