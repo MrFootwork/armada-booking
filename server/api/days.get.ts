@@ -31,8 +31,10 @@ async function fetchDaysFromDB(query: {
 		const daysFetched = (await db
 			.collection('days')
 			.find({
-				date: { $gte: new Date(query.from) },
-				date: { $lte: new Date(query.to) },
+				date: {
+					$gte: new Date(query.from),
+					$lte: new Date(query.to),
+				},
 			})
 			.toArray()) as Day[]
 
