@@ -15,7 +15,7 @@ export function dateISOToFullISO(
 }
 
 /**
- *
+ *	Converts an object with date components as properties into a JS Date.
  * @param {string} year	- year e.g. 2016
  * @param {string} month	- 0-based month e.g. 1 = February
  * @param {string} day	- day e.g. 30
@@ -38,8 +38,6 @@ export function dateComponentToJSDate({
 	jsDate.setUTCMinutes(0)
 	jsDate.setUTCSeconds(0)
 	jsDate.setUTCMilliseconds(0)
-
-	console.log('this worked 🎉')
 
 	return jsDate
 }

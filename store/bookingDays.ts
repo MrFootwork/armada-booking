@@ -18,9 +18,7 @@ export const useDaysStore = defineStore('days', () => {
 	// getters (computed())
 	// actions
 	async function fetchDays(from: Date) {
-		console.log('store from: ', from)
 		const { firstDate, lastDate } = getDateRange(from)
-		console.log('store range: ', { firstDate, lastDate })
 
 		// FIXME reset times of both dates before ISO creation
 
@@ -28,17 +26,20 @@ export const useDaysStore = defineStore('days', () => {
 			from: useDate(firstDate).dateISO,
 			to: useDate(lastDate).dateISO,
 		}
-		console.log('store queryObject: ', queryObject)
 
 		const { data, error } = await useFetch(
 			`/api/days?${new URLSearchParams(queryObject).toString()}`,
 			{ method: 'GET' }
 		)
-		days.value = data.value?.out as Day[]
 
-		// FIXME date transformation mus be done here
-		// api gets date types from MongoDB
-		// console.log('daysStore: ', typeof days.value[0].date, days.value[0].date)
+		const dataTransformed = (data.value?.out as Day[]).map(day => {
+			const newDay = day
+			newDay.date = new Date(day.date)
+			return newDay
+		})
+
+		days.value = dataTransformed as Day[]
+
 		return days.value
 	}
 
