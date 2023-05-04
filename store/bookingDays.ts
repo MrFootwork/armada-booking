@@ -13,7 +13,8 @@ export const useDaysStore = defineStore('days', () => {
 		},
 	]
 
-	const days = ref<Day[]>(daysInitial)
+	// const days = ref<Day[]>(daysInitial)
+	const days = ref<Day[]>([])
 
 	// getters (computed())
 	// actions

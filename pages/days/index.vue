@@ -330,7 +330,7 @@ day: daySelected,
 			</p>
 		</div>
 
-		<Schedule v-if="days && gyms"
+		<Schedule v-if="days.length && gyms.length"
 							:current-day="daySelected"
 							:gym-id="gymSelected.id"
 							:court-id="courtSelected.id" />
