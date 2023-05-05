@@ -9,12 +9,20 @@ export const useDaysStore = defineStore('days', () => {
 		{
 			id: 'initial day',
 			date: new Date(),
-			gyms: [],
+			gyms: [
+				{
+					id: '63dfe7d99d49df953437b274',
+					nameCode: 'test',
+					nameShort: 'Antilopa',
+					place: 'Badminton Armada Arena Test',
+					courts: [],
+				},
+			],
 		},
 	]
 
-	// const days = ref<Day[]>(daysInitial)
-	const days = ref<Day[]>([])
+	const days = ref<Day[]>(daysInitial)
+	// const days = ref<Day[]>([])
 
 	// getters (computed())
 	// actions

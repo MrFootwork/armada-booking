@@ -45,6 +45,7 @@ export default defineNuxtConfig({
 		'@sidebase/nuxt-auth',
 		'@vueuse/nuxt',
 		'nuxt-scheduler',
+		'@nuxt/devtools',
 	],
 	pinia: {
 		autoImports: [

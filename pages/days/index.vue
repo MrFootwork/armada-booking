@@ -34,21 +34,39 @@ const dayStore = useDaysStore()
 const { days } = storeToRefs(dayStore)
 const { fetchDays, addSlot } = dayStore
 
-// FIXME research data fetch in composable before render
-onBeforeMount(async () => {
-	await fetchDays(new Date())
-	console.log(days.value);
-	console.log(dayStore.days);
-	daySelected.value = days.value[0].date
+// FIXME figure out, if router middleware can load store before entering page
+// https://stackoverflow.com/questions/70710965/vue-cant-access-pinia-store-in-beforeenter-vue-router
+// https://nuxt.com/docs/getting-started/routing#route-middleware
 
-	await fetchGyms()
-	console.log(gyms.value);
-	console.log(gymStore.gyms);
-	gymSelected.value = gyms.value[0]
-})
 // onBeforeMount(async () => {
+// 	await fetchDays(new Date())
+// 	console.log(days.value);
+// 	console.log(dayStore.days);
+// 	daySelected.value = days.value[0].date
+
+// 	await fetchGyms()
+// 	console.log(gyms.value);
+// 	console.log(gymStore.gyms);
+// 	// gymSelected.value = gyms.value[0]
+// })
+
+onBeforeMount(async () => {
+	try {
+		const fetchingDays = await fetchDays(new Date())
+		const fetchingGyms = await fetchGyms()
+		Promise.all([fetchingDays, fetchingGyms]).then(() => {
+			console.log(days.value);
+			daySelected.value = days.value[0].date
+			// gymSelected.value = gyms.value[0]
+		})
+	} catch (e) {
+		console.error(`Couldn't fetch days or gyms: `, e)
+	}
+})
+
+// const starter = (async () => {
 // 	try {
-// 		const fetchingDays = await fetchDays()
+// 		const fetchingDays = await fetchDays(new Date())
 // 		const fetchingGyms = await fetchGyms()
 // 		Promise.all([fetchingDays, fetchingGyms]).then(() => {
 // 			console.log(days.value);
@@ -58,7 +76,7 @@ onBeforeMount(async () => {
 // 	} catch (e) {
 // 		console.error(`Couldn't fetch days or gyms: `, e)
 // 	}
-// })
+// })();
 
 // FIXME move this to onBeforeMount()
 onMounted(() => {
@@ -130,7 +148,16 @@ const format = (date: Date) => {
  *        gym picker
  *
  *******************************/
-const gymSelected = ref<Gym>(gyms.value[0])
+const gymGhost = {
+	id: '63dfe7d99d49df953437b274',
+	nameCode: 'test',
+	nameShort: 'Antilopa',
+	place: 'Badminton Armada Arena Test',
+	courts: [],
+}
+
+// const gymSelected = ref<Gym>(gyms?.value[0] || gymGhost)
+const gymSelected = computed(() => gyms?.value[0])
 
 watch(gymSelected, (newGym, oldGym) => {
 	if (newGym.id !== oldGym.id) selectCourt(0)
@@ -148,9 +175,10 @@ const courtLayout = ''
 const courts = computed(() => {
 
 	const courts =
-		days.value
-			?.find(day => day.date.getDate() === daySelected.value.getDate())
-			?.gyms.find(gym => gym.id === gymSelected?.value.id)?.courts || []
+		days?.value
+			?.find(day => day?.date?.getDate() === daySelected?.value?.getDate())
+			?.gyms?.find(gym => gym?.id === gymSelected?.value?.id)?.courts
+		|| [{ id: 'initial court', courtName: 'initial', slots: [] }]
 
 	return courts
 })
@@ -159,7 +187,7 @@ const courtsNames = computed(() => {
 	return courts.value.map(court => court.courtName)
 })
 
-const courtSelected = ref(courts.value[0])
+const courtSelected = ref(courts?.value[0])
 // initialization after Pinia store useDaysStore is loaded
 onBeforeMount(() => {
 
@@ -330,7 +358,7 @@ day: daySelected,
 			</p>
 		</div>
 
-		<Schedule v-if="days.length && gyms.length"
+		<Schedule v-if="days.length && gyms && gyms[0].id && gymSelected?.id"
 							:current-day="daySelected"
 							:gym-id="gymSelected.id"
 							:court-id="courtSelected.id" />
