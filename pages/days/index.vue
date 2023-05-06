@@ -1,12 +1,14 @@
 <script setup lang="ts">
+definePageMeta({
+	middleware: 'fetch-before-entering-days'
+});
+
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
 import { useLanguage } from '@/store/language'
 import { useDaysStore } from '@/store/bookingDays'
 import { useGym } from '@/store/gym'
-
-import { Gym } from '@/model/TGym.model'
 
 import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue'
 import { mdiMenuLeft, mdiMenuRight, mdiMenuDown, mdiMenuUp } from '@mdi/js'
@@ -50,19 +52,19 @@ const { fetchDays, addSlot } = dayStore
 // 	// gymSelected.value = gyms.value[0]
 // })
 
-onBeforeMount(async () => {
-	try {
-		const fetchingDays = await fetchDays(new Date())
-		const fetchingGyms = await fetchGyms()
-		Promise.all([fetchingDays, fetchingGyms]).then(() => {
-			console.log(days.value);
-			daySelected.value = days.value[0].date
-			// gymSelected.value = gyms.value[0]
-		})
-	} catch (e) {
-		console.error(`Couldn't fetch days or gyms: `, e)
-	}
-})
+// onBeforeMount(async () => {
+// 	try {
+// 		const fetchingDays = await fetchDays(new Date())
+// 		const fetchingGyms = await fetchGyms()
+// 		Promise.all([fetchingDays, fetchingGyms]).then(() => {
+// 			console.log(days.value);
+// 			daySelected.value = days.value[0].date
+// 			// gymSelected.value = gyms.value[0]
+// 		})
+// 	} catch (e) {
+// 		console.error(`Couldn't fetch days or gyms: `, e)
+// 	}
+// })
 
 // const starter = (async () => {
 // 	try {
@@ -82,6 +84,7 @@ onBeforeMount(async () => {
 onMounted(() => {
 	if (languageStore.wasSet) return
 	setLanguage(navigator.language)
+	console.log(days);
 })
 /*******************************
  *
