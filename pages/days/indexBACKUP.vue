@@ -11,6 +11,8 @@ import { Gym } from '@/model/TGym.model'
 import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue'
 import { mdiMenuLeft, mdiMenuRight, mdiMenuDown, mdiMenuUp } from '@mdi/js'
 
+import useDate from '@/composables/date'
+
 // icon size
 const iconSize = 30
 
@@ -28,21 +30,55 @@ const { fetchGyms } = gymStore
 
 // days
 const dayStore = useDaysStore()
+// const { days, dayBookableRange } = storeToRefs(dayStore)
 const { days } = storeToRefs(dayStore)
 const { fetchDays, addSlot } = dayStore
 
-// TODO improve initial data fetch
-// 1. maybe a composable could do that
-// 2. try serverPrefetch()
-// initial data fetch
+// FIXME figure out, if router middleware can load store before entering page
+// https://stackoverflow.com/questions/70710965/vue-cant-access-pinia-store-in-beforeenter-vue-router
+// https://nuxt.com/docs/getting-started/routing#route-middleware
+
+// onBeforeMount(async () => {
+// 	await fetchDays(new Date())
+// 	console.log(days.value);
+// 	console.log(dayStore.days);
+// 	daySelected.value = days.value[0].date
+
+// 	await fetchGyms()
+// 	console.log(gyms.value);
+// 	console.log(gymStore.gyms);
+// 	// gymSelected.value = gyms.value[0]
+// })
+
 onBeforeMount(async () => {
-	const fetchingDays = await fetchDays()
-	const fetchingGyms = await fetchGyms()
-	Promise.all([fetchingDays, fetchingGyms]).then(() => {
-		gymSelected.value = gyms.value[0]
-	})
+	try {
+		const fetchingDays = await fetchDays(new Date())
+		const fetchingGyms = await fetchGyms()
+		Promise.all([fetchingDays, fetchingGyms]).then(() => {
+			console.log(days.value);
+			daySelected.value = days.value[0].date
+			// gymSelected.value = gyms.value[0]
+		})
+	} catch (e) {
+		console.error(`Couldn't fetch days or gyms: `, e)
+	}
 })
 
+// const starter = (async () => {
+// 	try {
+// 		const fetchingDays = await fetchDays(new Date())
+// 		const fetchingGyms = await fetchGyms()
+// 		Promise.all([fetchingDays, fetchingGyms]).then(() => {
+// 			console.log(days.value);
+// 			daySelected.value = days.value[0].date
+// 			gymSelected.value = gyms.value[0]
+// 		})
+// 	} catch (e) {
+// 		console.error(`Couldn't fetch days or gyms: `, e)
+// 	}
+// })();
+
+// FIXME move this to onBeforeMount()
 onMounted(() => {
 	if (languageStore.wasSet) return
 	setLanguage(navigator.language)
@@ -52,7 +88,6 @@ onMounted(() => {
  *        date picker
  *
  *******************************/
-const VALUE_OF_ONE_DAY = 24 * 60 * 60 * 1000
 const today = new Date()
 const year = today.getFullYear()
 const month = today.getMonth()
@@ -64,26 +99,11 @@ watch(daySelected, (newDay, oldDay) => {
 	if (newDay.getDay() !== oldDay.getDay()) selectCourt(0)
 })
 
-const dateDiffTodayToLast = 6
-
 // TODO today, lowerLimit and upperLimit should adjust at 24:00
 const lowerLimit: Date = new Date(year, month, day)
-
-const upperLimit: Date = ((dateBase) => {
-	let upperLimit = new Date(
-		dateBase.valueOf() + dateDiffTodayToLast * VALUE_OF_ONE_DAY
-	)
-
-	upperLimit.setHours(0)
-	upperLimit.setMinutes(0)
-	upperLimit.setSeconds(0)
-	upperLimit.setMilliseconds(0)
-
-	return upperLimit
-})(today)
+const upperLimit = useDate(new Date()).addDays()
 
 function increaseDay() {
-	// don't increase, if selected day reaches limit
 	if (daySelected.value.getDate() === upperLimit.getDate()) return
 
 	selectCourt(0)
@@ -107,6 +127,8 @@ const disabledDates = (date: Date) => {
 	return date < lowerLimit || upperLimit < date
 }
 
+// BUG tomorrow: 1 === 31 + 1 = 32
+// if tomorrow is 1st of month, it won't be recognized
 // date format for datepicker display
 const format = (date: Date) => {
 	if (date.getDay() === today.getDay()) return 'Today'
@@ -126,7 +148,16 @@ const format = (date: Date) => {
  *        gym picker
  *
  *******************************/
-const gymSelected = ref<Gym>(gyms.value[0])
+const gymGhost = {
+	id: '63dfe7d99d49df953437b274',
+	nameCode: 'test',
+	nameShort: 'Antilopa',
+	place: 'Badminton Armada Arena Test',
+	courts: [],
+}
+
+// const gymSelected = ref<Gym>(gyms?.value[0] || gymGhost)
+const gymSelected = computed(() => gyms?.value[0])
 
 watch(gymSelected, (newGym, oldGym) => {
 	if (newGym.id !== oldGym.id) selectCourt(0)
@@ -144,9 +175,10 @@ const courtLayout = ''
 const courts = computed(() => {
 
 	const courts =
-		days.value
-			?.find(day => day.date.getDate() === daySelected.value.getDate())
-			?.gyms.find(gym => gym.id === gymSelected?.value.id)?.courts || []
+		days?.value
+			?.find(day => day?.date?.getDate() === daySelected?.value?.getDate())
+			?.gyms?.find(gym => gym?.id === gymSelected?.value?.id)?.courts
+		|| [{ id: 'initial court', courtName: 'initial', slots: [] }]
 
 	return courts
 })
@@ -155,7 +187,7 @@ const courtsNames = computed(() => {
 	return courts.value.map(court => court.courtName)
 })
 
-const courtSelected = ref(courts.value[0])
+const courtSelected = ref(courts?.value[0])
 // initialization after Pinia store useDaysStore is loaded
 onBeforeMount(() => {
 
@@ -291,11 +323,11 @@ const [showGymHint, toggleGymHint] = useToggle()
 			</div>
 
 			<!-- <button @click="addSlot({
-					day: daySelected,
-					gymId: gymSelected.id,
-					courtId: courtSelected.id,
-					start: 11,
-					end: 12
+day: daySelected,
+	gymId: gymSelected.id,
+		courtId: courtSelected.id,
+			start: 11,
+				end: 12
 				})">Add Slot</button> -->
 
 		</form>
@@ -326,7 +358,8 @@ const [showGymHint, toggleGymHint] = useToggle()
 			</p>
 		</div>
 
-		<Schedule :current-day="daySelected"
+		<Schedule v-if="days.length && gyms && gyms[0].id && gymSelected?.id"
+							:current-day="daySelected"
 							:gym-id="gymSelected.id"
 							:court-id="courtSelected.id" />
 
