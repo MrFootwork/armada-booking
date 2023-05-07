@@ -1,34 +1,40 @@
 <script setup lang="ts">
 import Calendar from '~~/model/MCalendar.model';
+import { useDaysStore } from '@/store/bookingDays'
 import { Day } from '@/model/TDay.model'
+import { Gym } from '@/model/TGym.model'
+import { Court } from '@/model/TCourt.model';
 
 const props = defineProps<{
-  currentDay: Date,
-  gymId: Day['gyms'][number]['id'],
-  courtId: Day['gyms'][number]['courts'][number]['id'],
+  currentDay: Day['date'],
+  gymId: Gym['id'],
+  courtId: Court['id'],
 }>()
 
-const calendar = new Calendar
+// const calendar = new Calendar
 
-const currCourt = computed(() => {
-  return calendar
-    .days.find(day => day.date.getDate() === props.currentDay.getDate())
-    ?.gyms.find(gym => gym.id === props.gymId)
-    ?.courts.find(court => court.id === props.courtId)
-})
+// days
+const dayStore = useDaysStore()
+const { days, } = storeToRefs(dayStore)
+const { fetchDays, addSlot, currentCourt, currentGym } = dayStore
+
+const currCourt = currentCourt(props)
+
+// const currCourt = computed(() => {
+//   return calendar
+//     .days.find(day => day.date.getDate() === props.currentDay.getDate())
+//     ?.gyms.find(gym => gym.id === props.gymId)
+//     ?.courts.find(court => court.id === props.courtId)
+// })
 
 const courts = computed(() => {
-  return calendar
-    .days.find(day => day.date.getDate() === props.currentDay.getDate())!
+  return days
+    .find(day => day.date.getDate() === props.currentDay.getDate())!
     .gyms.find(gym => gym.id === props.gymId)!
     .courts
 })
 
-const currGym = computed(() => {
-  return calendar
-    .days.find(day => day.date.getDate() === props.currentDay.getDate())!
-    .gyms.find(gym => gym.id === props.gymId)!
-})
+const currGym = currentGym({ currentDay: props.currentDay, gymId: props.gymId })
 
 /*******************************
  *
@@ -38,8 +44,8 @@ const currGym = computed(() => {
 const hourFirstDefault = 8
 const hourLastDefault = 23
 
-const hourFirst = computed(() => currGym.value.start || hourFirstDefault)
-const hourLast = computed(() => currGym.value.end || hourLastDefault)
+const hourFirst = computed(() => currGym.start || hourFirstDefault)
+const hourLast = computed(() => currGym.end || hourLastDefault)
 const hourCount = computed(() => hourLast.value - hourFirst.value)
 
 let hours: number[] = Array.from(
@@ -52,7 +58,7 @@ const columnFirstPlayer = 2
 const wrapperSlots = ref<HTMLElement | null>(null)
 
 const currentSlots = computed(() => {
-  return currCourt.value?.slots
+  return currCourt.slots
 })
 
 let currentSlotsElements: HTMLDivElement[] = [];

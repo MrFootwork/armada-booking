@@ -163,7 +163,8 @@ const format = (date: Date) => {
  *        gym picker
  *
  *******************************/
-const gymSelected = computed(() => gyms?.value[0])
+// const gymSelected = computed(() => gyms?.value[0])
+const gymSelected = ref(gyms?.value[0])
 
 watch(gymSelected, (newGym, oldGym) => {
   if (newGym.id !== oldGym.id) selectCourt(0)
@@ -197,7 +198,7 @@ const courtSelected = ref(courts?.value[0])
 // initialization after Pinia store useDaysStore is loaded
 onBeforeMount(() => {
 
-  // courtSelected.value = courts?.value[0]
+  courtSelected.value = courts?.value[0]
 
 })
 
@@ -359,12 +360,14 @@ const [showGymHint, toggleGymHint] = useToggle()
       </p>
     </div>
 
-    <!-- <Schedule v-if="days.length && gyms && gyms[0].id && gymSelected?.id"
-							:current-day="daySelected"
-							:gym-id="gymSelected.id"
-							:court-id="courtSelected.id" /> -->
+    <Schedule v-if="days.length && gyms.length && gyms[0] && gyms[0].id && gymSelected?.id"
+              :current-day="daySelected"
+              :gym-id="gymSelected.id"
+              :court-id="courtSelected.id" />
 
     <pre>{{ daySelected }}</pre>
+    <pre>{{ gymSelected.id }}</pre>
+    <pre>{{ courtSelected.id }}</pre>
 
   </div>
 </template>
