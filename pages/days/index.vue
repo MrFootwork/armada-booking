@@ -73,7 +73,7 @@ const { fetchDays, addSlot } = dayStore
 // 		Promise.all([fetchingDays, fetchingGyms]).then(() => {
 // 			console.log(days.value);
 // 			daySelected.value = days.value[0].date
-// 			gymSelected.value = gyms.value[0]
+// 			// gymSelected.value = gyms.value[0]
 // 		})
 // 	} catch (e) {
 // 		console.error(`Couldn't fetch days or gyms: `, e)
@@ -365,6 +365,7 @@ day: daySelected,
 							:current-day="daySelected"
 							:gym-id="gymSelected.id"
 							:court-id="courtSelected.id" />
+
 
 	</div>
 </template>

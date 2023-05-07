@@ -79,8 +79,8 @@ async function resetDays() {
     <div class="days-wrapper">
       <div class="day-item"
            v-for="day in days">
-        {{ day.date.toLocaleString('de-DE', { dateStyle: 'long' }) }}
-        <br> {{ day.date }}
+        {{ day.date.toLocaleString('de-DE', { dateStyle: 'long', timeStyle: 'short' }) }}
+        <!-- <br> {{ day.date }} -->
         <br> {{ day.date.toISOString() }}
         <br>{{ day.id }}
         <br> type: {{ typeof day.date }}
@@ -97,6 +97,7 @@ div.days-wrapper {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  flex-wrap: wrap;
 
   div.day-item {
     @include buttonShadow;
