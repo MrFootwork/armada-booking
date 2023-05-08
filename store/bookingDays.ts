@@ -21,9 +21,8 @@ export const useDaysStore = defineStore('days', () => {
 		},
 	]
 
-	// FIXME save Schedule election values and
-	// compute reactive schedule output
-
+	// BUG initial data reappears each time
+	// when coming back from another day
 	const days = ref<Day[]>(daysInitial)
 
 	// getters
@@ -51,6 +50,13 @@ export const useDaysStore = defineStore('days', () => {
 			.find(day => day.date.getDate() === props.currentDay.getDate())!
 			.gyms.find(gym => gym.id === props.gymId)!
 	}
+
+	const currentCourts = (props: { currentDay: Date; gymId: string }) => {
+		return days.value
+			.find(day => day.date.getDate() === props.currentDay.getDate())!
+			.gyms.find(gym => gym.id === props.gymId)!.courts
+	}
+
 	// actions
 	async function fetchDays(from: Date) {
 		const { firstDate, lastDate } = getDateRange(from)
@@ -135,5 +141,5 @@ export const useDaysStore = defineStore('days', () => {
 		// push to days
 	}
 
-	return { days, currentCourt, currentGym, fetchDays, addSlot }
+	return { days, currentCourt, currentGym, currentCourts, fetchDays, addSlot }
 })
