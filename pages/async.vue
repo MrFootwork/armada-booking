@@ -180,12 +180,18 @@ const showCourtPicker = ref(false)
 const courtLayout = ''
 
 const courts = computed(() => {
+  console.log('************ NEW SELECT *********************');
+  console.log('daySelected?.value: ', daySelected?.value.toDateString());
+  console.log('gymSelected?.value: ', gymSelected?.value.id);
+  console.log('days?.value: ', days?.value.map(day => day.date.toDateString()));
 
   const courts =
     days?.value
       ?.find(day => day?.date?.getDate() === daySelected?.value?.getDate())
       ?.gyms?.find(gym => gym?.id === gymSelected?.value?.id)?.courts
     || [{ id: 'initial court', courtName: 'initial', slots: [] }]
+
+  console.log('courts: ', courts);
 
   return courts
 })
@@ -233,7 +239,9 @@ function selectCourt(index: number) {
   courtSelected.value = courts.value[index]
 }
 
-// gym hint, e.g. switch courts freely
+// gym hint, e.g. any announcements for players
+// TODO use @formkit/auto-animate for expand/collapse
+// https://auto-animate.formkit.com/#usage-vue
 const [showGymHint, toggleGymHint] = useToggle()
 
 </script>
@@ -360,11 +368,12 @@ const [showGymHint, toggleGymHint] = useToggle()
       </p>
     </div>
 
-    <Schedule v-if="days.length && gyms.length && gyms[0] && gyms[0].id && gymSelected?.id"
+    <!-- <Schedule v-if="days.length && gyms.length && gyms[0] && gyms[0].id && gymSelected?.id"
               :current-day="daySelected"
               :gym-id="gymSelected.id"
-              :court-id="courtSelected.id" />
+              :court-id="courtSelected.id" /> -->
 
+    <!-- <pre>{{ days[0] }}</pre> -->
     <pre>{{ daySelected }}</pre>
     <pre>{{ gymSelected.id }}</pre>
     <pre>{{ courtSelected.id }}</pre>
