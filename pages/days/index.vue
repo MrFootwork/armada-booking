@@ -1,7 +1,8 @@
 <script setup lang="ts">
-definePageMeta({
-	middleware: 'fetch-before-entering-days'
-});
+// FIXME store data doesn't load on middleware
+// definePageMeta({
+//   middleware: 'fetch-before-entering-days'
+// });
 
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -32,60 +33,25 @@ const { fetchGyms } = gymStore
 
 // days
 const dayStore = useDaysStore()
-// const { days, dayBookableRange } = storeToRefs(dayStore)
 const { days } = storeToRefs(dayStore)
 const { fetchDays, addSlot } = dayStore
 
-// FIXME figure out, if router middleware can load store before entering page
-// https://stackoverflow.com/questions/70710965/vue-cant-access-pinia-store-in-beforeenter-vue-router
-// https://nuxt.com/docs/getting-started/routing#route-middleware
+try {
+	const fetchingDays = await fetchDays(new Date())
+	const fetchingGyms = await fetchGyms()
+	Promise.all([fetchingDays, fetchingGyms]).then(() => {
+		daySelected.value = new Date()
+	})
+} catch (e) {
+	console.error(`Couldn't fetch days or gyms: `, e)
+	alert('Couldn\'t fetch database. Please ask for support!')
+}
 
-// onBeforeMount(async () => {
-// 	await fetchDays(new Date())
-// 	console.log(days.value);
-// 	console.log(dayStore.days);
-// 	daySelected.value = days.value[0].date
-
-// 	await fetchGyms()
-// 	console.log(gyms.value);
-// 	console.log(gymStore.gyms);
-// 	// gymSelected.value = gyms.value[0]
-// })
-
-// onBeforeMount(async () => {
-// 	try {
-// 		const fetchingDays = await fetchDays(new Date())
-// 		const fetchingGyms = await fetchGyms()
-// 		Promise.all([fetchingDays, fetchingGyms]).then(() => {
-// 			console.log(days.value);
-// 			daySelected.value = days.value[0].date
-// 			// gymSelected.value = gyms.value[0]
-// 		})
-// 	} catch (e) {
-// 		console.error(`Couldn't fetch days or gyms: `, e)
-// 	}
-// })
-
-// const starter = (async () => {
-// 	try {
-// 		const fetchingDays = await fetchDays(new Date())
-// 		const fetchingGyms = await fetchGyms()
-// 		Promise.all([fetchingDays, fetchingGyms]).then(() => {
-// 			console.log(days.value);
-// 			daySelected.value = days.value[0].date
-// 			// gymSelected.value = gyms.value[0]
-// 		})
-// 	} catch (e) {
-// 		console.error(`Couldn't fetch days or gyms: `, e)
-// 	}
-// })();
-
-// FIXME move this to onBeforeMount()
-onMounted(() => {
+onBeforeMount(() => {
 	if (languageStore.wasSet) return
 	setLanguage(navigator.language)
-	console.log(days);
 })
+
 /*******************************
  *
  *        date picker
@@ -144,23 +110,12 @@ const format = (date: Date) => {
 	return `${weekDay}`
 }
 
-// TODO must translate imported languages from 'date-fns/locale' from useLanguage() store
-
 /*******************************
  *
  *        gym picker
  *
  *******************************/
-const gymGhost = {
-	id: '63dfe7d99d49df953437b274',
-	nameCode: 'test',
-	nameShort: 'Antilopa',
-	place: 'Badminton Armada Arena Test',
-	courts: [],
-}
-
-// const gymSelected = ref<Gym>(gyms?.value[0] || gymGhost)
-const gymSelected = computed(() => gyms?.value[0])
+const gymSelected = ref(gyms?.value[0])
 
 watch(gymSelected, (newGym, oldGym) => {
 	if (newGym.id !== oldGym.id) selectCourt(0)
@@ -176,7 +131,6 @@ const showCourtPicker = ref(false)
 const courtLayout = ''
 
 const courts = computed(() => {
-
 	const courts =
 		days?.value
 			?.find(day => day?.date?.getDate() === daySelected?.value?.getDate())
@@ -193,11 +147,10 @@ const courtsNames = computed(() => {
 const courtSelected = ref(courts?.value[0])
 // initialization after Pinia store useDaysStore is loaded
 onBeforeMount(() => {
-
-	courtSelected.value = courts.value[0]
-
+	courtSelected.value = courts?.value[0]
 })
 
+// BUG this is set wrong on Today!
 const courtIndex = computed(() => {
 	return courtsNames.value.indexOf(courtSelected?.value?.courtName) || 0
 })
@@ -228,7 +181,9 @@ function selectCourt(index: number) {
 	courtSelected.value = courts.value[index]
 }
 
-// gym hint, e.g. switch courts freely
+// gym hint, e.g. any announcements for players
+// TODO use @formkit/auto-animate for expand/collapse
+// https://auto-animate.formkit.com/#usage-vue
 const [showGymHint, toggleGymHint] = useToggle()
 
 </script>
@@ -278,7 +233,8 @@ const [showGymHint, toggleGymHint] = useToggle()
 								id="gyms"
 								v-model="gymSelected">
 					<option v-for="(gym, i) in gyms"
-									:value="gyms[i]">
+									:value="gyms[i]"
+									:key="gym.id">
 						{{ gym.nameShort }}
 					</option>
 				</select>
@@ -325,13 +281,6 @@ const [showGymHint, toggleGymHint] = useToggle()
 
 			</div>
 
-			<!-- <button @click="addSlot({
-day: daySelected,
-	gymId: gymSelected.id,
-		courtId: courtSelected.id,
-			start: 11,
-				end: 12
-				})">Add Slot</button> -->
 
 		</form>
 
@@ -361,11 +310,10 @@ day: daySelected,
 			</p>
 		</div>
 
-		<Schedule v-if="days.length && gyms && gyms[0].id && gymSelected?.id"
+		<Schedule v-if="days.length && gyms.length && gyms[0] && gyms[0].id && gymSelected?.id"
 							:current-day="daySelected"
 							:gym-id="gymSelected.id"
 							:court-id="courtSelected.id" />
-
 
 	</div>
 </template>

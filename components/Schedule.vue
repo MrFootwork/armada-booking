@@ -11,32 +11,21 @@ const props = defineProps<{
   courtId: Court['id'],
 }>()
 
-// const calendar = new Calendar
-
 // days
 const dayStore = useDaysStore()
-const { days, } = storeToRefs(dayStore)
-const { fetchDays, addSlot, currentCourt, currentGym, currentCourts } = dayStore
+const { currentCourt, currentGym, currentCourts } = dayStore
+
+const currGym = currentGym({
+  currentDay: props.currentDay,
+  gymId: props.gymId
+})
 
 const currCourt = currentCourt(props)
 
-// const currCourt = computed(() => {
-//   return calendar
-//     .days.find(day => day.date.getDate() === props.currentDay.getDate())
-//     ?.gyms.find(gym => gym.id === props.gymId)
-//     ?.courts.find(court => court.id === props.courtId)
-// })
-
-// const courts = computed(() => {
-//   return days
-//     .find(day => day.date.getDate() === props.currentDay.getDate())!
-//     .gyms.find(gym => gym.id === props.gymId)!
-//     .courts
-// })
-
-const currCourts = currentCourts({ currentDay: props.currentDay, gymId: props.gymId })
-
-const currGym = currentGym({ currentDay: props.currentDay, gymId: props.gymId })
+const currCourts = currentCourts({
+  currentDay: props.currentDay,
+  gymId: props.gymId
+})
 
 /*******************************
  *
@@ -93,6 +82,7 @@ function slotsAppend() {
     wrapperSlots.value?.appendChild(slotElement)
   })
 }
+
 onMounted(() => {
   slotsCreate()
   slotsAppend()

@@ -25,6 +25,6 @@ export default defineNuxtRouteMiddleware(async to => {
 		return
 	}
 
-	// FIXME initiate pinia store in route middleware
-	// why is selected court still on "initial"?
+	// FIXME load via middleware doesn't work
+	// workaround: load store data on page load
 })

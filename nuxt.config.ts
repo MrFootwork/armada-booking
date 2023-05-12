@@ -74,6 +74,12 @@ export default defineNuxtConfig({
 		host: '0.0.0.0',
 	},
 	build: {
+		// this allows to debug nuxt in VS Code
+		extend(config, ctx) {
+			if (ctx.isDev) {
+				config.devtool = ctx.isClient ? 'source-map' : 'inline-source-map'
+			}
+		},
 		rollupOptions: {
 			external: true,
 		},
