@@ -135,7 +135,7 @@ const courts = computed(() => {
 		days?.value
 			?.find(day => day?.date?.getDate() === daySelected?.value?.getDate())
 			?.gyms?.find(gym => gym?.id === gymSelected?.value?.id)?.courts
-		|| [{ id: 'initial court', courtName: 'initial', slots: [] }]
+		|| [{ id: 'initial court', courtName: '❌ no data', slots: [] }]
 
 	return courts
 })
