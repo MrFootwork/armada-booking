@@ -38,6 +38,21 @@ async function addDay(newDate: Date) {
   fetchResult.value = insertedDay
 }
 
+async function addDayWithSample(newDate: Date) {
+  const year = newDate.getFullYear().toString()
+  const month = newDate.getMonth().toString()
+  const day = newDate.getDate().toString()
+  const withSample = new Boolean(true).toString()
+
+  const dateComponents = { year, month, day, withSample }
+
+  const insertedDay = await $fetch(
+    `/api/days?${new URLSearchParams(dateComponents).toString()}`,
+    { method: 'POST' })
+
+  fetchResult.value = insertedDay
+}
+
 const today = new Date()
 const year = today.getFullYear()
 const month = today.getMonth()
@@ -57,6 +72,7 @@ async function resetDays() {
   <div>
     <button @click="getDays(daySelected)">days.get</button>
     <button @click="addDay(daySelected)">days.put</button>
+    <button @click="addDayWithSample(daySelected)">days.put with sample</button>
     <button @click="deleteDays('all')">days.delete.all</button>
     <button @click="resetDays()">days.reset</button>
 

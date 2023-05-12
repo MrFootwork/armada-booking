@@ -41,6 +41,8 @@ try {
 	const fetchingGyms = await fetchGyms()
 	Promise.all([fetchingDays, fetchingGyms]).then(() => {
 		daySelected.value = new Date()
+		gymSelected.value = gyms.value[0]
+		selectCourt(0)
 	})
 } catch (e) {
 	console.error(`Couldn't fetch days or gyms: `, e)
@@ -146,9 +148,9 @@ const courtsNames = computed(() => {
 
 const courtSelected = ref(courts?.value[0])
 // initialization after Pinia store useDaysStore is loaded
-onBeforeMount(() => {
-	courtSelected.value = courts?.value[0]
-})
+// onBeforeMount(() => {
+// 	courtSelected.value = courts?.value[0]
+// })
 
 // BUG this is set wrong on Today!
 const courtIndex = computed(() => {

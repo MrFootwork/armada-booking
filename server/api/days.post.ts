@@ -4,6 +4,8 @@ import { MongoClient } from 'mongodb'
 import fetchGyms from '@/server/utils/mongo/gyms'
 import { dateComponentToJSDate } from '@/server/utils/typeConversions/date'
 
+let needSlots = false
+
 // populates the given day and pushes it to the database
 // query parameters, e.g. year=2023&month=1&day=24
 // @param	{string}	year	YYYY
@@ -11,13 +13,17 @@ import { dateComponentToJSDate } from '@/server/utils/typeConversions/date'
 // @param	{string}	day		day of month
 // @return {api, in out}	api object
 export default defineEventHandler(async event => {
-	const { year, month, day } = getQuery(event)
+	const queryObject = getQuery(event)
+	const { year, month, day, withSample } = queryObject
+
+	needSlots = withSample === 'true'
 	const newDate = dateComponentToJSDate({ year, month, day })
+
 	const dayInserted = await insertDay(newDate)
 
 	return {
 		api: 'days.post',
-		in: { newDate },
+		in: queryObject,
 		out: dayInserted,
 	}
 })
@@ -41,6 +47,40 @@ async function insertDay(newDay: Date) {
 					courtName: i,
 					slots: [],
 				}
+
+				// add random slots
+				if (needSlots) {
+					newCourt.slots.push({
+						id: '0001',
+						hourIndex: 8,
+						start: new Date(
+							newDay.getFullYear(),
+							newDay.getMonth(),
+							newDay.getDate(),
+							8
+						),
+						end: new Date(
+							newDay.getFullYear(),
+							newDay.getMonth(),
+							newDay.getDate(),
+							11
+						),
+						bookingDate: new Date(
+							newDay.getFullYear(),
+							newDay.getMonth(),
+							newDay.getDate() - 5,
+							20
+						),
+						player: [
+							{
+								id: '123',
+								name: 'Peter',
+								bookedBy: '123',
+							},
+						],
+					})
+				}
+
 				gymWithCourts.courts.push(newCourt)
 			}
 
@@ -52,6 +92,8 @@ async function insertDay(newDay: Date) {
 			.insertOne({ date: newDay, gyms: gymsWithCourts })
 
 		return dayInserted
+
+		function getCourtWithSlots(courtId: number) {}
 	} catch (e) {
 		console.error('Could not create day on database. ', e)
 	} finally {

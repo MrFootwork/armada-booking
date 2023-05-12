@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Calendar from '~~/model/MCalendar.model';
 import { useDaysStore } from '@/store/bookingDays'
 import { Day } from '@/model/TDay.model'
 import { Gym } from '@/model/TGym.model'
@@ -22,10 +21,10 @@ const currGym = currentGym({
 
 const currCourt = currentCourt(props)
 
-const currCourts = currentCourts({
-  currentDay: props.currentDay,
-  gymId: props.gymId
-})
+// const currCourts = currentCourts({
+//   currentDay: props.currentDay,
+//   gymId: props.gymId
+// })
 
 /*******************************
  *
@@ -49,6 +48,7 @@ const columnFirstPlayer = 2
 const wrapperSlots = ref<HTMLElement | null>(null)
 
 const currentSlots = computed(() => {
+  console.log('currentSlots: ', currCourt.slots);
   return currCourt.slots
 })
 
