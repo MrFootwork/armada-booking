@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // definePageMeta({
-// 	middleware: 'fetch-before-entering-days'
+//   middleware: 'fetch-before-entering-days'
 // });
 
 import VueDatePicker from '@vuepic/vue-datepicker';
@@ -32,7 +32,6 @@ const { fetchGyms } = gymStore
 
 // days
 const dayStore = useDaysStore()
-// const { days, dayBookableRange } = storeToRefs(dayStore)
 const { days } = storeToRefs(dayStore)
 const { fetchDays, addSlot } = dayStore
 
@@ -84,14 +83,13 @@ try {
   const fetchingDays = await fetchDays(new Date())
   const fetchingGyms = await fetchGyms()
   Promise.all([fetchingDays, fetchingGyms]).then(() => {
-    console.log(days.value);
+    console.log('page loads: ', days.value);
     daySelected.value = days.value[0].date
     // gymSelected.value = gyms.value[0]
   })
 } catch (e) {
   console.error(`Couldn't fetch days or gyms: `, e)
 }
-
 
 // FIXME move this to onBeforeMount()
 onMounted(() => {
@@ -118,6 +116,7 @@ watch(daySelected, (newDay, oldDay) => {
 const lowerLimit: Date = new Date(year, month, day)
 const upperLimit = useDate(new Date()).addDays()
 
+// BUG check if these functions change days store
 function increaseDay() {
   if (daySelected.value.getDate() === upperLimit.getDate()) return
 
@@ -181,7 +180,7 @@ const courtLayout = ''
 
 const courts = computed(() => {
   console.log('************ NEW SELECT *********************');
-  console.log('daySelected?.value: ', daySelected?.value.toDateString());
+  console.log('daySelected?.value: ', daySelected?.value.id);
   console.log('gymSelected?.value: ', gymSelected?.value.id);
   console.log('days?.value: ', days?.value.map(day => day.date.toDateString()));
 
@@ -373,8 +372,30 @@ const [showGymHint, toggleGymHint] = useToggle()
               :gym-id="gymSelected.id"
               :court-id="courtSelected.id" /> -->
 
-    <!-- <pre>{{ days[0] }}</pre> -->
-    <pre>{{ daySelected }}</pre>
+    <span>days</span>
+    <!-- BUG dates of initial load changes after switching days -->
+    <pre>{{ days.map(day => {
+      return {
+        id: day.id,
+        date: day.date,
+        dateUi: day.date.toDateString(),
+      }
+    }) }}</pre>
+
+    <span>daySelected</span>
+    <pre>{{ daySelected }}
+      <br>{{ daySelected.toISOString() }}
+      <br>{{ daySelected.getDate() }}
+      <br>{{ daySelected.getUTCDate() }}
+    </pre>
+
+    <span>Today</span>
+    <pre>{{ today }}
+      <br>{{ today.toISOString() }}
+      <br>{{ today.getDate() }}
+      <br>{{ today.getUTCDate() }}
+    </pre>
+
     <pre>{{ gymSelected.id }}</pre>
     <pre>{{ courtSelected.id }}</pre>
 
