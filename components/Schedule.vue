@@ -13,8 +13,9 @@ const props = defineProps<{
 // days
 const dayStore = useDaysStore()
 const { days } = storeToRefs(dayStore)
-const { currentCourt, currentGym } = dayStore
+const { currentGym } = dayStore
 
+// gym
 let currGym: Gym = {
   id: 'not found',
   nameCode: 'not found',
@@ -32,7 +33,19 @@ try {
   console.error(e);
 }
 
-const currCourt = currentCourt(props)
+// court
+const currentCourt = computed<Court>(() => {
+  const fallbackCourt = {
+    id: 'fallback court',
+    courtName: 'fallback court',
+    slots: []
+  }
+
+  return days.value
+    .find(day => day.date.getDate() === props.currentDay.getDate())
+    ?.gyms.find(gym => gym.id === props.gymId)
+    ?.courts?.find(court => court.id === props.courtId) || fallbackCourt
+})
 
 /*******************************
  *
@@ -56,7 +69,9 @@ const columnFirstPlayer = 2
 const wrapperSlots = ref<HTMLElement | null>(null)
 
 const currentSlots = computed(() => {
-  return currCourt.slots
+  if (currentCourt.value) {
+    return currentCourt.value.slots
+  }
 })
 
 let currentSlotsElements: HTMLDivElement[] = [];

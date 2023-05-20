@@ -26,25 +26,6 @@ export const useDaysStore = defineStore('days', () => {
 	const days = ref<Day[]>([])
 
 	// getters
-	const currentCourt = (props: {
-		currentDay: Date
-		gymId: string
-		courtId: string
-	}) => {
-		const fallbackCourt = {
-			id: '1',
-			courtName: '1',
-			slots: [],
-		}
-
-		return (
-			days.value
-				.find(day => day.date.getDate() === props.currentDay.getDate())
-				?.gyms.find(gym => gym.id === props.gymId)
-				?.courts.find(court => court.id === props.courtId) || fallbackCourt
-		)
-	}
-
 	const currentGym = (props: { currentDay: Date; gymId: string }) => {
 		const dayData = days.value.find(
 			day => day.date.getDate() === props.currentDay.getDate()
@@ -139,5 +120,5 @@ export const useDaysStore = defineStore('days', () => {
 		// push to days
 	}
 
-	return { days, currentCourt, currentGym, fetchDays, addSlot }
+	return { days, currentGym, fetchDays, addSlot }
 })
