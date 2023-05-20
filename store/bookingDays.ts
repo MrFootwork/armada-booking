@@ -21,8 +21,6 @@ export const useDaysStore = defineStore('days', () => {
 		},
 	]
 
-	// BUG initial data reappears each time
-	// when coming back from another day
 	const days = ref<Day[]>([])
 
 	// getters

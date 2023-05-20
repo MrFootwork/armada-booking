@@ -53,7 +53,7 @@ const currentCourt = computed<Court>(() => {
  *
  *******************************/
 const hourFirstDefault = 8
-const hourLastDefault = 23
+const hourLastDefault = 22
 
 const hourFirst = computed(() => currGym.start || hourFirstDefault)
 const hourLast = computed(() => currGym.end || hourLastDefault)
@@ -63,6 +63,9 @@ let hours: number[] = Array.from(
   { length: hourCount.value + 1 },    // +1 for additional border
   (_, i) => i + hourFirstDefault      // values are mapped to the hour values
 )
+// FIXME create array for clickable hour elements
+
+console.log('hours ', hours);
 
 // grid coordinates columns: wrapper slots
 const columnFirstPlayer = 2
@@ -94,7 +97,7 @@ function slotsCreate() {
         const duration = endDate.getHours() - startDate.getHours()
 
         const slotElement = document.createElement("div")
-        slotElement.setAttribute("class", "slot")
+        slotElement.setAttribute("class", "slot visible")
         slotElement.textContent = `${currentSlots.value[slot].player[player].name}`
         slotElement.style.gridColumn = `${player + columnFirstPlayer}`
         slotElement.style.gridRow = `${start} / span ${duration}`
@@ -128,12 +131,14 @@ onUpdated(() => {
   <div class="wrapper schedule">
 
     <div class="wrapper hour-grid">
+
       <div class="hour-grid hour"
            v-for="hour in hours"
            :key="hour.toString()"
            :id="hour.toString()">
         <label for="hour">{{ hour }}:00</label>
       </div>
+
     </div>
 
     <div class="wrapper schedule-content">
@@ -179,11 +184,6 @@ onUpdated(() => {
   grid-template-areas:
     "hour-grid schedule";
 
-  .court-selector {
-    grid-area: court-selector;
-    border: 1px solid red;
-  }
-
   .wrapper.hour-grid {
     grid-area: hour-grid;
 
@@ -219,6 +219,11 @@ onUpdated(() => {
     .schedule.hour {
       height: 2rem;
       border-top: 1px solid grey;
+
+      &:hover,
+      &:focus {
+        border: 1px solid red;
+      }
     }
 
     .wrapper.slots {
@@ -231,6 +236,11 @@ onUpdated(() => {
       grid-template-columns: .5rem repeat(4, 1fr) .5rem;
       grid-template-rows: repeat(13, $hour-height);
       padding: 0;
+
+      .slot.visible {
+        visibility: visible;
+        display: block;
+      }
     }
   }
 }
