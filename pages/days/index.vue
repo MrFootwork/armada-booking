@@ -350,6 +350,8 @@ const [showGymHint, toggleGymHint] = useToggle()
 	@include inputHeight();
 	width: 8rem;
 	border: 0;
+	border-top: 1px solid var(--font-color);
+	border-bottom: 1px solid var(--font-color);
 
 	border-radius: 0;
 
