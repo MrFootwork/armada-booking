@@ -446,8 +446,10 @@ const [showGymHint, toggleGymHint] = useToggle()
 					padding: 0 0.6rem;
 					border-radius: 0;
 					border: none;
+					border-top: 1px solid var(--font-color);
+					border-bottom: 1px solid var(--font-color);
 					@include inputHeight();
-					width: 2rem;
+					width: 2.5rem;
 					cursor: pointer;
 				}
 			}
