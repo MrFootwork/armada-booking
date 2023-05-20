@@ -101,8 +101,14 @@ const disabledDates = (date: Date) => {
 // if tomorrow is 1st of month, it won't be recognized
 // date format for datepicker display
 const format = (date: Date) => {
+	// if today is Saturday = 6, Sa + 1 would be 7
+	// Sunday can only be 0
+	let tomorrowDay = today.getDay() + 1 >= 7
+		? 0
+		: today.getDay() + 1
+
 	if (date.getDay() === today.getDay()) return 'Today'
-	if (date.getDay() === today.getDay() + 1) return 'Tomorrow'
+	if (date.getDay() === tomorrowDay) return 'Tomorrow'
 
 	let weekDay = new Intl.DateTimeFormat("en-us", {
 		weekday: "long"
