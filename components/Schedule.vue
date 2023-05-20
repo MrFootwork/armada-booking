@@ -12,19 +12,26 @@ const props = defineProps<{
 
 // days
 const dayStore = useDaysStore()
-const { currentCourt, currentGym, currentCourts } = dayStore
+const { currentCourt, currentGym } = dayStore
 
-const currGym = currentGym({
-  currentDay: props.currentDay,
-  gymId: props.gymId
-})
+let currGym: Gym = {
+  id: 'not found',
+  nameCode: 'not found',
+  nameShort: 'not found',
+  place: 'not found',
+  courtCount: 0
+}
+
+try {
+  currGym = currentGym({
+    currentDay: props.currentDay,
+    gymId: props.gymId
+  })
+} catch (e) {
+  console.error(e);
+}
 
 const currCourt = currentCourt(props)
-
-// const currCourts = currentCourts({
-//   currentDay: props.currentDay,
-//   gymId: props.gymId
-// })
 
 /*******************************
  *
@@ -48,7 +55,6 @@ const columnFirstPlayer = 2
 const wrapperSlots = ref<HTMLElement | null>(null)
 
 const currentSlots = computed(() => {
-  console.log('currentSlots: ', currCourt.slots);
   return currCourt.slots
 })
 
@@ -101,6 +107,7 @@ onUpdated(() => {
     <div class="wrapper hour-grid">
       <div class="hour-grid hour"
            v-for="hour in hours"
+           :key="hour.toString()"
            :id="hour.toString()">
         <label for="hour">{{ hour }}:00</label>
       </div>
@@ -111,6 +118,7 @@ onUpdated(() => {
       <div class="schedule hour"
            v-for="hour in hours"
            ref="hourElements"
+           :key="hour.toString()"
            :id="hour.toString()">
       </div>
 

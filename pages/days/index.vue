@@ -45,7 +45,6 @@ try {
 		selectCourt(0)
 	})
 } catch (e) {
-	console.error(`Couldn't fetch days or gyms: `, e)
 	alert('Couldn\'t fetch database. Please ask for support!')
 }
 

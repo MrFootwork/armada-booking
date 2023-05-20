@@ -46,15 +46,13 @@ export const useDaysStore = defineStore('days', () => {
 	}
 
 	const currentGym = (props: { currentDay: Date; gymId: string }) => {
-		return days.value
-			.find(day => day.date.getDate() === props.currentDay.getDate())!
-			.gyms.find(gym => gym.id === props.gymId)!
-	}
+		const dayData = days.value.find(
+			day => day.date.getDate() === props.currentDay.getDate()
+		)
 
-	const currentCourts = (props: { currentDay: Date; gymId: string }) => {
-		return days.value
-			.find(day => day.date.getDate() === props.currentDay.getDate())!
-			.gyms.find(gym => gym.id === props.gymId)!.courts
+		if (!dayData) throw new Error("first day doesn't exist")
+
+		return dayData.gyms.find(gym => gym.id === props.gymId)!
 	}
 
 	// actions
@@ -141,5 +139,5 @@ export const useDaysStore = defineStore('days', () => {
 		// push to days
 	}
 
-	return { days, currentCourt, currentGym, currentCourts, fetchDays, addSlot }
+	return { days, currentCourt, currentGym, fetchDays, addSlot }
 })
