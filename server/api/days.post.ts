@@ -17,6 +17,7 @@ export default defineEventHandler(async event => {
 	const { year, month, day, withSample } = queryObject
 
 	needSlots = withSample === 'true'
+
 	const newDate = dateComponentToJSDate({ year, month, day })
 
 	const dayInserted = await insertDay(newDate)
@@ -50,6 +51,22 @@ async function insertDay(newDay: Date) {
 
 				// add random slots
 				if (needSlots) {
+					const randomSlotData = (() => {
+						const playerNames = ['Martin', 'Paula', 'John', 'Freddy']
+
+						const start = Math.floor(Math.random() * 10) + 8
+						const end = start + Math.floor(Math.random() * 3)
+						const bookingDate = Math.floor(Math.random() * 24)
+						const playerName = playerNames[Math.floor(Math.random() * 4)]
+
+						return {
+							start,
+							end,
+							bookingDate,
+							playerName,
+						}
+					})()
+
 					newCourt.slots.push({
 						id: '0001',
 						hourIndex: 8,
@@ -57,24 +74,24 @@ async function insertDay(newDay: Date) {
 							newDay.getFullYear(),
 							newDay.getMonth(),
 							newDay.getDate(),
-							8
+							randomSlotData.start
 						),
 						end: new Date(
 							newDay.getFullYear(),
 							newDay.getMonth(),
 							newDay.getDate(),
-							11
+							randomSlotData.end
 						),
 						bookingDate: new Date(
 							newDay.getFullYear(),
 							newDay.getMonth(),
 							newDay.getDate() - 5,
-							20
+							randomSlotData.bookingDate.get
 						),
 						player: [
 							{
 								id: '123',
-								name: 'Peter',
+								name: randomSlotData.playerName,
 								bookedBy: '123',
 							},
 						],

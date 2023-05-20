@@ -12,6 +12,7 @@ const props = defineProps<{
 
 // days
 const dayStore = useDaysStore()
+const { days } = storeToRefs(dayStore)
 const { currentCourt, currentGym } = dayStore
 
 let currGym: Gym = {
@@ -68,18 +69,25 @@ function slotsDelete() {
 }
 
 function slotsCreate() {
-  for (let slot = 0; slot < currentSlots.value!.length; slot++) {
-    for (let player = 0; player < currentSlots.value![slot].player.length; player++) {
-      const start = currentSlots.value![slot].start.getHours() - hourFirst.value + 1
-      const duration = currentSlots.value![slot].end.getHours() - currentSlots.value![slot].start.getHours()
+  if (currentSlots.value) {
+    for (let slot = 0; slot < currentSlots.value.length; slot++) {
+      for (let player = 0; player < currentSlots.value[slot].player.length; player++) {
+        const startDate = new Date(currentSlots.value[slot].start)
+        const endDate = new Date(currentSlots.value[slot].end)
 
-      const slotElement = document.createElement("div")
-      slotElement.setAttribute("class", "slot")
-      slotElement.textContent = `${currentSlots.value![slot].player[player].name}`
-      slotElement.style.gridColumn = `${player + columnFirstPlayer}`
-      slotElement.style.gridRow = `${start} / span ${duration}`
-      currentSlotsElements.push(slotElement)
+        const start = startDate.getHours() - hourFirst.value + 1
+        const duration = endDate.getHours() - startDate.getHours()
+
+        const slotElement = document.createElement("div")
+        slotElement.setAttribute("class", "slot")
+        slotElement.textContent = `${currentSlots.value[slot].player[player].name}`
+        slotElement.style.gridColumn = `${player + columnFirstPlayer}`
+        slotElement.style.gridRow = `${start} / span ${duration}`
+        currentSlotsElements.push(slotElement)
+      }
     }
+  } else {
+    alert('no slots available')
   }
 }
 
