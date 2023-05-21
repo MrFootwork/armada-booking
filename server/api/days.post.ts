@@ -45,8 +45,8 @@ async function insertDay(newDay: Date) {
 			for (let i = 1; i <= gym.courtCount; i++) {
 				// create court boilerplate
 				const newCourt = {
-					id: i,
-					courtName: i,
+					id: `${String(i).padStart(2, '0')}`,
+					courtName: `${String(i).padStart(2, '0')}`,
 					slots: [],
 				}
 

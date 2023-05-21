@@ -9,10 +9,9 @@ const fetchResult = ref()
 // days
 const dayStore = useDaysStore()
 const { days } = storeToRefs(dayStore)
-const { fetchDays } = dayStore
+const { fetchDays, addSlot } = dayStore
 
 async function getDays(from: Date) {
-  console.log('page from: ', from);
   fetchResult.value = await fetchDays(from)
 }
 
@@ -36,6 +35,20 @@ async function addDay(newDate: Date) {
     { method: 'POST' })
 
   fetchResult.value = insertedDay
+}
+
+// FIXME provide path to target slot
+const addSlotInStore = async () => {
+  const dayId = days.value[0].id
+  const gymId = days.value[0].gyms[0].id
+  const courtId = 1
+  const start = 12
+  const end = 14
+
+  const queryObject = { dayId, gymId, courtId, start, end }
+  console.log(queryObject);
+
+  const response = await addSlot(queryObject)
 }
 
 async function addDayWithSample(newDate: Date) {
@@ -71,10 +84,11 @@ async function resetDays() {
 <template>
   <div>
     <button @click="getDays(daySelected)">days.get</button>
-    <button @click="addDay(daySelected)">days.put</button>
-    <button @click="addDayWithSample(daySelected)">days.put with sample</button>
+    <button @click="addDay(daySelected)">days.post</button>
+    <button @click="addDayWithSample(daySelected)">days.post with sample</button>
     <button @click="deleteDays('all')">days.delete.all</button>
     <button @click="resetDays()">days.reset</button>
+    <button @click="addSlotInStore()">slot.post</button>
 
     <VueDatePicker v-model="daySelected"
                    week-numbers="iso"

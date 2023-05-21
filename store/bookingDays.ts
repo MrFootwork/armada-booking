@@ -70,42 +70,35 @@ export const useDaysStore = defineStore('days', () => {
 	}
 
 	async function addSlot({
-		day,
+		dayId,
 		gymId,
 		courtId,
 		start,
 		end,
 	}: {
-		day: Date
+		dayId: string
 		gymId: Day['gyms'][number]['id']
 		courtId: Day['gyms'][number]['courts'][number]['id']
 		start: number
 		end: number
 	}) {
-		// FIXME add new slot to DB
-		if (true) {
-			alert('not ready, yet.')
-			return
+		const queryObject = {
+			dayId,
+			gymId,
+			courtId,
+			start,
+			end,
 		}
 
-		const isDay = (storeDay: Date) => storeDay.date.getDate() === day.getDate()
-		const isGym = (storeGym: Day['gyms'][number]) => storeGym.id === gymId
-		const isCourt = (storeCourt: Day['gyms'][number]['courts'][number]) =>
-			storeCourt.id === courtId
+		console.log('day store: ', queryObject)
 
-		const daysIndex = days?.value?.findIndex(isDay)
-		const daysElement = days?.value?.find(isDay)
+		// FIXME call api
+		const { data, error } = await useFetch(
+			`/api/slot?${new URLSearchParams(queryObject).toString()}`,
+			{ method: 'PUT' }
+		)
 
-		const gymsIndex = daysElement?.gyms.findIndex(isGym)
-		const gymsElement = daysElement?.gyms.find(isGym)
-
-		const courtsIndex = gymsElement?.courts.findIndex(isCourt)
-		const courtsElement = gymsElement?.courts.find(isCourt)
-
-		console.log('day: ', daysIndex, daysElement)
-		console.log('gym: ', gymsIndex, gymsElement)
-		console.log('court: ', courtsIndex, courtsElement)
-
+		console.log(data.value?.out)
 		// push to days
 	}
 
