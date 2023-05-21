@@ -63,11 +63,25 @@ async function insertDay(newDay: Date) {
 
 					let slotCount = 1
 
-					// BUG randomized slots are placed one hour behind
-					// keep adding random slots
 					while (durationAllowed > 4) {
 						const randomSlotData = (() => {
-							const playerNames = ['Martin', 'Paula', 'John', 'Freddy']
+							const playerNames = [
+								'Martin',
+								'Paula',
+								'John',
+								'Freddy',
+								'Quinn',
+								'Mackenzie',
+								'Cody',
+								'Kelly',
+								'Duncan',
+								'Shelby',
+								'Shane',
+								'Zane',
+								'Jordan',
+								'Lake',
+							]
+
 							const maximalSlotDistance = 3
 							const maximalSessionLength = 4
 

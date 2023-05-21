@@ -16,16 +16,16 @@ const props = defineProps<{
 /*******************************
  *        booking data
  *******************************/
+// language
+const languageStore = useLanguage()
+const { preferred } = storeToRefs(languageStore)
+
 // days
 const dayStore = useDaysStore()
 const { days } = storeToRefs(dayStore)
 
-// days
-const languageStore = useLanguage()
-const { preferred } = storeToRefs(languageStore)
-
 // gym
-const currGym = computed(() => {
+const currentGym = computed(() => {
   return days.value
     .find(day => day.date.getDate() === props.currentDay.getDate())
     ?.gyms.find(gym => gym.id === props.gymId)
@@ -58,8 +58,8 @@ const currentSlots = computed(() => {
 const hourFirstDefault = 8
 const hourLastDefault = 22
 
-const hourFirst = computed(() => currGym.value?.start || hourFirstDefault)
-const hourLast = computed(() => currGym.value?.end || hourLastDefault)
+const hourFirst = computed(() => currentGym.value?.start || hourFirstDefault)
+const hourLast = computed(() => currentGym.value?.end || hourLastDefault)
 const hourCount = computed(() => hourLast.value - hourFirst.value)
 
 const hours = computed(() => {
@@ -246,8 +246,16 @@ onUpdated(() => {
     cursor: pointer;
     opacity: 0;
 
-    &:hover {
+    &:hover,
+    &:focus {
       opacity: 75%;
+    }
+
+    // TODO firefox needs touchstart/-end animation
+    // :active seems to only work in Chrome.
+    &:active {
+      opacity: 75%;
+      transition: opacity 0.5s;
     }
   }
 }
