@@ -63,6 +63,7 @@ async function insertDay(newDay: Date) {
 
 					let slotCount = 1
 
+					// BUG randomized slots are placed one hour behind
 					// keep adding random slots
 					while (durationAllowed > 4) {
 						const randomSlotData = (() => {
@@ -70,7 +71,7 @@ async function insertDay(newDay: Date) {
 							const maximalSlotDistance = 3
 							const maximalSessionLength = 4
 
-							// slots start maximal 3h from previous sessions
+							// slots start maximal 3h after previous sessions
 							const start =
 								Math.floor(Math.random() * maximalSlotDistance) +
 								startingHourAllowed
@@ -86,14 +87,14 @@ async function insertDay(newDay: Date) {
 							durationAllowed =
 								(gym.end || defaultEndHour) - startingHourAllowed
 
-							const playerName = () =>
+							const randomizePlayerName = () =>
 								playerNames[Math.floor(Math.random() * playerNames.length)]
 
 							return {
 								start,
 								end,
 								bookingDate,
-								playerName,
+								randomizePlayerName,
 							}
 						})()
 
@@ -103,7 +104,7 @@ async function insertDay(newDay: Date) {
 						let randomPlayers = [
 							{
 								id: '123',
-								name: randomSlotData.playerName(),
+								name: randomSlotData.randomizePlayerName(),
 								bookedBy: '123',
 							},
 						]
@@ -111,7 +112,7 @@ async function insertDay(newDay: Date) {
 						for (let i = 0; i < playerCountToAdd; i++) {
 							const newPlayer = {
 								id: `${i}${i}${i}`,
-								name: randomSlotData.playerName(),
+								name: randomSlotData.randomizePlayerName(),
 								bookedBy: randomPlayers[0].id,
 							}
 							randomPlayers.push(newPlayer)

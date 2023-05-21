@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useDaysStore } from '@/store/bookingDays'
+import { useLanguage } from '@/store/language'
+
 import { Day } from '@/model/TDay.model'
 import { Gym } from '@/model/TGym.model'
 import { Court } from '@/model/TCourt.model';
@@ -10,10 +12,17 @@ const props = defineProps<{
   courtId: Court['id'],
 }>()
 
+/*******************************
+ *        booking data
+ *******************************/
 // days
 const dayStore = useDaysStore()
 const { days } = storeToRefs(dayStore)
 const { currentGym } = dayStore
+
+// days
+const languageStore = useLanguage()
+const { preferred } = storeToRefs(languageStore)
 
 // gym
 let currGym: Gym = {
@@ -47,10 +56,15 @@ const currentCourt = computed<Court>(() => {
     ?.courts?.find(court => court.id === props.courtId) || fallbackCourt
 })
 
+// slots
+const currentSlots = computed(() => {
+  if (currentCourt.value) {
+    return currentCourt.value.slots
+  }
+})
+
 /*******************************
- *
  *        calendar view
- *
  *******************************/
 const hourFirstDefault = 8
 const hourLastDefault = 22
@@ -68,11 +82,7 @@ let hours: number[] = Array.from(
 const columnFirstPlayer = 2
 const wrapperSlots = ref<HTMLElement | null>(null)
 
-const currentSlots = computed(() => {
-  if (currentCourt.value) {
-    return currentCourt.value.slots
-  }
-})
+
 
 let currentSlotsElements: HTMLDivElement[] = [];
 
@@ -86,8 +96,38 @@ function slotsDelete() {
 // FIXME create array for clickable hour elements
 // currently this function creates only the first element as free slot
 function slotsFreeCreate() {
+  console.log('*********************');
+  console.log('* Create free slots *');
+  console.log('*********************');
   console.log('hours ', hours);
-  console.log('currentSlots ', currentSlots.value);
+  // console.log('currentSlots ', currentSlots.value);
+
+  // determine booked times
+  const bookedTimes: [number, number][] = (() => {
+    return currentSlots.value?.map(slot => {
+      return [new Date(slot.start).getHours(), new Date(slot.end).getHours()]
+    }) || []
+  })()
+
+  // loop through rows
+  for (let i = 0; i < hours.length; i++) {
+    const hour = hours[i];
+    const gridRow = i + 1
+
+    // determine column to add free slot
+    const hourIsBooked = bookedTimes.some(bookedSlot => {
+      const [start, end] = bookedSlot
+      // console.log(start, hour, end);
+      return start <= hour && hour < end
+    })
+
+    console.log('hourIsBooked: ', hour, hourIsBooked);
+
+
+    // place free slot accordingly
+
+
+  }
 
   // create slot and its content
   const slotElement = document.createElement("div")
@@ -123,7 +163,13 @@ function slotsBookedCreate() {
         slotElement.textContent = `${currentSlot.player[player].name}`
         slotElement.title = `
         slot hourIndex: ${currentSlot.hourIndex} 
-        slot start: ${currentSlot.start} 
+        slot start: ${startDate.toLocaleTimeString(
+          preferred.value,
+          {
+            hour: 'numeric',
+            timeZone: 'Europe/Bucharest'
+          }
+        )} 
         slot end: ${currentSlot.end} 
         slot id: ${currentSlot.id} 
         player id: ${currentSlot.player[player].id} 
