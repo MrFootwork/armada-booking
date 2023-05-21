@@ -63,8 +63,8 @@ let hours: number[] = Array.from(
   { length: hourCount.value + 1 },    // +1 for additional border
   (_, i) => i + hourFirstDefault      // values are mapped to the hour values
 )
-// FIXME create array for clickable hour elements
 
+// FIXME create array for clickable hour elements
 console.log('hours ', hours);
 
 // grid coordinates columns: wrapper slots
