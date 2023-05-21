@@ -41,7 +41,7 @@ async function addDay(newDate: Date) {
 const addSlotInStore = async () => {
   const dayId = days.value[0].id
   const gymId = days.value[0].gyms[0].id
-  const courtId = 1
+  const courtId = '01'
   const start = 12
   const end = 14
 
