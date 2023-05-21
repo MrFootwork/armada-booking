@@ -61,6 +61,8 @@ async function insertDay(newDay: Date) {
 					let durationAllowed =
 						(gym.end || defaultEndHour) - startingHourAllowed
 
+					let slotCount = 1
+
 					// keep adding random slots
 					while (durationAllowed > 5) {
 						const randomBookingOffsetByDays = Math.floor(Math.random() * -4)
@@ -112,7 +114,7 @@ async function insertDay(newDay: Date) {
 
 						// push randomized slots into court
 						newCourt.slots.push({
-							id: '0001',
+							id: `${String(slotCount).padStart(4, '0')}`,
 							hourIndex: randomSlotData.start,
 							start: newDateAtHour(randomSlotData.start),
 							end: newDateAtHour(randomSlotData.end),

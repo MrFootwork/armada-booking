@@ -90,17 +90,27 @@ function slotsCreate() {
   if (currentSlots.value) {
     for (let slot = 0; slot < currentSlots.value.length; slot++) {
       for (let player = 0; player < currentSlots.value[slot].player.length; player++) {
-        const startDate = new Date(currentSlots.value[slot].start)
-        const endDate = new Date(currentSlots.value[slot].end)
+        const currentSlot = currentSlots.value[slot]
+
+        const startDate = new Date(currentSlot.start)
+        const endDate = new Date(currentSlot.end)
 
         const start = startDate.getHours() - hourFirst.value + 1
         const duration = endDate.getHours() - startDate.getHours()
 
         const slotElement = document.createElement("div")
         slotElement.setAttribute("class", "slot visible")
-        slotElement.textContent = `${currentSlots.value[slot].player[player].name}`
+        slotElement.textContent = `${currentSlot.player[player].name}`
         slotElement.style.gridColumn = `${player + columnFirstPlayer}`
         slotElement.style.gridRow = `${start} / span ${duration}`
+        slotElement.title = `
+          slot hourIndex: ${currentSlot.hourIndex} 
+          slot start: ${currentSlot.start} 
+          slot end: ${currentSlot.end} 
+          slot id: ${currentSlot.id} 
+          player id: ${currentSlot.player[player].id} 
+          player name: ${currentSlot.player[player].name} 
+          player organizer: ${currentSlot.player[player].bookedBy}`
         currentSlotsElements.push(slotElement)
       }
     }
