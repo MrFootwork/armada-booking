@@ -64,16 +64,21 @@ async function insertDay(newDay: Date) {
 					let slotCount = 1
 
 					// keep adding random slots
-					while (durationAllowed > 5) {
-						const randomBookingOffsetByDays = Math.floor(Math.random() * -4)
-
+					while (durationAllowed > 4) {
 						const randomSlotData = (() => {
 							const playerNames = ['Martin', 'Paula', 'John', 'Freddy']
+							const maximalSlotDistance = 3
+							const maximalSessionLength = 4
 
+							// slots start maximal 3h from previous sessions
 							const start =
-								Math.floor(Math.random() * durationAllowed) +
+								Math.floor(Math.random() * maximalSlotDistance) +
 								startingHourAllowed
-							const end = start + Math.floor(Math.random() * 5)
+
+							// slot ends at least one hour after start
+							const end =
+								start + Math.floor(Math.random() * maximalSessionLength + 1)
+
 							const bookingDate = Math.floor(Math.random() * 24)
 
 							// reset starting hour for next random slot
@@ -113,6 +118,9 @@ async function insertDay(newDay: Date) {
 						}
 
 						// push randomized slots into court
+						const randomBookingOffsetByDays = Math.floor(Math.random() * -4)
+
+						// BUG? hourIndex doesn't match start time
 						newCourt.slots.push({
 							id: `${String(slotCount).padStart(4, '0')}`,
 							hourIndex: randomSlotData.start,
@@ -154,8 +162,6 @@ async function insertDay(newDay: Date) {
 			.insertOne({ date: newDay, gyms: gymsWithCourts })
 
 		return dayInserted
-
-		function getCourtWithSlots(courtId: number) {}
 	} catch (e) {
 		console.error('Could not create day on database. ', e)
 	} finally {

@@ -64,9 +64,6 @@ let hours: number[] = Array.from(
   (_, i) => i + hourFirstDefault      // values are mapped to the hour values
 )
 
-// FIXME create array for clickable hour elements
-console.log('hours ', hours);
-
 // grid coordinates columns: wrapper slots
 const columnFirstPlayer = 2
 const wrapperSlots = ref<HTMLElement | null>(null)
@@ -86,7 +83,29 @@ function slotsDelete() {
   currentSlotsElements = []
 }
 
-function slotsCreate() {
+// FIXME create array for clickable hour elements
+// currently this function creates only the first element as free slot
+function slotsFreeCreate() {
+  console.log('hours ', hours);
+  console.log('currentSlots ', currentSlots.value);
+
+  // create slot and its content
+  const slotElement = document.createElement("div")
+  slotElement.setAttribute("class", "slot free")
+  slotElement.textContent = `➕`
+
+  // slot placement
+  slotElement.style.gridColumn = `${0 + columnFirstPlayer}`
+  slotElement.style.gridRow = `${1} / span 1`
+  // slotElement.style.gridColumn = `${firstFreePlayer + columnFirstPlayer}`
+  // slotElement.style.gridRow = `${rowHour} / span 1`
+
+  // add slot to slot array
+  currentSlotsElements.push(slotElement)
+
+}
+
+function slotsBookedCreate() {
   if (currentSlots.value) {
     for (let slot = 0; slot < currentSlots.value.length; slot++) {
       for (let player = 0; player < currentSlots.value[slot].player.length; player++) {
@@ -98,19 +117,24 @@ function slotsCreate() {
         const start = startDate.getHours() - hourFirst.value + 1
         const duration = endDate.getHours() - startDate.getHours()
 
+        // create slot and its content
         const slotElement = document.createElement("div")
-        slotElement.setAttribute("class", "slot visible")
+        slotElement.setAttribute("class", "slot booked")
         slotElement.textContent = `${currentSlot.player[player].name}`
+        slotElement.title = `
+        slot hourIndex: ${currentSlot.hourIndex} 
+        slot start: ${currentSlot.start} 
+        slot end: ${currentSlot.end} 
+        slot id: ${currentSlot.id} 
+        player id: ${currentSlot.player[player].id} 
+        player name: ${currentSlot.player[player].name} 
+        player organizer: ${currentSlot.player[player].bookedBy}`
+
+        // slot placement
         slotElement.style.gridColumn = `${player + columnFirstPlayer}`
         slotElement.style.gridRow = `${start} / span ${duration}`
-        slotElement.title = `
-          slot hourIndex: ${currentSlot.hourIndex} 
-          slot start: ${currentSlot.start} 
-          slot end: ${currentSlot.end} 
-          slot id: ${currentSlot.id} 
-          player id: ${currentSlot.player[player].id} 
-          player name: ${currentSlot.player[player].name} 
-          player organizer: ${currentSlot.player[player].bookedBy}`
+
+        // add slot to slot array
         currentSlotsElements.push(slotElement)
       }
     }
@@ -126,13 +150,15 @@ function slotsAppend() {
 }
 
 onMounted(() => {
-  slotsCreate()
+  slotsBookedCreate()
+  slotsFreeCreate()
   slotsAppend()
 })
 
 onUpdated(() => {
   slotsDelete()
-  slotsCreate()
+  slotsBookedCreate()
+  slotsFreeCreate()
   slotsAppend()
 })
 </script>
@@ -174,6 +200,8 @@ onUpdated(() => {
   color: white;
   background-color: var(--highlight-color);
 
+  margin: 1px 0;
+
   text-indent: .5rem;
   padding-top: .5rem;
 
@@ -181,6 +209,19 @@ onUpdated(() => {
   box-shadow:
     2px 2px 8px -2px var(--card-shadow-dark),
     -2px -2px 6px -3px var(--card-shadow-light);
+
+  &.booked {
+    opacity: 95%;
+  }
+
+  &.free {
+    cursor: pointer;
+    opacity: 0;
+
+    &:hover {
+      opacity: 75%;
+    }
+  }
 }
 </style>
 
@@ -242,15 +283,12 @@ onUpdated(() => {
       width: 100%;
 
       display: grid;
-      column-gap: 1%;
+      gap: 0 1%;
       grid-template-columns: .5rem repeat(4, 1fr) .5rem;
       grid-template-rows: repeat(13, $hour-height);
       padding: 0;
 
-      .slot.visible {
-        visibility: visible;
-        display: block;
-      }
+
     }
   }
 }
