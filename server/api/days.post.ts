@@ -43,6 +43,7 @@ async function insertDay(newDay: Date) {
 			// create a gym copy with its courts
 			const gymWithCourts = gym
 			for (let i = 1; i <= gym.courtCount; i++) {
+				// create court boilerplate
 				const newCourt = {
 					id: i,
 					courtName: i,
@@ -51,13 +52,16 @@ async function insertDay(newDay: Date) {
 
 				// add random slots
 				if (needSlots) {
+					const randomBookingOffsetByDays = Math.floor(Math.random() * -4)
+
 					const randomSlotData = (() => {
 						const playerNames = ['Martin', 'Paula', 'John', 'Freddy']
 
 						const start = Math.floor(Math.random() * 10) + 8
-						const end = start + Math.floor(Math.random() * 3)
+						const end = start + Math.floor(Math.random() * 4)
 						const bookingDate = Math.floor(Math.random() * 24)
-						const playerName = playerNames[Math.floor(Math.random() * 4)]
+						const playerName =
+							playerNames[Math.floor(Math.random() * playerNames.length)]
 
 						return {
 							start,
@@ -67,26 +71,24 @@ async function insertDay(newDay: Date) {
 						}
 					})()
 
+					function newDateAtHour(hour: number, dayOffset: number = 0) {
+						return new Date(
+							newDay.getFullYear(),
+							newDay.getMonth(),
+							newDay.getDate() + dayOffset,
+							hour
+						)
+					}
+
+					// push randomized slots into court
 					newCourt.slots.push({
 						id: '0001',
 						hourIndex: 8,
-						start: new Date(
-							newDay.getFullYear(),
-							newDay.getMonth(),
-							newDay.getDate(),
-							randomSlotData.start
-						),
-						end: new Date(
-							newDay.getFullYear(),
-							newDay.getMonth(),
-							newDay.getDate(),
-							randomSlotData.end
-						),
-						bookingDate: new Date(
-							newDay.getFullYear(),
-							newDay.getMonth(),
-							newDay.getDate() - 5,
-							randomSlotData.bookingDate.get
+						start: newDateAtHour(randomSlotData.start),
+						end: newDateAtHour(randomSlotData.end),
+						bookingDate: newDateAtHour(
+							randomSlotData.bookingDate.get,
+							randomBookingOffsetByDays
 						),
 						player: [
 							{
@@ -98,6 +100,7 @@ async function insertDay(newDay: Date) {
 					})
 				}
 
+				// push freshly created court into courts
 				gymWithCourts.courts.push(newCourt)
 			}
 
@@ -115,5 +118,6 @@ async function insertDay(newDay: Date) {
 		console.error('Could not create day on database. ', e)
 	} finally {
 		await mongoClient.close()
+		console.log(`day created${needSlots ? ' with random slots' : ''}`)
 	}
 }

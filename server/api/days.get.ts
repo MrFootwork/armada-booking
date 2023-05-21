@@ -44,5 +44,6 @@ async function fetchDaysFromDB(query: {
 		console.error('could not read from database. ', e)
 	} finally {
 		await mongoClient.close()
+		console.log('Fetched Days')
 	}
 }

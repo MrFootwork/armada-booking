@@ -14,7 +14,6 @@ export default defineEventHandler(async event => {
 async function deleteDays(option) {
 	const { mongoURI } = useRuntimeConfig()
 	const mongoClient = new MongoClient(mongoURI)
-	console.log('deleting days on MongoDB...')
 
 	try {
 		await mongoClient.connect()
@@ -33,5 +32,6 @@ async function deleteDays(option) {
 		console.error('Could not delete days database. ', e)
 	} finally {
 		await mongoClient.close()
+		console.log('Deleted Days')
 	}
 }
