@@ -20,6 +20,6 @@ export default defineEventHandler(async event => {
 		console.error('could not retrieve gyms from database. ', e)
 	} finally {
 		await mongoClient.close()
-		console.log('Fetched gyms')
+		console.log('Fetched Gyms')
 	}
 })

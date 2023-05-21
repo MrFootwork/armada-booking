@@ -52,25 +52,84 @@ async function insertDay(newDay: Date) {
 
 				// add random slots
 				if (needSlots) {
-					const randomBookingOffsetByDays = Math.floor(Math.random() * -4)
+					console.log('Gym Data ', gym)
 
-					const randomSlotData = (() => {
-						const playerNames = ['Martin', 'Paula', 'John', 'Freddy']
+					const defaultStartHour = 8
+					const defaultEndHour = 20
 
-						const start = Math.floor(Math.random() * 10) + 8
-						const end = start + Math.floor(Math.random() * 4)
-						const bookingDate = Math.floor(Math.random() * 24)
-						const playerName =
-							playerNames[Math.floor(Math.random() * playerNames.length)]
+					let startingHourAllowed = gym.start || defaultStartHour
+					let durationAllowed =
+						(gym.end || defaultEndHour) - startingHourAllowed
 
-						return {
-							start,
-							end,
-							bookingDate,
-							playerName,
+					// keep adding random slots
+					while (durationAllowed > 5) {
+						const randomBookingOffsetByDays = Math.floor(Math.random() * -4)
+
+						const randomSlotData = (() => {
+							const playerNames = ['Martin', 'Paula', 'John', 'Freddy']
+
+							const start =
+								Math.floor(Math.random() * durationAllowed) +
+								startingHourAllowed
+							const end = start + Math.floor(Math.random() * 5)
+							const bookingDate = Math.floor(Math.random() * 24)
+
+							// reset starting hour for next random slot
+							startingHourAllowed = end
+							durationAllowed =
+								(gym.end || defaultEndHour) - startingHourAllowed
+
+							const playerName = () =>
+								playerNames[Math.floor(Math.random() * playerNames.length)]
+
+							return {
+								start,
+								end,
+								bookingDate,
+								playerName,
+							}
+						})()
+
+						// add more players to that slot
+						const playerCountToAdd = Math.floor(Math.random() * 4)
+
+						let randomPlayers = [
+							{
+								id: '123',
+								name: randomSlotData.playerName(),
+								bookedBy: '123',
+							},
+						]
+
+						for (let i = 0; i < playerCountToAdd; i++) {
+							const newPlayer = {
+								id: `${i}${i}${i}`,
+								name: randomSlotData.playerName(),
+								bookedBy: randomPlayers[0].id,
+							}
+							randomPlayers.push(newPlayer)
 						}
-					})()
 
+						// push randomized slots into court
+						newCourt.slots.push({
+							id: '0001',
+							hourIndex: randomSlotData.start,
+							start: newDateAtHour(randomSlotData.start),
+							end: newDateAtHour(randomSlotData.end),
+							bookingDate: newDateAtHour(
+								randomSlotData.bookingDate,
+								randomBookingOffsetByDays
+							),
+							player: randomPlayers,
+						})
+					}
+
+					/**
+					 *
+					 * @param {number} hour hour as number
+					 * @param {number} dayOffset (optional) offset for day of date
+					 * @returns Date with given hour and day offset
+					 */
 					function newDateAtHour(hour: number, dayOffset: number = 0) {
 						return new Date(
 							newDay.getFullYear(),
@@ -79,25 +138,6 @@ async function insertDay(newDay: Date) {
 							hour
 						)
 					}
-
-					// push randomized slots into court
-					newCourt.slots.push({
-						id: '0001',
-						hourIndex: 8,
-						start: newDateAtHour(randomSlotData.start),
-						end: newDateAtHour(randomSlotData.end),
-						bookingDate: newDateAtHour(
-							randomSlotData.bookingDate.get,
-							randomBookingOffsetByDays
-						),
-						player: [
-							{
-								id: '123',
-								name: randomSlotData.playerName,
-								bookedBy: '123',
-							},
-						],
-					})
 				}
 
 				// push freshly created court into courts
