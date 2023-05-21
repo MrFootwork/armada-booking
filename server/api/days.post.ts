@@ -121,7 +121,17 @@ async function insertDay(newDay: Date) {
 						// push randomized slots into court
 						const randomBookingOffsetByDays = Math.floor(Math.random() * -4)
 
-						// BUG? hourIndex doesn't match start time
+						console.log(
+							'generated start time: ',
+							newDateAtHour(randomSlotData.start),
+							newDateAtHour(randomSlotData.start).toLocaleTimeString('de-DE', {
+								hour: 'numeric',
+								timeZone: 'Europe/Bucharest',
+							})
+						)
+
+						// FIXME test Romanian Client with German Server
+						// Will the times still match?
 						newCourt.slots.push({
 							id: `${String(slotCount).padStart(4, '0')}`,
 							hourIndex: randomSlotData.start,

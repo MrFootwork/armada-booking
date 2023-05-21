@@ -4,7 +4,8 @@ import { useLanguage } from '@/store/language'
 
 import { Day } from '@/model/TDay.model'
 import { Gym } from '@/model/TGym.model'
-import { Court } from '@/model/TCourt.model';
+import { Court } from '@/model/TCourt.model'
+import { Slot } from '@/model/TSlot.model'
 
 const props = defineProps<{
   currentDay: Day['date'],
@@ -18,29 +19,17 @@ const props = defineProps<{
 // days
 const dayStore = useDaysStore()
 const { days } = storeToRefs(dayStore)
-const { currentGym } = dayStore
 
 // days
 const languageStore = useLanguage()
 const { preferred } = storeToRefs(languageStore)
 
 // gym
-let currGym: Gym = {
-  id: 'not found',
-  nameCode: 'not found',
-  nameShort: 'not found',
-  place: 'not found',
-  courtCount: 0
-}
-
-try {
-  currGym = currentGym({
-    currentDay: props.currentDay,
-    gymId: props.gymId
-  })
-} catch (e) {
-  console.error(e);
-}
+const currGym = computed(() => {
+  return days.value
+    .find(day => day.date.getDate() === props.currentDay.getDate())
+    ?.gyms.find(gym => gym.id === props.gymId)
+})
 
 // court
 const currentCourt = computed<Court>(() => {
@@ -69,20 +58,20 @@ const currentSlots = computed(() => {
 const hourFirstDefault = 8
 const hourLastDefault = 22
 
-const hourFirst = computed(() => currGym.start || hourFirstDefault)
-const hourLast = computed(() => currGym.end || hourLastDefault)
+const hourFirst = computed(() => currGym.value?.start || hourFirstDefault)
+const hourLast = computed(() => currGym.value?.end || hourLastDefault)
 const hourCount = computed(() => hourLast.value - hourFirst.value)
 
-let hours: number[] = Array.from(
-  { length: hourCount.value + 1 },    // +1 for additional border
-  (_, i) => i + hourFirstDefault      // values are mapped to the hour values
-)
+const hours = computed(() => {
+  return Array.from(
+    { length: hourCount.value + 1 },    // +1 for additional border
+    (_, i) => i + hourFirst.value      // values are mapped to the hour values
+  )
+})
 
 // grid coordinates columns: wrapper slots
 const columnFirstPlayer = 2
 const wrapperSlots = ref<HTMLElement | null>(null)
-
-
 
 let currentSlotsElements: HTMLDivElement[] = [];
 
@@ -93,56 +82,49 @@ function slotsDelete() {
   currentSlotsElements = []
 }
 
-// FIXME create array for clickable hour elements
-// currently this function creates only the first element as free slot
 function slotsFreeCreate() {
-  console.log('*********************');
-  console.log('* Create free slots *');
-  console.log('*********************');
-  console.log('hours ', hours);
-  // console.log('currentSlots ', currentSlots.value);
-
   // determine booked times
-  const bookedTimes: [number, number][] = (() => {
+  const bookedTimes: [number, number, Slot['player']][] = (() => {
     return currentSlots.value?.map(slot => {
-      return [new Date(slot.start).getHours(), new Date(slot.end).getHours()]
+      return [new Date(slot.start).getHours(), new Date(slot.end).getHours(), slot.player]
     }) || []
   })()
 
   // loop through rows
-  for (let i = 0; i < hours.length; i++) {
-    const hour = hours[i];
+  for (let i = 0; i < hours.value.length; i++) {
+    const hour = hours.value[i];
     const gridRow = i + 1
 
     // determine column to add free slot
+    let gridColumn = columnFirstPlayer
+    let playersAtThisHour = 0
+
     const hourIsBooked = bookedTimes.some(bookedSlot => {
-      const [start, end] = bookedSlot
-      // console.log(start, hour, end);
-      return start <= hour && hour < end
+      const [start, end, players] = bookedSlot
+      const hourHasReservation = start <= hour && hour < end
+      if (hourHasReservation) playersAtThisHour = players.length
+      return hourHasReservation
     })
 
-    console.log('hourIsBooked: ', hour, hourIsBooked);
+    if (hourIsBooked) {
+      // determine next column is free
+      gridColumn = playersAtThisHour < 4
+        ? gridColumn + playersAtThisHour
+        : 0
+    }
 
+    // create slot and its content
+    const slotElement = document.createElement("div")
+    slotElement.setAttribute("class", "slot free")
+    slotElement.textContent = `➕`
 
-    // place free slot accordingly
+    // slot placement
+    slotElement.style.gridColumn = `${gridColumn}`
+    slotElement.style.gridRow = `${gridRow} / span 1`
 
-
+    // add slot to slot array
+    currentSlotsElements.push(slotElement)
   }
-
-  // create slot and its content
-  const slotElement = document.createElement("div")
-  slotElement.setAttribute("class", "slot free")
-  slotElement.textContent = `➕`
-
-  // slot placement
-  slotElement.style.gridColumn = `${0 + columnFirstPlayer}`
-  slotElement.style.gridRow = `${1} / span 1`
-  // slotElement.style.gridColumn = `${firstFreePlayer + columnFirstPlayer}`
-  // slotElement.style.gridRow = `${rowHour} / span 1`
-
-  // add slot to slot array
-  currentSlotsElements.push(slotElement)
-
 }
 
 function slotsBookedCreate() {

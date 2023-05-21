@@ -24,15 +24,6 @@ export const useDaysStore = defineStore('days', () => {
 	const days = ref<Day[]>([])
 
 	// getters
-	const currentGym = (props: { currentDay: Date; gymId: string }) => {
-		const dayData = days.value.find(
-			day => day.date.getDate() === props.currentDay.getDate()
-		)
-
-		if (!dayData) throw new Error("first day doesn't exist")
-
-		return dayData.gyms.find(gym => gym.id === props.gymId)!
-	}
 
 	// actions
 	async function fetchDays(from: Date) {
@@ -118,5 +109,5 @@ export const useDaysStore = defineStore('days', () => {
 		// push to days
 	}
 
-	return { days, currentGym, fetchDays, addSlot }
+	return { days, fetchDays, addSlot }
 })
