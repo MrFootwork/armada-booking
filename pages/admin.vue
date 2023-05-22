@@ -42,13 +42,14 @@ const addSlotInStore = async () => {
   const dayId = days.value[0].id
   const gymId = days.value[0].gyms[0].id
   const courtId = '1'
-  const start = 12
-  const end = 14
+  const start = 18
+  const end = 19
 
   const queryObject = { dayId, gymId, courtId, start, end }
   console.log(queryObject);
 
   const response = await addSlot(queryObject)
+  fetchResult.value = response
 }
 
 async function addDayWithSample(newDate: Date) {
@@ -88,7 +89,11 @@ async function resetDays() {
     <button @click="addDayWithSample(daySelected)">days.post with sample</button>
     <button @click="deleteDays('all')">days.delete.all</button>
     <button @click="resetDays()">days.reset</button>
-    <button @click="addSlotInStore()">slot.post</button>
+    <button @click="addSlotInStore()"
+            style=" background-color: orangered; 
+                    color: white">
+      slot.post
+    </button>
 
     <VueDatePicker v-model="daySelected"
                    week-numbers="iso"

@@ -82,25 +82,26 @@ export const useDaysStore = defineStore('days', () => {
 		start: number
 		end: number
 	}) {
-		const queryObject = {
-			dayId,
-			gymId,
-			courtId,
-			start,
-			end,
+		const { data, error } = await useFetch(`/api/slot`, {
+			query: {
+				dayId,
+				gymId,
+				courtId,
+				start,
+				end,
+			},
+			method: 'PUT',
+		})
+
+		if (error.value) {
+			console.error('Something went wrong...', error.value.data)
+			console.error('StatusCode: ', error.value.statusCode)
+			console.error('Name: ', error.value.name)
+			console.error('Message: ', error.value.message)
+			return error.value.data.stack
 		}
 
-		console.log('day store: ', queryObject)
-
-		const { data, error } = await useFetch(
-			`/api/slot?${new URLSearchParams(queryObject).toString()}`,
-			{ method: 'PUT' }
-		)
-
-		// receive updated day document
-		// update day store
-
-		console.log(data.value?.out)
+		return data.value
 	}
 
 	return { days, fetchDays, addSlot }

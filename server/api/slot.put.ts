@@ -1,19 +1,19 @@
 // FIXME api endpoint for posting a single specific slot
-import { MongoClient } from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
 // import replaceId from '@/server/utils/mongo/replaceId'
 import { Day } from '@/model/TDay.model'
 import { ISODateString } from 'next-auth'
 
 export default defineEventHandler(async event => {
 	const queryObject = getQuery(event)
-	console.log('api ', queryObject)
+
+	console.log('slot.put query: ', queryObject)
 
 	// use queryobject to navigate document on MongoDB
 	// update document on MongoDB
 	// return updated document
 
 	const slotInserted = await putSlot(queryObject)
-	// const slotInserted = 'that worked 🙌🥳🥂🥂'
 
 	return {
 		api: 'slot.put',
@@ -40,15 +40,25 @@ async function putSlot(queryObject) {
 		// 	})
 		// 	.toArray()) as Day[]
 
-		// const daysIdTransformed = await replaceId(daysFetched)
+		// partial document update
+		// https://stackoverflow.com/questions/10290621/how-do-i-partially-update-an-object-in-mongodb-so-the-new-object-will-overlay
+		const query = { _id: new ObjectId(queryObject.dayId) }
+		const newValue = { $set: { newKey: '🐷' } }
 
-		// days holds date types
-		// return daysIdTransformed
-		return 'that worked 🙌🥳🥂🥂'
+		const dayUpdated = await db
+			.collection('days')
+			.updateOne(query, newValue, function (err, res) {
+				if (err) throw err
+				console.log('1 document updated')
+			})
+
+		console.log('Added new slot to database.')
+
+		return dayUpdated
 	} catch (e) {
-		console.error('could not put on database. ', e)
+		console.error('Could not update day on database. ', '\n', e)
+		throw new Error(e)
 	} finally {
 		await mongoClient.close()
-		console.log('Added new slot to database.')
 	}
 }
