@@ -138,14 +138,15 @@ async function insertDay(newDay: Date) {
 						console.log(
 							'generated start time: ',
 							newDateAtHour(randomSlotData.start),
+							newDateAtHour(randomSlotData.start).getHours(),
 							newDateAtHour(randomSlotData.start).toLocaleTimeString('de-DE', {
 								hour: 'numeric',
 								timeZone: 'Europe/Bucharest',
 							})
 						)
 
-						// FIXME test Romanian Client with German Server
-						// Will the times still match?
+						// BUG hourIndex must be in Romanian time
+						// use option { timeZone: 'Europe/Bucharest' }
 						newCourt.slots.push({
 							id: `${String(slotCount).padStart(4, '0')}`,
 							hourIndex: randomSlotData.start,
