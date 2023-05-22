@@ -92,14 +92,15 @@ export const useDaysStore = defineStore('days', () => {
 
 		console.log('day store: ', queryObject)
 
-		// FIXME call api
 		const { data, error } = await useFetch(
 			`/api/slot?${new URLSearchParams(queryObject).toString()}`,
 			{ method: 'PUT' }
 		)
 
+		// receive updated day document
+		// update day store
+
 		console.log(data.value?.out)
-		// push to days
 	}
 
 	return { days, fetchDays, addSlot }
