@@ -94,11 +94,11 @@ export const useDaysStore = defineStore('days', () => {
 		})
 
 		if (error.value) {
-			console.error('Something went wrong...', error.value.data)
 			console.error('StatusCode: ', error.value.statusCode)
 			console.error('Name: ', error.value.name)
 			console.error('Message: ', error.value.message)
-			return error.value.data.stack
+			console.error('Something went wrong...', error.value.data)
+			return error.value.message
 		}
 
 		return data.value

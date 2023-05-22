@@ -82,6 +82,13 @@ function slotsDelete() {
   currentSlotsElements = []
 }
 
+// FIXME add fetch functionality
+// const queryObject = { dayId, gymId, courtId, start, end }
+//   console.log(queryObject);
+
+//   const response = await addSlot(queryObject)
+//   fetchResult.value = response
+
 function slotsFreeCreate() {
   // determine booked times
   const bookedTimes: [number, number, Slot['player']][] = (() => {

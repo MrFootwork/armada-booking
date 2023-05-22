@@ -37,7 +37,7 @@ async function addDay(newDate: Date) {
   fetchResult.value = insertedDay
 }
 
-// FIXME provide path to target slot
+// FIXME provide path to slot array
 const addSlotInStore = async () => {
   const dayId = days.value[0].id
   const gymId = days.value[0].gyms[0].id
@@ -50,6 +50,10 @@ const addSlotInStore = async () => {
 
   const response = await addSlot(queryObject)
   fetchResult.value = response
+
+  await fetchDays(new Date())
+
+  console.log('updated day: ', days.value);
 }
 
 async function addDayWithSample(newDate: Date) {
