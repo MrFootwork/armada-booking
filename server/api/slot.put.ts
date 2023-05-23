@@ -16,6 +16,7 @@ export default defineEventHandler(async event => {
 	}
 })
 
+// FIXME accept optional slot id
 async function putSlot(queryObject: {
 	dayId: Day['id']
 	gymId: Day['gyms'][number]['id']
@@ -59,6 +60,7 @@ async function putSlot(queryObject: {
 			isoDateFrom(targetDate, queryObject.end, isoOffset)
 		)
 
+		// FIXME create unique slot id
 		const slotValue = {
 			id: 'xxxx',
 			hourIndex: queryObject.start.toString(),
@@ -74,6 +76,8 @@ async function putSlot(queryObject: {
 			],
 		}
 
+		// FIXME if player wants to join existing slot, determine slot index
+		// and push player into that slot instead of creating new slot
 		// courtId is 1-based
 		const courtIndex = queryObject.courtId - 1
 		const pathProperty = `gyms.$.courts.${courtIndex}.slots`

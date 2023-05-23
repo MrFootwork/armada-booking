@@ -130,12 +130,7 @@ function slotsFreeCreate() {
       currentSlotsElements.push(slotElement)
     }
 
-    // console.log(slotElement, i, hour, hourIsBooked, playersAtThisHour, gridRow, gridColumn);
-    // FIXME add slot functionality
     async function bookSlotOnClick() {
-      console.log('***************************');
-      console.log('*   bookSlotOnClick       *');
-      console.log('***************************');
       const currentDay = days.value.find(d => d.date.getDate() === props.currentDay.getDate())
       const dayId = currentDay!.id
       const gymId = props.gymId
