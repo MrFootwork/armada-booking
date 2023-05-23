@@ -23,6 +23,7 @@ const { preferred } = storeToRefs(languageStore)
 // days
 const dayStore = useDaysStore()
 const { days } = storeToRefs(dayStore)
+const { fetchDays, addSlot } = dayStore
 
 // gym
 const currentGym = computed(() => {
@@ -90,8 +91,6 @@ function slotsFreeCreate() {
     }) || []
   })()
 
-  console.log('Booked ', bookedTimes);
-
   // loop through rows
   for (let i = 0; i < hours.value.length; i++) {
     const hour = hours.value[i];
@@ -131,18 +130,25 @@ function slotsFreeCreate() {
       currentSlotsElements.push(slotElement)
     }
 
-    console.log(i, hour, hourIsBooked, playersAtThisHour, gridRow, gridColumn);
-  }
+    // console.log(slotElement, i, hour, hourIsBooked, playersAtThisHour, gridRow, gridColumn);
+    // FIXME add slot functionality
+    async function bookSlotOnClick() {
+      const currentDay = days.value.find(d => d.date.getDate() === props.currentDay.getDate())
+      const dayId = currentDay!.id
+      const gymId = props.gymId
+      const courtId = props.courtId
+      const start = hour
+      const end = hour + 1
 
-  // FIXME add slot functionality
-  // const queryObject = { dayId, gymId, courtId, start, end }
-  //   console.log(queryObject);
+      const queryObject = { dayId, gymId, courtId, start, end }
+      console.log(queryObject);
 
-  //   const response = await addSlot(queryObject)
-  //   fetchResult.value = response
-  function bookSlotOnClick() {
-    console.log('🍍🍌🍊🍎');
+      const response = await addSlot(queryObject)
+      console.log('addSlot response: ', response);
 
+      await fetchDays(new Date())
+      console.log('updated days fetched');
+    }
   }
 }
 
