@@ -11,7 +11,7 @@ export default defineEventHandler(async event => {
 	}
 })
 
-async function deleteDays(option) {
+async function deleteDays(option: 'last' | 'all') {
 	const { mongoURI } = useRuntimeConfig()
 	const mongoClient = new MongoClient(mongoURI)
 

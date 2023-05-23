@@ -37,13 +37,13 @@ async function addDay(newDate: Date) {
   fetchResult.value = insertedDay
 }
 
-// FIXME provide path to slot array
-const addSlotInStore = async () => {
-  const dayId = days.value[0].id
-  const gymId = days.value[0].gyms[0].id
+const addSlotInStore = async (targetDate: Date) => {
+  const day = days.value.find(d => d.date.getDate() === targetDate.getDate())
+  const dayId = day!.id
+  const gymId = day!.gyms[1].id
   const courtId = '1'
-  const start = 20
-  const end = 22
+  const start = 12
+  const end = 15
 
   const queryObject = { dayId, gymId, courtId, start, end }
   console.log(queryObject);
@@ -93,7 +93,7 @@ async function resetDays() {
     <button @click="addDayWithSample(daySelected)">days.post with sample</button>
     <button @click="deleteDays('all')">days.delete.all</button>
     <button @click="resetDays()">days.reset</button>
-    <button @click="addSlotInStore()"
+    <button @click="addSlotInStore(daySelected)"
             style=" background-color: orangered; 
                     color: white">
       slot.post

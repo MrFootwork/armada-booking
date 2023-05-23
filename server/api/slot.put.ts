@@ -3,17 +3,10 @@ import { MongoClient, ObjectId } from 'mongodb'
 // import replaceId from '@/server/utils/mongo/replaceId'
 import { Day } from '@/model/TDay.model'
 import { ISODateString } from 'next-auth'
-import { getOffset } from '@/server/utils/date/timezone'
+import { getOffset, isoDateFrom } from '@/server/utils/date/timezone'
 
 export default defineEventHandler(async event => {
 	const queryObject = getQuery(event)
-
-	console.log('slot.put query: ', queryObject)
-
-	// use queryobject to navigate document on MongoDB
-	// update document on MongoDB
-	// return updated document
-
 	const slotInserted = await putSlot(queryObject)
 
 	return {
@@ -27,6 +20,7 @@ async function putSlot(queryObject: {
 	dayId: Day['id']
 	gymId: Day['gyms'][number]['id']
 	courtId: Day['gyms'][number]['courts'][number]['id']
+	day: Date
 	start: number
 	end: number
 	timeZone: 'Europe/Bucharest'
@@ -46,92 +40,31 @@ async function putSlot(queryObject: {
 		// navigating to array element by identifier instead of index
 		// https://stackoverflow.com/a/61919092/13608849
 
-		// full featured solution in development
 		const query = {
 			'_id': new ObjectId(queryObject.dayId),
 			'gyms.id': new ObjectId(queryObject.gymId),
 		}
 		// build slot element
-		// FIXME convert start and end to date objects
-		// consider timezones, read
-		// https://stackoverflow.com/questions/15141762/how-to-initialize-a-javascript-date-to-a-particular-time-zone
 		const offset = getOffset(queryObject.timeZone)
-		console.log('The Offset: ', offset)
-
-		const startIsoDate = (() => {
-			console.log('')
-			console.log('*************************')
-			console.log('* start date calculation')
-			console.log('*************************')
-			// FIXME build this string
-			const todayDay = new Date().getDate()
-			console.log('todayDay: ', todayDay)
-
-			const today = new Date()
-			console.log('building date: ', today)
-
-			today.setHours(0, 0, 0, 0)
-			console.log('building date: ', today)
-
-			let isoDateString = today.toISOString()
-			isoDateString = isoDateString.replace(
-				/\d{2}T\d{2}/,
-				`${String(todayDay).padStart(2, '0')}T${queryObject.start}`
-			)
-			// FIXME replace Z by offset e.g. +03:00
-			console.log('iso: ', isoDateString)
-
-			console.log('')
-			return isoDateString
-			// return '2023-05-23T20:00:00.000+03:00'
-		})()
-
-		const startDate = new Date(startIsoDate)
-
-		console.log('date: ', startDate)
-		console.log('ISO: ', startDate.toISOString())
-		console.log('UTC: ', startDate.toUTCString())
-		console.log('local hour: ', startDate.getHours())
-		console.log('UTC hour: ', startDate.getUTCHours())
-		console.log(
-			'Greenwich Time: ',
-			startDate.toLocaleString('de-DE', {
-				timeZone: 'Etc/Greenwich',
-			}),
-			getOffset('Etc/Greenwich')
+		const isoOffset = `+${(-offset / 60).toString().padStart(2, '0')}:00`
+		// build UTC conform target date times
+		const startDate = new Date(
+			isoDateFrom(queryObject.day, queryObject.start, isoOffset)
 		)
-		console.log(
-			'London Time: ',
-			startDate.toLocaleString('de-DE', {
-				timeZone: 'Europe/London',
-			}),
-			getOffset('Europe/London')
-		)
-		console.log(
-			'German Time: ',
-			startDate.toLocaleString('de-DE', {
-				timeZone: 'Europe/Berlin',
-			}),
-			getOffset('Europe/Berlin')
-		)
-		console.log(
-			'Romanian time: ',
-			startDate.toLocaleString('de-DE', {
-				timeZone: 'Europe/Bucharest',
-			}),
-			getOffset('Europe/Bucharest')
+		const endDate = new Date(
+			isoDateFrom(queryObject.day, queryObject.end, isoOffset)
 		)
 
 		const slotValue = {
 			id: 'xxxx',
 			hourIndex: queryObject.start.toString(),
-			start: '2023-05-22T08:00:00.000Z',
-			end: '2023-05-22T11:00:00.000Z',
+			start: startDate,
+			end: endDate,
 			bookingDate: new Date(),
 			player: [
 				{
 					id: 'XXX',
-					name: 'Slot Maker',
+					name: '🍍',
 					bookedBy: 'XXX',
 				},
 			],

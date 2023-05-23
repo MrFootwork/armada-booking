@@ -165,6 +165,8 @@ function slotsBookedCreate() {
         player name: ${currentSlot.player[player].name} 
         player organizer: ${currentSlot.player[player].bookedBy}`
 
+        // FIXME add click listener and use bookingDays/addSlot
+
         // slot placement
         slotElement.style.gridColumn = `${player + columnFirstPlayer}`
         slotElement.style.gridRow = `${start} / span ${duration}`

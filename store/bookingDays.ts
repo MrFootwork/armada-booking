@@ -82,6 +82,7 @@ export const useDaysStore = defineStore('days', () => {
 		start: number
 		end: number
 	}) {
+		const day = days.value.find(day => day.id === dayId)?.date
 		// TODO bind timeZone to a global admin setting
 		// locations will never change
 		// when I book from Germany I will always
@@ -93,6 +94,7 @@ export const useDaysStore = defineStore('days', () => {
 				dayId,
 				gymId,
 				courtId,
+				day,
 				start,
 				end,
 				timeZone,

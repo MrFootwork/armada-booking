@@ -32,3 +32,30 @@ export const getOffset = timeZone => {
 
 	return result
 }
+
+/**
+ * Uses the date part of `day` and hour to create a UTC conform date.
+ * @param day Date object of targeted day
+ * @param hour local hour e.g. `14`
+ * @param isoOffset ISO offset e.g. `'+03:00'`
+ * @returns ISO date string e.g. `'2023-05-23T14:00:00.000+03:00'`
+ */
+export const isoDateFrom = (day: Date, hour: number, isoOffset: string) => {
+	// save calendar day e.g. 13.05.2024 -> 13
+	const targetDay = new Date(day).getDate()
+	// create today date object with nulled time
+	const targetDate = new Date()
+	targetDate.setHours(0, 0, 0, 0)
+
+	// create today iso string
+	let isoDateString = targetDate.toISOString()
+	// set day and hour in iso string
+	isoDateString = isoDateString.replace(
+		/\d{2}T\d{2}/,
+		`${String(targetDay).padStart(2, '0')}T${hour}`
+	)
+	// set offset in iso string
+	isoDateString = isoDateString.replace(/Z/, isoOffset)
+
+	return isoDateString
+}
