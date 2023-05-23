@@ -82,23 +82,27 @@ export const useDaysStore = defineStore('days', () => {
 		start: number
 		end: number
 	}) {
-		const day = days.value.find(day => day.id === dayId)?.date
 		// TODO bind timeZone to a global admin setting
 		// locations will never change
 		// when I book from Germany I will always
 		// only consider Romanian local times
 		const timeZone = 'Europe/Bucharest'
+		const day = days.value.find(day => day.id === dayId)?.date
+
+		const queryObject = {
+			dayId,
+			gymId,
+			courtId,
+			day,
+			start,
+			end,
+			timeZone,
+		}
+
+		console.log('queryObject: ', queryObject)
 
 		const { data, error } = await useFetch(`/api/slot`, {
-			query: {
-				dayId,
-				gymId,
-				courtId,
-				day,
-				start,
-				end,
-				timeZone,
-			},
+			query: queryObject,
 			method: 'PUT',
 		})
 

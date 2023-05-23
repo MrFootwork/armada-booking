@@ -133,6 +133,9 @@ function slotsFreeCreate() {
     // console.log(slotElement, i, hour, hourIsBooked, playersAtThisHour, gridRow, gridColumn);
     // FIXME add slot functionality
     async function bookSlotOnClick() {
+      console.log('***************************');
+      console.log('*   bookSlotOnClick       *');
+      console.log('***************************');
       const currentDay = days.value.find(d => d.date.getDate() === props.currentDay.getDate())
       const dayId = currentDay!.id
       const gymId = props.gymId
@@ -170,14 +173,22 @@ function slotsBookedCreate() {
         slotElement.textContent = `${currentSlot.player[player].name}`
         slotElement.title = `
         slot hourIndex: ${currentSlot.hourIndex} 
-        slot start: ${startDate.toLocaleTimeString(
+        slot start local: ${startDate.toLocaleTimeString(
           preferred.value,
           {
             hour: 'numeric',
             timeZone: 'Europe/Bucharest'
           }
         )} 
-        slot end: ${currentSlot.end} 
+        slot start ISO: ${currentSlot.start} 
+        slot end local: ${endDate.toLocaleTimeString(
+          preferred.value,
+          {
+            hour: 'numeric',
+            timeZone: 'Europe/Bucharest'
+          }
+        )} 
+        slot end ISO: ${currentSlot.end} 
         slot id: ${currentSlot.id} 
         player id: ${currentSlot.player[player].id} 
         player name: ${currentSlot.player[player].name} 

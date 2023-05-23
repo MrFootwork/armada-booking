@@ -3,7 +3,7 @@ import { MongoClient, ObjectId } from 'mongodb'
 // import replaceId from '@/server/utils/mongo/replaceId'
 import { Day } from '@/model/TDay.model'
 import { ISODateString } from 'next-auth'
-import { getOffset, isoDateFrom } from '@/server/utils/date/timezone'
+import { isoDateFrom } from '@/server/utils/date/timezone'
 
 export default defineEventHandler(async event => {
 	const queryObject = getQuery(event)
@@ -27,7 +27,11 @@ async function putSlot(queryObject: {
 }) {
 	const { mongoURI } = useRuntimeConfig()
 	const mongoClient: MongoClient = new MongoClient(mongoURI)
+	const targetDate = new Date(queryObject.day)
 
+	console.log('***************************')
+	console.log('*       slot.put.ts       *')
+	console.log('***************************')
 	console.log('query in api: ', queryObject)
 
 	try {
@@ -45,15 +49,28 @@ async function putSlot(queryObject: {
 			'gyms.id': new ObjectId(queryObject.gymId),
 		}
 		// build slot element
+		console.log(
+			'server local: ',
+			Intl.DateTimeFormat().resolvedOptions().timeZone
+		)
+		console.log('the day: ', targetDate.toISOString())
+		console.log('the offset: ', targetDate.getTimezoneOffset())
+		// const offset = targetDate.getTimezoneOffset()
 		const offset = getOffset(queryObject.timeZone)
+
+		console.log('offset of: ', queryObject.timeZone, offset)
+
 		const isoOffset = `+${(-offset / 60).toString().padStart(2, '0')}:00`
 		// build UTC conform target date times
 		const startDate = new Date(
-			isoDateFrom(queryObject.day, queryObject.start, isoOffset)
+			isoDateFrom(targetDate, queryObject.start, isoOffset)
 		)
 		const endDate = new Date(
-			isoDateFrom(queryObject.day, queryObject.end, isoOffset)
+			isoDateFrom(targetDate, queryObject.end, isoOffset)
 		)
+
+		console.log('start ', startDate)
+		console.log('end ', endDate)
 
 		const slotValue = {
 			id: 'xxxx',
@@ -69,6 +86,9 @@ async function putSlot(queryObject: {
 				},
 			],
 		}
+
+		console.log('slot value: ', slotValue)
+
 		// courtId is 1-based
 		const courtIndex = queryObject.courtId - 1
 		const pathProperty = `gyms.$.courts.${courtIndex}.slots`

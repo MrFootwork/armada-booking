@@ -57,5 +57,7 @@ export const isoDateFrom = (day: Date, hour: number, isoOffset: string) => {
 	// set offset in iso string
 	isoDateString = isoDateString.replace(/Z/, isoOffset)
 
+	console.log('timezone.ts isoDateString', isoDateString)
+
 	return isoDateString
 }
