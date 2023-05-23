@@ -9,7 +9,7 @@
  * ```
  * From Weihang Jian https://stackoverflow.com/a/64262840/13608849
  * @param timeZone IANA time zone e.g. ```'Europe/Paris'```
- * @returns UTC offset in seconds
+ * @returns UTC offset in minutes
  */
 export const getOffset = timeZone => {
 	const timeZoneName = Intl.DateTimeFormat('ia', {

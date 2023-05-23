@@ -49,17 +49,7 @@ async function putSlot(queryObject: {
 			'gyms.id': new ObjectId(queryObject.gymId),
 		}
 		// build slot element
-		console.log(
-			'server local: ',
-			Intl.DateTimeFormat().resolvedOptions().timeZone
-		)
-		console.log('the day: ', targetDate.toISOString())
-		console.log('the offset: ', targetDate.getTimezoneOffset())
-		// const offset = targetDate.getTimezoneOffset()
 		const offset = getOffset(queryObject.timeZone)
-
-		console.log('offset of: ', queryObject.timeZone, offset)
-
 		const isoOffset = `+${(-offset / 60).toString().padStart(2, '0')}:00`
 		// build UTC conform target date times
 		const startDate = new Date(
@@ -68,9 +58,6 @@ async function putSlot(queryObject: {
 		const endDate = new Date(
 			isoDateFrom(targetDate, queryObject.end, isoOffset)
 		)
-
-		console.log('start ', startDate)
-		console.log('end ', endDate)
 
 		const slotValue = {
 			id: 'xxxx',
@@ -86,8 +73,6 @@ async function putSlot(queryObject: {
 				},
 			],
 		}
-
-		console.log('slot value: ', slotValue)
 
 		// courtId is 1-based
 		const courtIndex = queryObject.courtId - 1

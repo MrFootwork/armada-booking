@@ -99,8 +99,6 @@ export const useDaysStore = defineStore('days', () => {
 			timeZone,
 		}
 
-		console.log('queryObject: ', queryObject)
-
 		const { data, error } = await useFetch(`/api/slot`, {
 			query: queryObject,
 			method: 'PUT',

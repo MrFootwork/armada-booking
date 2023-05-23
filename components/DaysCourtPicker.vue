@@ -26,7 +26,7 @@ function selectCourtAndClose(indexOfSelectedCourt: number) {
     <div class="wrapper court-picker content">
 
       <button class="wrapper closer"
-              @click="$emit('togglePicker')">
+              @click="$emit('toggle-picker')">
         <div class="closer background"> </div>
         <div class="closer icon ascending"></div>
         <div class="closer icon descending"></div>
