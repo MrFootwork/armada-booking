@@ -53,6 +53,77 @@ async function putSlot(queryObject: {
 		// FIXME convert start and end to date objects
 		// consider timezones, read
 		// https://stackoverflow.com/questions/15141762/how-to-initialize-a-javascript-date-to-a-particular-time-zone
+		const startDate = new Date('2023-05-23T20:00:00.000+03:00')
+
+		/**
+		 * Calculates the time difference from timezone to UTC,
+		 * e.g. 'Europe/Berlin' with GMT+2 returns -120.
+		 * ```
+		 * console.log(getOffset("US/Eastern")); // 240
+		 * console.log(getOffset("Atlantic/Reykjavik")); // 0
+		 * console.log(getOffset("Europe/Berlin")); // -120
+		 * console.log(getOffset("Asia/Tokyo")); // -540
+		 * ```
+		 * From Weihang Jian https://stackoverflow.com/a/64262840/13608849
+		 * @param timeZone IANA time zone e.g. ```'Europe/Paris'```
+		 * @returns UTC offset in seconds
+		 */
+		const getOffset = timeZone => {
+			const timeZoneName = Intl.DateTimeFormat('ia', {
+				timeZoneName: 'shortOffset',
+				timeZone,
+			})
+				.formatToParts()
+				.find(i => i.type === 'timeZoneName').value
+
+			const offset = timeZoneName.slice(3)
+			if (!offset) return 0
+
+			const matchData = offset.match(/([+-])(\d+)(?::(\d+))?/)
+			if (!matchData) throw `cannot parse timezone name: ${timeZoneName}`
+
+			const [, sign, hour, minute] = matchData
+			let result = parseInt(hour) * 60
+			if (sign === '+') result *= -1
+			if (minute) result += parseInt(minute)
+
+			return result
+		}
+
+		console.log('date: ', startDate)
+		console.log('ISO: ', startDate.toISOString())
+		console.log('UTC: ', startDate.toUTCString())
+		console.log('local hour: ', startDate.getHours())
+		console.log('UTC hour: ', startDate.getUTCHours())
+		console.log(
+			'Greenwich Time: ',
+			startDate.toLocaleString('de-DE', {
+				timeZone: 'Etc/Greenwich',
+			}),
+			getOffset('Etc/Greenwich')
+		)
+		console.log(
+			'London Time: ',
+			startDate.toLocaleString('de-DE', {
+				timeZone: 'Europe/London',
+			}),
+			getOffset('Europe/London')
+		)
+		console.log(
+			'German Time: ',
+			startDate.toLocaleString('de-DE', {
+				timeZone: 'Europe/Berlin',
+			}),
+			getOffset('Europe/Berlin')
+		)
+		console.log(
+			'Romanian time: ',
+			startDate.toLocaleString('de-DE', {
+				timeZone: 'Europe/Bucharest',
+			}),
+			getOffset('Europe/Bucharest')
+		)
+
 		const slotValue = {
 			id: 'xxxx',
 			hourIndex: queryObject.start.toString(),

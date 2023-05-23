@@ -42,8 +42,8 @@ const addSlotInStore = async () => {
   const dayId = days.value[0].id
   const gymId = days.value[0].gyms[0].id
   const courtId = '1'
-  const start = 18
-  const end = 19
+  const start = 20
+  const end = 22
 
   const queryObject = { dayId, gymId, courtId, start, end }
   console.log(queryObject);
