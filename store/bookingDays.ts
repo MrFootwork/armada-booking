@@ -82,6 +82,12 @@ export const useDaysStore = defineStore('days', () => {
 		start: number
 		end: number
 	}) {
+		// TODO bind timeZone to a global admin setting
+		// locations will never change
+		// when I book from Germany I will always
+		// only consider Romanian local times
+		const timeZone = 'Europe/Bucharest'
+
 		const { data, error } = await useFetch(`/api/slot`, {
 			query: {
 				dayId,
@@ -89,6 +95,7 @@ export const useDaysStore = defineStore('days', () => {
 				courtId,
 				start,
 				end,
+				timeZone,
 			},
 			method: 'PUT',
 		})
