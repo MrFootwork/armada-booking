@@ -82,13 +82,6 @@ function slotsDelete() {
   currentSlotsElements = []
 }
 
-// FIXME add fetch functionality
-// const queryObject = { dayId, gymId, courtId, start, end }
-//   console.log(queryObject);
-
-//   const response = await addSlot(queryObject)
-//   fetchResult.value = response
-
 function slotsFreeCreate() {
   // determine booked times
   const bookedTimes: [number, number, Slot['player']][] = (() => {
@@ -97,13 +90,15 @@ function slotsFreeCreate() {
     }) || []
   })()
 
+  console.log('Booked ', bookedTimes);
+
   // loop through rows
   for (let i = 0; i < hours.value.length; i++) {
     const hour = hours.value[i];
     const gridRow = i + 1
 
     // determine column to add free slot
-    let gridColumn = columnFirstPlayer
+    let gridColumn: number | null = columnFirstPlayer
     let playersAtThisHour = 0
 
     const hourIsBooked = bookedTimes.some(bookedSlot => {
@@ -117,7 +112,7 @@ function slotsFreeCreate() {
       // determine next column is free
       gridColumn = playersAtThisHour < 4
         ? gridColumn + playersAtThisHour
-        : 0
+        : null
     }
 
     // create slot and its content
@@ -125,12 +120,29 @@ function slotsFreeCreate() {
     slotElement.setAttribute("class", "slot free")
     slotElement.textContent = `➕`
 
-    // slot placement
-    slotElement.style.gridColumn = `${gridColumn}`
-    slotElement.style.gridRow = `${gridRow} / span 1`
+    // add click listener
+    slotElement.addEventListener("click", bookSlotOnClick)
 
-    // add slot to slot array
-    currentSlotsElements.push(slotElement)
+    // slot placement
+    if (playersAtThisHour < 4) {
+      slotElement.style.gridColumn = `${gridColumn} / span ${4 - playersAtThisHour}`
+      slotElement.style.gridRow = `${gridRow} / span 1`
+      // add slot to slot array
+      currentSlotsElements.push(slotElement)
+    }
+
+    console.log(i, hour, hourIsBooked, playersAtThisHour, gridRow, gridColumn);
+  }
+
+  // FIXME add slot functionality
+  // const queryObject = { dayId, gymId, courtId, start, end }
+  //   console.log(queryObject);
+
+  //   const response = await addSlot(queryObject)
+  //   fetchResult.value = response
+  function bookSlotOnClick() {
+    console.log('🍍🍌🍊🍎');
+
   }
 }
 
