@@ -92,8 +92,6 @@ export const useDaysStore = defineStore('days', () => {
 		const timeZone = 'Europe/Bucharest'
 		const day = days.value.find(day => day.id === dayId)?.date
 
-		// FIXME adjust start and end to existing slots
-		// provide slot id, if initial start and end overlap with existing ones
 		const queryObject = {
 			dayId,
 			gymId,

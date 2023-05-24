@@ -132,7 +132,6 @@ function slotsFreeCreate() {
       currentSlotsElements.push(slotElement)
     }
 
-    // FIXME provide gym index and slot index
     async function bookSlotOnClick() {
       const currentDay = days.value.find(d => d.date.getDate() === props.currentDay.getDate())
       const dayId = currentDay!.id
@@ -194,7 +193,7 @@ function slotsBookedCreate() {
         player name: ${currentSlot.player[player].name} 
         player organizer: ${currentSlot.player[player].bookedBy}`
 
-        // FIXME add click listener and use bookingDays/addSlot
+        // FIXME add click listener for editing and deletion
 
         // slot placement
         slotElement.style.gridColumn = `${player + columnFirstPlayer}`

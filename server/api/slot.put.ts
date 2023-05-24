@@ -73,6 +73,7 @@ async function putSlot(query: {
 
 		// navigate to slot and push additional player
 		if (playerJoinsSlot) {
+			// FIXME determine player id of organizer
 			var playerValue: Slot['player'][number] = {
 				id: '1234567890',
 				name: '🍊',
