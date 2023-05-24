@@ -1,6 +1,6 @@
 import { Day } from '@/model/TDay.model'
 import { Court } from '@/model/TCourt.model'
-import { MongoClient } from 'mongodb'
+import { MongoClient, ObjectId } from 'mongodb'
 import fetchGyms from '@/server/utils/mongo/gyms'
 import { dateComponentToJSDate } from '@/server/utils/typeConversions/date'
 
@@ -148,7 +148,7 @@ async function insertDay(newDay: Date) {
 						// BUG hourIndex must be in Romanian time
 						// use option { timeZone: 'Europe/Bucharest' }
 						newCourt.slots.push({
-							id: `${String(slotCount).padStart(4, '0')}`,
+							id: new ObjectId(),
 							hourIndex: randomSlotData.start,
 							start: newDateAtHour(randomSlotData.start),
 							end: newDateAtHour(randomSlotData.end),

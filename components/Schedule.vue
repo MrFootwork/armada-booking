@@ -132,6 +132,7 @@ function slotsFreeCreate() {
       currentSlotsElements.push(slotElement)
     }
 
+    // FIXME provide gym index and slot index
     async function bookSlotOnClick() {
       const currentDay = days.value.find(d => d.date.getDate() === props.currentDay.getDate())
       const dayId = currentDay!.id
@@ -157,6 +158,8 @@ function slotsBookedCreate() {
     for (let slot = 0; slot < currentSlots.value.length; slot++) {
       for (let player = 0; player < currentSlots.value[slot].player.length; player++) {
         const currentSlot = currentSlots.value[slot]
+
+        console.log('Rendering Slots in local Timezone: ', Intl.DateTimeFormat().resolvedOptions().timeZone);
 
         const startDate = new Date(currentSlot.start)
         const endDate = new Date(currentSlot.end)

@@ -83,11 +83,45 @@ async function putSlot(queryObject: {
 				bookedBy: 'XXX',
 			}
 
+			// FIXME get gym index from bookingDays
 			// FIXME fetch slot data
-			// here
+			// FIXME return only slot array
+			// https://stackoverflow.com/questions/65924661/how-to-get-only-part-of-document-in-mongodb-with-node-js
+			const dayDocument: Day = await db.collection('days').findOne(
+				{
+					'_id': new ObjectId(queryObject.dayId),
+					'gyms.id': new ObjectId(queryObject.gymId),
+				},
+				{ projection: { 'gyms.$': 1 } }
+			)
 
-			// FIXME determine slot index
-			var slotIndex = 0
+			// const courtsDocument = dayDocument.gyms[0].courts
+			const courtsDocument = dayDocument.gyms.find(
+				gym => gym.id.toString() === queryObject.gymId
+			).courts
+
+			var slotIndex = courtsDocument
+				?.find(court => {
+					console.log('court.id ', court.id)
+					console.log('queryObject.courtId ', queryObject.courtId)
+					console.log('match? ', court.id === queryObject.courtId)
+					return court.id === queryObject.courtId
+				})
+				.slots.findIndex(slot => {
+					console.log('slot.id ', slot.id)
+					console.log('queryObject.slotId ', queryObject.slotId)
+					console.log('match? ', slot.id === queryObject.slotId)
+					return slot.id.toString() === queryObject.slotId
+				})
+
+			const slotDocument = courtsDocument?.find(
+				court => court.id === queryObject.courtId
+			).slots
+
+			console.log('dayDocument: ', dayDocument)
+			console.log('courtsDocument: ', courtsDocument)
+			console.log('slotIndex: ', slotIndex)
+			console.log('slotDocument: ', slotDocument)
 		}
 		// query gym
 		// nested arrays can't be queried because the path
