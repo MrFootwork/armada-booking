@@ -73,34 +73,35 @@ async function putSlot(queryObject: {
 					},
 				],
 			}
-
-			// FIXME if player wants to join existing slot,
-			// navigate to slot and only push additional player
-			var pathProperty = `gyms.$.courts.${courtIndex}.slots`
 		}
 
 		// navigate to slot and push additional player
 		if (playerJoinsSlot) {
 			var playerValue: Slot['player'][number] = {
 				id: '1234567890',
-				name: '🍋',
+				name: '🍊',
 				bookedBy: 'XXX',
 			}
 
-			// FIXME fetch slot data and determine slot index
-			const slotIndex = 0
+			// FIXME fetch slot data
+			// here
 
-			var pathProperty = `gyms.$.courts.${courtIndex}.slots.${slotIndex}.player`
+			// FIXME determine slot index
+			var slotIndex = 0
 		}
-
+		// query gym
+		// nested arrays can't be queried because the path
+		// can't contain more than one $.
 		const query = {
 			'_id': new ObjectId(queryObject.dayId),
 			'gyms.id': new ObjectId(queryObject.gymId),
 		}
-
-		// FIXME create type union of slot and player
-		// build navigation to slots array
-		let keyValueObject = {}
+		//build the path property for slot/player navigation
+		const pathProperty =
+			`gyms.$.courts.${courtIndex}.slots` +
+			(playerJoinsSlot ? `.${slotIndex}.player` : '')
+		// putting them together for mongo's push command
+		let keyValueObject: Slot | Slot['player'][number] = {}
 		keyValueObject[pathProperty] = slotValue || playerValue
 
 		const pushCommand = { $push: keyValueObject }
