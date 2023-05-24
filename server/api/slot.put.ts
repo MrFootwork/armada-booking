@@ -2,6 +2,7 @@
 import { MongoClient, ObjectId } from 'mongodb'
 // import replaceId from '@/server/utils/mongo/replaceId'
 import { Day } from '@/model/TDay.model'
+import { Slot } from '@/model/TSlot.model'
 import { ISODateString } from 'next-auth'
 import { isoDateFrom } from '@/server/utils/date/timezone'
 
@@ -25,14 +26,17 @@ async function putSlot(queryObject: {
 	start: number
 	end: number
 	timeZone: 'Europe/Bucharest'
+	slotId?: Slot['id']
 }) {
 	const { mongoURI } = useRuntimeConfig()
 	const mongoClient: MongoClient = new MongoClient(mongoURI)
 	const targetDate = new Date(queryObject.day)
+	const playerJoinsSlot = new Boolean(queryObject.slotId).valueOf()
 
 	console.log('***************************')
 	console.log('*       slot.put.ts       *')
 	console.log('***************************')
+	console.log('playerJoinsSlot ', playerJoinsSlot, queryObject.slotId)
 	console.log('query in api: ', queryObject)
 
 	try {
@@ -62,7 +66,7 @@ async function putSlot(queryObject: {
 
 		// FIXME create unique slot id
 		const slotValue = {
-			id: 'xxxx',
+			id: new ObjectId(),
 			hourIndex: queryObject.start.toString(),
 			start: startDate,
 			end: endDate,

@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { Day } from '@/model/TDay.model'
+import { Slot } from '@/model/TSlot.model'
 import useDate from '~~/composables/date'
 
 export const useDaysStore = defineStore('days', () => {
@@ -75,12 +76,14 @@ export const useDaysStore = defineStore('days', () => {
 		courtId,
 		start,
 		end,
+		slotId,
 	}: {
 		dayId: string
 		gymId: Day['gyms'][number]['id']
 		courtId: Day['gyms'][number]['courts'][number]['id']
 		start: number
 		end: number
+		slotId?: Slot['id']
 	}) {
 		// TODO bind timeZone to a global admin setting
 		// locations will never change
@@ -99,7 +102,10 @@ export const useDaysStore = defineStore('days', () => {
 			start,
 			end,
 			timeZone,
+			slotId,
 		}
+
+		console.log('query: ', queryObject)
 
 		const { data, error } = await useFetch(`/api/slot`, {
 			query: queryObject,

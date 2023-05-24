@@ -85,9 +85,9 @@ function slotsDelete() {
 
 function slotsFreeCreate() {
   // determine booked times
-  const bookedTimes: [number, number, Slot['player']][] = (() => {
+  const bookedTimes: [Slot['id'], number, number, Slot['player']][] = (() => {
     return currentSlots.value?.map(slot => {
-      return [new Date(slot.start).getHours(), new Date(slot.end).getHours(), slot.player]
+      return [slot.id, new Date(slot.start).getHours(), new Date(slot.end).getHours(), slot.player]
     }) || []
   })()
 
@@ -95,35 +95,37 @@ function slotsFreeCreate() {
   for (let i = 0; i < hours.value.length; i++) {
     const hour = hours.value[i];
     const gridRow = i + 1
+    let currentSlotId: Slot['id'] | undefined = undefined
 
     // determine column to add free slot
     let gridColumn: number | null = columnFirstPlayer
     let playersAtThisHour = 0
 
-    const hourIsBooked = bookedTimes.some(bookedSlot => {
-      const [start, end, players] = bookedSlot
-      const hourHasReservation = start <= hour && hour < end
-      if (hourHasReservation) playersAtThisHour = players.length
-      return hourHasReservation
+    // there are at least one reservation at this hour
+    const hourHasReservation = bookedTimes.some(bookedSlot => {
+      const [slotId, start, end, players] = bookedSlot
+      const hourOverlapsSlot = start <= hour && hour < end
+      if (hourOverlapsSlot) {
+        playersAtThisHour = players.length
+        currentSlotId = slotId
+      }
+      return hourOverlapsSlot
     })
 
-    if (hourIsBooked) {
-      // determine next column is free
-      gridColumn = playersAtThisHour < 4
-        ? gridColumn + playersAtThisHour
-        : null
-    }
+    // less than 4 reservations are already made at this hour
+    const hourHasFreeSlots = playersAtThisHour < 4
 
-    // create slot and its content
-    const slotElement = document.createElement("div")
-    slotElement.setAttribute("class", "slot free")
-    slotElement.textContent = `➕`
+    // determine next free column 
+    if (hourHasReservation && hourHasFreeSlots) gridColumn += playersAtThisHour
 
-    // add click listener
-    slotElement.addEventListener("click", bookSlotOnClick)
-
-    // slot placement
-    if (playersAtThisHour < 4) {
+    if (hourHasFreeSlots) {
+      // create slot and its content
+      const slotElement = document.createElement("div")
+      slotElement.setAttribute("class", "slot free")
+      slotElement.textContent = `➕`
+      // add click listener
+      slotElement.addEventListener("click", bookSlotOnClick)
+      // slot placement
       slotElement.style.gridColumn = `${gridColumn} / span ${4 - playersAtThisHour}`
       slotElement.style.gridRow = `${gridRow} / span 1`
       // add slot to slot array
@@ -138,8 +140,8 @@ function slotsFreeCreate() {
       const start = hour
       const end = hour + 1
 
-      const queryObject = { dayId, gymId, courtId, start, end }
-      console.log(queryObject);
+      const queryObject = { dayId, gymId, courtId, start, end, ...(hourHasReservation && { slotId: currentSlotId }) }
+      console.log('query from component: ', queryObject);
 
       const response = await addSlot(queryObject)
       console.log('addSlot response: ', response);
