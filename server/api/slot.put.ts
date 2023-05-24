@@ -43,16 +43,6 @@ async function putSlot(queryObject: {
 		await mongoClient.connect()
 		const db = mongoClient.db('bookings')
 
-		// partial document update
-		// https://stackoverflow.com/questions/10290621/how-do-i-partially-update-an-object-in-mongodb-so-the-new-object-will-overlay
-
-		// navigating to array element by identifier instead of index
-		// https://stackoverflow.com/a/61919092/13608849
-
-		const query = {
-			'_id': new ObjectId(queryObject.dayId),
-			'gyms.id': new ObjectId(queryObject.gymId),
-		}
 		// build slot element
 		const offset = getOffset(queryObject.timeZone)
 		const isoOffset = `+${(-offset / 60).toString().padStart(2, '0')}:00`
@@ -64,30 +54,54 @@ async function putSlot(queryObject: {
 			isoDateFrom(targetDate, queryObject.end, isoOffset)
 		)
 
-		// FIXME create unique slot id
-		const slotValue = {
-			id: new ObjectId(),
-			hourIndex: queryObject.start.toString(),
-			start: startDate,
-			end: endDate,
-			bookingDate: new Date(),
-			player: [
-				{
-					id: 'XXX',
-					name: '🍍',
-					bookedBy: 'XXX',
-				},
-			],
-		}
-
-		// FIXME if player wants to join existing slot, determine slot index
-		// and push player into that slot instead of creating new slot
 		// courtId is 1-based
 		const courtIndex = queryObject.courtId - 1
-		const pathProperty = `gyms.$.courts.${courtIndex}.slots`
+
+		// navigate to court and push slot with player
+		if (!playerJoinsSlot) {
+			var slotValue: Slot = {
+				id: new ObjectId(),
+				hourIndex: queryObject.start.toString(),
+				start: startDate,
+				end: endDate,
+				bookingDate: new Date(),
+				player: [
+					{
+						id: 'XXX',
+						name: '🍍',
+						bookedBy: 'XXX',
+					},
+				],
+			}
+
+			// FIXME if player wants to join existing slot,
+			// navigate to slot and only push additional player
+			var pathProperty = `gyms.$.courts.${courtIndex}.slots`
+		}
+
+		// navigate to slot and push additional player
+		if (playerJoinsSlot) {
+			var playerValue: Slot['player'][number] = {
+				id: '1234567890',
+				name: '🍋',
+				bookedBy: 'XXX',
+			}
+
+			// FIXME fetch slot data and determine slot index
+			const slotIndex = 0
+
+			var pathProperty = `gyms.$.courts.${courtIndex}.slots.${slotIndex}.player`
+		}
+
+		const query = {
+			'_id': new ObjectId(queryObject.dayId),
+			'gyms.id': new ObjectId(queryObject.gymId),
+		}
+
+		// FIXME create type union of slot and player
 		// build navigation to slots array
 		let keyValueObject = {}
-		keyValueObject[pathProperty] = slotValue
+		keyValueObject[pathProperty] = slotValue || playerValue
 
 		const pushCommand = { $push: keyValueObject }
 
