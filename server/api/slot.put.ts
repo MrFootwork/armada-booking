@@ -17,8 +17,7 @@ export default defineEventHandler(async event => {
 	}
 })
 
-// FIXME accept optional slot id
-async function putSlot(queryObject: {
+async function putSlot(query: {
 	dayId: Day['id']
 	gymId: Day['gyms'][number]['id']
 	courtId: Day['gyms'][number]['courts'][number]['id']
@@ -30,38 +29,35 @@ async function putSlot(queryObject: {
 }) {
 	const { mongoURI } = useRuntimeConfig()
 	const mongoClient: MongoClient = new MongoClient(mongoURI)
-	const targetDate = new Date(queryObject.day)
-	const playerJoinsSlot = new Boolean(queryObject.slotId).valueOf()
+	const targetDate = new Date(query.day)
+	const playerJoinsSlot = new Boolean(query.slotId).valueOf()
 
 	console.log('***************************')
 	console.log('*       slot.put.ts       *')
 	console.log('***************************')
-	console.log('playerJoinsSlot ', playerJoinsSlot, queryObject.slotId)
-	console.log('query in api: ', queryObject)
+	console.log('playerJoinsSlot ', playerJoinsSlot, query.slotId)
+	console.log('query in api: ', query)
 
 	try {
 		await mongoClient.connect()
 		const db = mongoClient.db('bookings')
 
 		// build slot element
-		const offset = getOffset(queryObject.timeZone)
+		const offset = getOffset(query.timeZone)
 		const isoOffset = `+${(-offset / 60).toString().padStart(2, '0')}:00`
 		// build UTC conform target date times
-		const startDate = new Date(
-			isoDateFrom(targetDate, queryObject.start, isoOffset)
-		)
-		const endDate = new Date(
-			isoDateFrom(targetDate, queryObject.end, isoOffset)
-		)
+		const startDate = new Date(isoDateFrom(targetDate, query.start, isoOffset))
+		const endDate = new Date(isoDateFrom(targetDate, query.end, isoOffset))
 
 		// courtId is 1-based
-		const courtIndex = queryObject.courtId - 1
+		const courtIndex = query.courtId - 1
 
+		// FIXME read user name and create player object
 		// navigate to court and push slot with player
 		if (!playerJoinsSlot) {
 			var slotValue: Slot = {
 				id: new ObjectId(),
-				hourIndex: queryObject.start.toString(),
+				hourIndex: query.start.toString(),
 				start: startDate,
 				end: endDate,
 				bookingDate: new Date(),
@@ -83,52 +79,26 @@ async function putSlot(queryObject: {
 				bookedBy: 'XXX',
 			}
 
-			// FIXME get gym index from bookingDays
-			// FIXME fetch slot data
-			// FIXME return only slot array
-			// https://stackoverflow.com/questions/65924661/how-to-get-only-part-of-document-in-mongodb-with-node-js
 			const dayDocument: Day = await db.collection('days').findOne(
 				{
-					'_id': new ObjectId(queryObject.dayId),
-					'gyms.id': new ObjectId(queryObject.gymId),
+					'_id': new ObjectId(query.dayId),
+					'gyms.id': new ObjectId(query.gymId),
 				},
 				{ projection: { 'gyms.$': 1 } }
 			)
 
-			// const courtsDocument = dayDocument.gyms[0].courts
 			const courtsDocument = dayDocument.gyms.find(
-				gym => gym.id.toString() === queryObject.gymId
+				gym => gym.id.toString() === query.gymId
 			).courts
 
 			var slotIndex = courtsDocument
-				?.find(court => {
-					console.log('court.id ', court.id)
-					console.log('queryObject.courtId ', queryObject.courtId)
-					console.log('match? ', court.id === queryObject.courtId)
-					return court.id === queryObject.courtId
-				})
-				.slots.findIndex(slot => {
-					console.log('slot.id ', slot.id)
-					console.log('queryObject.slotId ', queryObject.slotId)
-					console.log('match? ', slot.id === queryObject.slotId)
-					return slot.id.toString() === queryObject.slotId
-				})
-
-			const slotDocument = courtsDocument?.find(
-				court => court.id === queryObject.courtId
-			).slots
-
-			console.log('dayDocument: ', dayDocument)
-			console.log('courtsDocument: ', courtsDocument)
-			console.log('slotIndex: ', slotIndex)
-			console.log('slotDocument: ', slotDocument)
+				?.find(court => court.id === query.courtId)
+				.slots.findIndex(slot => slot.id.toString() === query.slotId)
 		}
-		// query gym
-		// nested arrays can't be queried because the path
-		// can't contain more than one $.
-		const query = {
-			'_id': new ObjectId(queryObject.dayId),
-			'gyms.id': new ObjectId(queryObject.gymId),
+
+		const updateQuery = {
+			'_id': new ObjectId(query.dayId),
+			'gyms.id': new ObjectId(query.gymId),
 		}
 		//build the path property for slot/player navigation
 		const pathProperty =
@@ -142,12 +112,9 @@ async function putSlot(queryObject: {
 
 		const dayUpdated = await db
 			.collection('days')
-			.updateOne(query, pushCommand, function (err, res) {
-				if (err) throw err
-				console.log('1 document updated')
-			})
+			.updateOne(updateQuery, pushCommand)
 
-		console.log('Added new slot to database.')
+		console.log('Added new slot/player to database.')
 
 		return dayUpdated
 	} catch (e) {
