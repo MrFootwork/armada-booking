@@ -3,10 +3,24 @@ import { MongoClient, ObjectId } from 'mongodb'
 // import replaceId from '@/server/utils/mongo/replaceId'
 import { Day } from '@/model/TDay.model'
 import { Slot } from '@/model/TSlot.model'
-import { ISODateString } from 'next-auth'
+import { SessionUser } from '@/model/TSessionUser.model'
+import { ISODateString, Session } from 'next-auth'
 import { isoDateFrom } from '@/server/utils/date/timezone'
 
+import { getServerSession } from '#auth'
+
+let userLoggedIn: SessionUser = null
+
 export default defineEventHandler(async event => {
+	// accessing user data from session
+	const session = await getServerSession(event)
+	userLoggedIn = session?.user.name
+
+	console.log('***************************')
+	console.log('*       slot.put.ts       *')
+	console.log('***************************')
+	console.log('user: ', userLoggedIn)
+
 	const queryObject = getQuery(event)
 	const slotInserted = await putSlot(queryObject)
 
@@ -28,12 +42,12 @@ async function putSlot(query: {
 	slotId?: Slot['id']
 }) {
 	const { mongoURI } = useRuntimeConfig()
-	const mongoClient: MongoClient = new MongoClient(mongoURI)
+	const mongoClient = new MongoClient(mongoURI)
 	const targetDate = new Date(query.day)
 	const playerJoinsSlot = new Boolean(query.slotId).valueOf()
 
 	console.log('***************************')
-	console.log('*       slot.put.ts       *')
+	console.log('*         putSlot         *')
 	console.log('***************************')
 	console.log('playerJoinsSlot ', playerJoinsSlot, query.slotId)
 	console.log('query in api: ', query)
@@ -46,24 +60,12 @@ async function putSlot(query: {
 		const offset = getOffset(query.timeZone)
 		const isoOffset = `+${(-offset / 60).toString().padStart(2, '0')}:00`
 		// build UTC conform target date times
-		const startDateIso = isoDateFrom(targetDate, query.start, isoOffset)
-		const endDateIso = isoDateFrom(targetDate, query.end, isoOffset)
-
-		console.log('startDateIso ', startDateIso)
-		console.log('endDateIso ', endDateIso)
-
-		const startDate = new Date(startDateIso)
-		const endDate = new Date(endDateIso)
-
-		console.log('start ', startDate)
-		// console.log('start iso ', startDate.toISOString())
-		console.log('end ', endDate)
-		// console.log('end iso ', endDate.toISOString())
+		const startDate = new Date(isoDateFrom(targetDate, query.start, isoOffset))
+		const endDate = new Date(isoDateFrom(targetDate, query.end, isoOffset))
 
 		// courtId is 1-based
 		const courtIndex = query.courtId - 1
 
-		// FIXME read user name and create player object
 		// navigate to court and push slot with player
 		if (!playerJoinsSlot) {
 			var slotValue: Slot = {
@@ -74,9 +76,9 @@ async function putSlot(query: {
 				bookingDate: new Date(),
 				player: [
 					{
-						id: 'XXX',
-						name: '🍍',
-						bookedBy: 'XXX',
+						id: userLoggedIn.id,
+						name: userLoggedIn.username,
+						bookedBy: userLoggedIn.username,
 					},
 				],
 			}
@@ -86,8 +88,8 @@ async function putSlot(query: {
 		if (playerJoinsSlot) {
 			// FIXME determine player id of organizer
 			var playerValue: Slot['player'][number] = {
-				id: '1234567890',
-				name: '🍊',
+				id: userLoggedIn.id,
+				name: userLoggedIn.username,
 				bookedBy: 'XXX',
 			}
 

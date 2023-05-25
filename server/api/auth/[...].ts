@@ -51,22 +51,7 @@ export default NuxtAuthHandler({
 					await mongoClient.close()
 				}
 
-				// FIXME provide users scheme or ts type
-
-				if (user) {
-					// Any object returned will be saved in `user` property of the JWT
-					// return user
-					// Workaround if I need to pass user data to session
-					return {
-						name: {
-							id: user._id,
-							firstName: user.firstName,
-							lastName: user.lastName,
-							username: user.username,
-						},
-						email: user.email,
-					}
-				} else {
+				if (!user) {
 					// eslint-disable-next-line no-console
 					console.error(
 						'Warning: Malicious login attempt registered, bad credentials provided'
@@ -76,6 +61,22 @@ export default NuxtAuthHandler({
 					return null
 
 					// You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
+				}
+				// return user
+				// Any object returned will be saved in `user` property of the JWT
+				// Workaround if I need to pass user data to session
+				const customUser = {
+					id: user._id.toString(),
+					username: user.username,
+					email: user.email,
+					firstName: user.firstName,
+					lastName: user.lastName,
+				}
+
+				console.log('auth handler user: ', customUser)
+
+				return {
+					name: customUser,
 				}
 			},
 			// BUG first load from sleeping server creates second token

@@ -41,6 +41,10 @@ export const getOffset = timeZone => {
  * @returns ISO date string e.g. `'2023-05-23T14:00:00.000+03:00'`
  */
 export const isoDateFrom = (day: Date, hour: number, isoOffset: string) => {
+	// FIXME day is not always correct
+	// doesn't matter for prod
+	// But a wrong date is annoying...
+
 	// save calendar day e.g. 13.05.2024 -> 13
 	const targetDay = new Date(day).getDate()
 	// create today date object with nulled time
