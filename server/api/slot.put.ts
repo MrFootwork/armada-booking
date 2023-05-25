@@ -80,6 +80,8 @@ async function putSlot(query: {
 				bookedBy: 'XXX',
 			}
 
+			// dayDocument is not really type Day
+			// certain IDs are not string but ObjectId instead
 			const dayDocument: Day = await db.collection('days').findOne(
 				{
 					'_id': new ObjectId(query.dayId),

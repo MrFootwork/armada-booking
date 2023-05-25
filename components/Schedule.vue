@@ -85,9 +85,19 @@ function slotsDelete() {
 
 function slotsFreeCreate() {
   // determine booked times
-  const bookedTimes: [Slot['id'], number, number, Slot['player']][] = (() => {
+  const bookedTimes: [
+    Slot['id'],
+    number,
+    number,
+    Slot['player']
+  ][] = (() => {
     return currentSlots.value?.map(slot => {
-      return [slot.id, new Date(slot.start).getHours(), new Date(slot.end).getHours(), slot.player]
+      return [
+        slot.id,
+        new Date(slot.start).getHours(),
+        new Date(slot.end).getHours(),
+        slot.player
+      ]
     }) || []
   })()
 
@@ -132,6 +142,9 @@ function slotsFreeCreate() {
       currentSlotsElements.push(slotElement)
     }
 
+    // FIXME open modal to ask for duration
+    // BUG 🐞 booking first hour of the day results 
+    // in start date "1970-01-01T00:00:00Z"
     async function bookSlotOnClick() {
       const currentDay = days.value.find(d => d.date.getDate() === props.currentDay.getDate())
       const dayId = currentDay!.id
@@ -140,12 +153,16 @@ function slotsFreeCreate() {
       const start = hour
       const end = hour + 1
 
-      const queryObject = { dayId, gymId, courtId, start, end, ...(hourHasReservation && { slotId: currentSlotId }) }
+      const queryObject = {
+        dayId, gymId, courtId, start, end,
+        ...(hourHasReservation && { slotId: currentSlotId })
+      }
       console.log('query from component: ', queryObject);
 
       const response = await addSlot(queryObject)
       console.log('addSlot response: ', response);
 
+      // TODO fetch only the one updated day and replace days with it
       await fetchDays(new Date())
       console.log('updated days fetched');
     }
