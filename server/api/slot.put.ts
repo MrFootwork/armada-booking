@@ -86,7 +86,6 @@ async function putSlot(query: {
 
 		// navigate to slot and push additional player
 		if (playerJoinsSlot) {
-			// FIXME determine player id of organizer
 			var playerValue: Slot['player'][number] = {
 				id: userLoggedIn.id,
 				name: userLoggedIn.username,
@@ -110,6 +109,13 @@ async function putSlot(query: {
 			var slotIndex = courtsDocument
 				?.find(court => court.id === query.courtId)
 				.slots.findIndex(slot => slot.id.toString() === query.slotId)
+
+			const organizingPlayer = courtsDocument
+				?.find(court => court.id === query.courtId)
+				.slots.find(slot => slot.id.toString() === query.slotId)
+				?.player[0].bookedBy
+
+			playerValue.bookedBy = organizingPlayer
 		}
 
 		const updateQuery = {
