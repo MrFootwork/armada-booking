@@ -53,6 +53,13 @@ const currentSlots = computed(() => {
   }
 })
 
+// duration dialog
+const durationShow = ref(false)
+const toggleDurationModal = () => {
+  console.log('toggling duration modal', durationShow.value);
+  durationShow.value = !durationShow.value
+}
+
 /*******************************
  *        calendar view
  *******************************/
@@ -143,7 +150,11 @@ function slotsFreeCreate() {
     }
 
     // FIXME open modal to ask for duration
+    // use templatePromise to wait for input from duration modal
+    // https://vueuse.org/core/createTemplatePromise/#createtemplatepromise
     async function bookSlotOnClick() {
+      durationShow.value = true
+
       const currentDay = days.value.find(d => d.date.getDate() === props.currentDay.getDate())
       const dayId = currentDay!.id
       const gymId = props.gymId
@@ -165,6 +176,10 @@ function slotsFreeCreate() {
       console.log('updated days fetched');
     }
   }
+}
+
+function testModal() {
+  durationShow.value = true
 }
 
 function slotsBookedCreate() {
@@ -246,6 +261,8 @@ onUpdated(() => {
 <template>
   <div class="wrapper schedule">
 
+    <button @click="testModal">Toggle Duration Modal</button>
+
     <div class="wrapper hour-grid">
 
       <div class="hour-grid hour"
@@ -271,6 +288,9 @@ onUpdated(() => {
       </div>
 
     </div>
+
+    <ScheduleModalDuration v-if="durationShow"
+                           @toggle-modal="toggleDurationModal" />
 
   </div>
 </template>
