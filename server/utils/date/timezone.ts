@@ -52,7 +52,7 @@ export const isoDateFrom = (day: Date, hour: number, isoOffset: string) => {
 	// set day and hour in iso string
 	isoDateString = isoDateString.replace(
 		/\d{2}T\d{2}/,
-		`${String(targetDay).padStart(2, '0')}T${hour}`
+		`${String(targetDay).padStart(2, '0')}T${String(hour).padStart(2, '0')}`
 	)
 	// set offset in iso string
 	isoDateString = isoDateString.replace(/Z/, isoOffset)

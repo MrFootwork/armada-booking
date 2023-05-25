@@ -46,8 +46,19 @@ async function putSlot(query: {
 		const offset = getOffset(query.timeZone)
 		const isoOffset = `+${(-offset / 60).toString().padStart(2, '0')}:00`
 		// build UTC conform target date times
-		const startDate = new Date(isoDateFrom(targetDate, query.start, isoOffset))
-		const endDate = new Date(isoDateFrom(targetDate, query.end, isoOffset))
+		const startDateIso = isoDateFrom(targetDate, query.start, isoOffset)
+		const endDateIso = isoDateFrom(targetDate, query.end, isoOffset)
+
+		console.log('startDateIso ', startDateIso)
+		console.log('endDateIso ', endDateIso)
+
+		const startDate = new Date(startDateIso)
+		const endDate = new Date(endDateIso)
+
+		console.log('start ', startDate)
+		// console.log('start iso ', startDate.toISOString())
+		console.log('end ', endDate)
+		// console.log('end iso ', endDate.toISOString())
 
 		// courtId is 1-based
 		const courtIndex = query.courtId - 1

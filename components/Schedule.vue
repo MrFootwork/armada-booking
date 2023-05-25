@@ -143,8 +143,6 @@ function slotsFreeCreate() {
     }
 
     // FIXME open modal to ask for duration
-    // BUG 🐞 booking first hour of the day results 
-    // in start date "1970-01-01T00:00:00Z"
     async function bookSlotOnClick() {
       const currentDay = days.value.find(d => d.date.getDate() === props.currentDay.getDate())
       const dayId = currentDay!.id
