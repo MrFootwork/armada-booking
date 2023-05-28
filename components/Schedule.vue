@@ -54,10 +54,10 @@ const currentSlots = computed(() => {
 })
 
 // duration dialog
-const durationShow = ref(false)
-const toggleDurationModal = () => {
-  console.log('toggling duration modal', durationShow.value);
-  durationShow.value = !durationShow.value
+const showDurationModal = ref(false)
+function toggleDurationModal() {
+  showDurationModal.value = !showDurationModal.value
+  console.log('toggling duration modal to ', showDurationModal.value);
 }
 
 /*******************************
@@ -77,6 +77,15 @@ const hours = computed(() => {
   )
 })
 
+// duration modal
+const selectedHour = ref(0)
+const selectedDuration = ref(1)
+
+function setDuration(inputDuration: number) {
+  selectedDuration.value = inputDuration
+  console.log('duration set to ', selectedDuration.value);
+}
+
 // grid coordinates columns: wrapper slots
 const columnFirstPlayer = 2
 const wrapperSlots = ref<HTMLElement | null>(null)
@@ -92,6 +101,7 @@ function slotsDelete() {
 
 function slotsFreeCreate() {
   // determine booked times
+  // TODO turn into objects instead of arrays
   const bookedTimes: [
     Slot['id'],
     number,
@@ -108,7 +118,7 @@ function slotsFreeCreate() {
     }) || []
   })()
 
-  // loop through rows
+  // loop through rows (= each hour)
   for (let i = 0; i < hours.value.length; i++) {
     const hour = hours.value[i];
     const gridRow = i + 1
@@ -121,11 +131,14 @@ function slotsFreeCreate() {
     // there are at least one reservation at this hour
     const hourHasReservation = bookedTimes.some(bookedSlot => {
       const [slotId, start, end, players] = bookedSlot
+
       const hourOverlapsSlot = start <= hour && hour < end
+
       if (hourOverlapsSlot) {
         playersAtThisHour = players.length
         currentSlotId = slotId
       }
+
       return hourOverlapsSlot
     })
 
@@ -153,13 +166,21 @@ function slotsFreeCreate() {
     // use templatePromise to wait for input from duration modal
     // https://vueuse.org/core/createTemplatePromise/#createtemplatepromise
     async function bookSlotOnClick() {
-      durationShow.value = true
+      // reset modal values
+      selectedDuration.value = 1
 
-      const currentDay = days.value.find(d => d.date.getDate() === props.currentDay.getDate())
+      const currentDay = days.value.find(day =>
+        day.date.getDate() === props.currentDay.getDate()
+      )
       const dayId = currentDay!.id
       const gymId = props.gymId
       const courtId = props.courtId
       const start = hour
+
+      selectedHour.value = hour
+      showDurationModal.value = true
+
+      // FIXME await for input? see link above
       const end = hour + 1
 
       const queryObject = {
@@ -168,8 +189,8 @@ function slotsFreeCreate() {
       }
       console.log('query from component: ', queryObject);
 
-      const response = await addSlot(queryObject)
-      console.log('addSlot response: ', response);
+      // const response = await addSlot(queryObject)
+      // console.log('addSlot response: ', response);
 
       // TODO fetch only the one updated day and replace days with it
       await fetchDays(new Date())
@@ -178,17 +199,14 @@ function slotsFreeCreate() {
   }
 }
 
-function testModal() {
-  durationShow.value = true
-}
-
 function slotsBookedCreate() {
   if (currentSlots.value) {
     for (let slot = 0; slot < currentSlots.value.length; slot++) {
       for (let player = 0; player < currentSlots.value[slot].player.length; player++) {
         const currentSlot = currentSlots.value[slot]
 
-        console.log('Rendering Slots in local Timezone: ', Intl.DateTimeFormat().resolvedOptions().timeZone);
+        console.log('Rendering Slots in local Timezone: ',
+          Intl.DateTimeFormat().resolvedOptions().timeZone);
 
         const startDate = new Date(currentSlot.start)
         const endDate = new Date(currentSlot.end)
@@ -261,7 +279,14 @@ onUpdated(() => {
 <template>
   <div class="wrapper schedule">
 
-    <button @click="testModal">Toggle Duration Modal</button>
+    <button @click="showDurationModal = true">Toggle Duration Modal</button>
+
+    <ScheduleModalDuration v-show="showDurationModal"
+                           :show-modal="showDurationModal"
+                           :slot-start="selectedHour"
+                           :gym-end="currentGym?.end"
+                           @toggle-modal="toggleDurationModal"
+                           @confirm-duration="setDuration" />
 
     <div class="wrapper hour-grid">
 
@@ -289,8 +314,7 @@ onUpdated(() => {
 
     </div>
 
-    <ScheduleModalDuration v-if="durationShow"
-                           @toggle-modal="toggleDurationModal" />
+
 
   </div>
 </template>

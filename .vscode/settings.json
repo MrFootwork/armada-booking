@@ -16,6 +16,10 @@
 		"editor.defaultFormatter": "Vue.volar",
 		"editor.formatOnSave": true
 	},
+	"[scss]": {
+		"editor.defaultFormatter": "syler.sass-indented",
+		"editor.tabSize": 2
+	},
 
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"editor.formatOnSave": false,

@@ -15,6 +15,20 @@
   user-select: none;
 }
 
+@mixin buttonStlye() {
+  border: none;
+  padding: .5rem;
+  margin: .5rem;
+  border-radius: 5px;
+
+  cursor: pointer;
+
+  color: var(--font-color);
+  text-align: center;
+
+  background-color: var(--card-color-primary);
+}
+
 @mixin cardStyle() {
   border-radius: $round-corner;
   padding      : 3rem;
