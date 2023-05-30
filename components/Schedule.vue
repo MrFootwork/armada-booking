@@ -186,6 +186,9 @@ function slotsFreeCreate() {
       // reset modal values
       selectedDuration.value = 1
 
+      // FIXME this should only call the modal
+      // The modal then calls DaysStore.addSlot() and .fetchDays()
+
       const currentDay = days.value.find(day =>
         day.date.getDate() === props.currentDay.getDate()
       )
