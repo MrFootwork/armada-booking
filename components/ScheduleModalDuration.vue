@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	import { Gym } from '@/model/TGym.model'
+	import { useSelection } from '~/store/selection'
 
 	const defaultEndHour = 20
 
@@ -8,6 +9,8 @@
 		slotStart: number
 		gymEnd: Gym['end']
 	}>()
+
+	const { dayId } = storeToRefs(useSelection())
 
 	const emit = defineEmits(['toggle-modal', 'confirm-duration'])
 
@@ -35,9 +38,7 @@
 			<div
 				class="modal-duration blurry-background"
 				@click="$emit('toggle-modal')"
-			>
-				🍍 {{ showModal }}
-			</div>
+			></div>
 
 			<div class="wrapper modal input">
 				<button class="wrapper closer" @click="$emit('toggle-modal')">
@@ -47,6 +48,8 @@
 				</button>
 
 				<span>{{ `${slotStart} - ${gymEnd}` }}</span>
+
+				<p>test: {{ dayId }}</p>
 
 				<div class="wrapper modal body">
 					<div class="wrapper input element">

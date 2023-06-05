@@ -1,233 +1,248 @@
 <script setup lang="ts">
-// FIXME store data doesn't load on middleware
-// definePageMeta({
-//   middleware: 'fetch-before-entering-days'
-// });
+	// FIXME store data doesn't load on middleware
+	// definePageMeta({
+	//   middleware: 'fetch-before-entering-days'
+	// });
 
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+	import VueDatePicker from '@vuepic/vue-datepicker'
+	import '@vuepic/vue-datepicker/dist/main.css'
 
-import { useLanguage } from '@/store/language'
-import { useDaysStore } from '@/store/bookingDays'
-import { useGym } from '@/store/gym'
+	import { useLanguage } from '@/store/language'
+	import { useGym } from '@/store/gym'
+	import { useDaysStore } from '@/store/bookingDays'
+	import { useSelection } from '@/store/selection'
 
-import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue'
-import { mdiMenuLeft, mdiMenuRight, mdiMenuDown, mdiMenuUp } from '@mdi/js'
+	import SvgIcon from '@jamescoyle/vue-icon/lib/svg-icon.vue'
+	import { mdiMenuLeft, mdiMenuRight, mdiMenuDown, mdiMenuUp } from '@mdi/js'
 
-import useDate from '@/composables/date'
+	import useDate from '@/composables/date'
 
-// icon size
-const iconSize = 30
+	// icon size
+	const iconSize = 30
 
-// dark (e.g. for date picker)
-const isDark = useDark()
+	// dark (e.g. for date picker)
+	const isDark = useDark()
 
-// language
-const languageStore = useLanguage()
-const { setLanguage } = languageStore
+	// language
+	const languageStore = useLanguage()
+	const { setLanguage } = languageStore
 
-// gyms
-const gymStore = useGym()
-const { gyms } = storeToRefs(gymStore)
-const { fetchGyms } = gymStore
+	// gyms
+	const gymStore = useGym()
+	const { gyms } = storeToRefs(gymStore)
+	const { fetchGyms } = gymStore
 
-// days
-const dayStore = useDaysStore()
-const { days } = storeToRefs(dayStore)
-const { fetchDays, addSlot } = dayStore
+	// days
+	const dayStore = useDaysStore()
+	const { days } = storeToRefs(dayStore)
+	const { fetchDays, addSlot } = dayStore
 
-try {
-	const fetchingDays = await fetchDays(new Date())
-	const fetchingGyms = await fetchGyms()
-	Promise.all([fetchingDays, fetchingGyms]).then(() => {
-		daySelected.value = new Date()
-		gymSelected.value = gyms.value[0]
-		selectCourt(0)
+	// selection
+	const selectionStore = useSelection()
+	const { dayID, gymID, courtID, hourStart, hourEnd } =
+		storeToRefs(selectionStore)
+	const { setDayIDByDate } = selectionStore
+
+	try {
+		const fetchingDays = await fetchDays(new Date())
+		const fetchingGyms = await fetchGyms()
+		Promise.all([fetchingDays, fetchingGyms]).then(() => {
+			daySelected.value = new Date()
+			gymSelected.value = gyms.value[0]
+			selectCourt(0)
+		})
+	} catch (e) {
+		alert("Couldn't fetch database. Please ask for support!")
+	}
+
+	onBeforeMount(() => {
+		if (languageStore.wasSet) return
+		setLanguage(navigator.language)
 	})
-} catch (e) {
-	alert('Couldn\'t fetch database. Please ask for support!')
-}
 
-onBeforeMount(() => {
-	if (languageStore.wasSet) return
-	setLanguage(navigator.language)
-})
+	/*******************************
+	 *
+	 *        date picker
+	 *
+	 *******************************/
+	const today = new Date()
+	const year = today.getFullYear()
+	const month = today.getMonth()
+	const day = today.getDate()
 
-/*******************************
- *
- *        date picker
- *
- *******************************/
-const today = new Date()
-const year = today.getFullYear()
-const month = today.getMonth()
-const day = today.getDate()
+	// TODO use selection store for this instead
+	const daySelected = ref(new Date(year, month, day))
+	// reset court, if new day is selected
+	watch(daySelected, (newDay, oldDay) => {
+		if (newDay.getDay() !== oldDay.getDay()) {
+			selectCourt(0)
+			setDayIDByDate(daySelected.value)
+		}
+	})
 
-const daySelected = ref(new Date(year, month, day))
-// reset court, if new day is selected
-watch(daySelected, (newDay, oldDay) => {
-	if (newDay.getDay() !== oldDay.getDay()) selectCourt(0)
-})
+	// TODO today, lowerLimit and upperLimit should adjust at 24:00
+	const lowerLimit: Date = new Date(year, month, day)
+	const upperLimit = useDate(new Date()).addDays()
 
-// TODO today, lowerLimit and upperLimit should adjust at 24:00
-const lowerLimit: Date = new Date(year, month, day)
-const upperLimit = useDate(new Date()).addDays()
+	function increaseDay() {
+		if (daySelected.value.getDate() === upperLimit.getDate()) return
 
-function increaseDay() {
-	if (daySelected.value.getDate() === upperLimit.getDate()) return
+		selectCourt(0)
 
-	selectCourt(0)
+		daySelected.value.setDate(daySelected.value.getDate() + 1)
+		daySelected.value = new Date(daySelected.value)
+		setDayIDByDate(daySelected.value)
+	}
 
-	daySelected.value.setDate(daySelected.value.getDate() + 1)
-	daySelected.value = new Date(daySelected.value)
-}
+	function decreaseDay() {
+		if (daySelected.value.getDate() === lowerLimit.getDate()) return
 
-function decreaseDay() {
-	if (daySelected.value.getDate() === lowerLimit.getDate()) return
+		selectCourt(0)
 
-	selectCourt(0)
+		daySelected.value.setDate(daySelected.value.getDate() - 1)
+		daySelected.value = new Date(daySelected.value)
+		setDayIDByDate(daySelected.value)
+	}
 
-	daySelected.value.setDate(daySelected.value.getDate() - 1)
-	daySelected.value = new Date(daySelected.value)
-}
+	// datepicker functions
+	// For demo purposes disables the next 2 days from the current date
+	const disabledDates = (date: Date) => {
+		return date < lowerLimit || upperLimit < date
+	}
 
-// datepicker functions
-// For demo purposes disables the next 2 days from the current date
-const disabledDates = (date: Date) => {
-	return date < lowerLimit || upperLimit < date
-}
+	// BUG tomorrow: 1 === 31 + 1 = 32
+	// if tomorrow is 1st of month, it won't be recognized
+	// date format for datepicker display
+	const format = (date: Date) => {
+		// if today is Saturday = 6, Sa + 1 would be 7
+		// Sunday can only be 0
+		let tomorrowDay = today.getDay() + 1 >= 7 ? 0 : today.getDay() + 1
 
-// BUG tomorrow: 1 === 31 + 1 = 32
-// if tomorrow is 1st of month, it won't be recognized
-// date format for datepicker display
-const format = (date: Date) => {
-	// if today is Saturday = 6, Sa + 1 would be 7
-	// Sunday can only be 0
-	let tomorrowDay = today.getDay() + 1 >= 7
-		? 0
-		: today.getDay() + 1
+		if (date.getDay() === today.getDay()) return 'Today'
+		if (date.getDay() === tomorrowDay) return 'Tomorrow'
 
-	if (date.getDay() === today.getDay()) return 'Today'
-	if (date.getDay() === tomorrowDay) return 'Tomorrow'
+		let weekDay = new Intl.DateTimeFormat('en-us', {
+			weekday: 'long',
+		}).format(date)
 
-	let weekDay = new Intl.DateTimeFormat("en-us", {
-		weekday: "long"
-	}).format(date)
+		return `${weekDay}`
+	}
 
-	return `${weekDay}`
-}
+	/*******************************
+	 *
+	 *        gym picker
+	 *
+	 *******************************/
+	const gymSelected = ref(gyms?.value[0])
 
-/*******************************
- *
- *        gym picker
- *
- *******************************/
-const gymSelected = ref(gyms?.value[0])
+	watch(gymSelected, (newGym, oldGym) => {
+		if (newGym.id !== oldGym.id) selectCourt(0)
+	})
 
-watch(gymSelected, (newGym, oldGym) => {
-	if (newGym.id !== oldGym.id) selectCourt(0)
-})
+	/*******************************
+	 *
+	 *        court picker
+	 *
+	 *******************************/
+	const showCourtPicker = ref(false)
 
-/*******************************
- *
- *        court picker
- *
- *******************************/
-const showCourtPicker = ref(false)
+	const courtLayout = ''
 
-const courtLayout = ''
-
-const courts = computed(() => {
-	const courts =
-		days?.value
+	const courts = computed(() => {
+		const courts = days?.value
 			?.find(day => day?.date?.getDate() === daySelected?.value?.getDate())
-			?.gyms?.find(gym => gym?.id === gymSelected?.value?.id)?.courts
-		|| [{ id: 'initial court', courtName: '❌ no data', slots: [] }]
+			?.gyms?.find(gym => gym?.id === gymSelected?.value?.id)?.courts || [
+			{ id: 'initial court', courtName: '❌ no data', slots: [] },
+		]
 
-	return courts
-})
+		return courts
+	})
 
-const courtsNames = computed(() => {
-	return courts.value.map(court => court.courtName)
-})
+	const courtsNames = computed(() => {
+		return courts.value.map(court => court.courtName)
+	})
 
-const courtSelected = ref(courts?.value[0])
-// initialization after Pinia store useDaysStore is loaded
-// onBeforeMount(() => {
-// 	courtSelected.value = courts?.value[0]
-// })
+	const courtSelected = ref(courts?.value[0])
+	// initialization after Pinia store useDaysStore is loaded
+	// onBeforeMount(() => {
+	// 	courtSelected.value = courts?.value[0]
+	// })
 
-// BUG this is set wrong on Today!
-const courtIndex = computed(() => {
-	return courtsNames.value.indexOf(courtSelected?.value?.courtName) || 0
-})
+	// BUG this is set wrong on Today!
+	const courtIndex = computed(() => {
+		return courtsNames.value.indexOf(courtSelected?.value?.courtName) || 0
+	})
 
-function toggleCourtPicker() {
-	showCourtPicker.value = !showCourtPicker.value
-}
-
-function courtPrevious() {
-	const currentCourt = courtIndex.value
-	const previousCourt = currentCourt - 1
-
-	if (currentCourt > 0) {
-		courtSelected.value = courts.value[previousCourt]
+	function toggleCourtPicker() {
+		showCourtPicker.value = !showCourtPicker.value
 	}
-}
 
-function courtNext() {
-	const currentCourt = courtIndex.value
-	const nextCourt = currentCourt + 1
+	function courtPrevious() {
+		const currentCourt = courtIndex.value
+		const previousCourt = currentCourt - 1
 
-	if (nextCourt < courts.value.length) {
-		courtSelected.value = courts.value[nextCourt]
+		if (currentCourt > 0) {
+			courtSelected.value = courts.value[previousCourt]
+		}
 	}
-}
 
-function selectCourt(index: number) {
-	courtSelected.value = courts.value[index]
-}
+	function courtNext() {
+		const currentCourt = courtIndex.value
+		const nextCourt = currentCourt + 1
 
-// gym hint, e.g. any announcements for players
-// TODO use @formkit/auto-animate for expand/collapse
-// https://auto-animate.formkit.com/#usage-vue
-const [showGymHint, toggleGymHint] = useToggle()
+		if (nextCourt < courts.value.length) {
+			courtSelected.value = courts.value[nextCourt]
+		}
+	}
 
+	function selectCourt(index: number) {
+		courtSelected.value = courts.value[index]
+	}
+
+	// gym hint, e.g. any announcements for players
+	// TODO use @formkit/auto-animate for expand/collapse
+	// https://auto-animate.formkit.com/#usage-vue
+	const [showGymHint, toggleGymHint] = useToggle()
 </script>
 
 <template>
 	<div class="wrapper day-page">
-		<form class="wrapper selectors"
-					@submit.prevent>
+		<form class="wrapper selectors" @submit.prevent>
 			<div class="selector date-picker">
 				<label for="date">Date</label>
 
 				<div class="wrapper buttons">
 					<button class="left">
-						<SvgIcon class="icon left"
-										 type="mdi"
-										 :path="mdiMenuLeft"
-										 :size="iconSize"
-										 @click="decreaseDay"></SvgIcon>
+						<SvgIcon
+							class="icon left"
+							type="mdi"
+							:path="mdiMenuLeft"
+							:size="iconSize"
+							@click="decreaseDay"
+						></SvgIcon>
 					</button>
 
-					<VueDatePicker v-model="daySelected"
-												 :disabled-dates="disabledDates"
-												 week-numbers="iso"
-												 auto-apply
-												 :locale="languageStore.preferred"
-												 :format="format"
-												 :dark="isDark"
-												 :clearable="false"
-												 :enable-time-picker="false"
-												 input-class-name="dp-custom-input" />
+					<VueDatePicker
+						v-model="daySelected"
+						:disabled-dates="disabledDates"
+						week-numbers="iso"
+						auto-apply
+						:locale="languageStore.preferred"
+						:format="format"
+						:dark="isDark"
+						:clearable="false"
+						:enable-time-picker="false"
+						input-class-name="dp-custom-input"
+					/>
 
 					<button class="right">
-						<SvgIcon class="icon right"
-										 type="mdi"
-										 :path="mdiMenuRight"
-										 :size="iconSize"
-										 @click="increaseDay"></SvgIcon>
+						<SvgIcon
+							class="icon right"
+							type="mdi"
+							:path="mdiMenuRight"
+							:size="iconSize"
+							@click="increaseDay"
+						></SvgIcon>
 					</button>
 				</div>
 			</div>
@@ -235,13 +250,8 @@ const [showGymHint, toggleGymHint] = useToggle()
 			<!-- TODO change background color on theme change -->
 			<div class="selector gym-picker">
 				<label for="gyms">Gym</label>
-				<select class="gym-picker"
-								name="gyms"
-								id="gyms"
-								v-model="gymSelected">
-					<option v-for="(gym, i) in gyms"
-									:value="gyms[i]"
-									:key="gym.id">
+				<select class="gym-picker" name="gyms" id="gyms" v-model="gymSelected">
+					<option v-for="(gym, i) in gyms" :value="gyms[i]" :key="gym.id">
 						{{ gym.nameShort }}
 					</option>
 				</select>
@@ -251,252 +261,249 @@ const [showGymHint, toggleGymHint] = useToggle()
 				<label for="court">Court</label>
 
 				<div class="wrapper buttons">
-
 					<button class="left">
-						<SvgIcon class="icon court left"
-										 type="mdi"
-										 :path="mdiMenuLeft"
-										 :size="iconSize"
-										 @click="courtPrevious">
+						<SvgIcon
+							class="icon court left"
+							type="mdi"
+							:path="mdiMenuLeft"
+							:size="iconSize"
+							@click="courtPrevious"
+						>
 						</SvgIcon>
 					</button>
 
-					<input type="button"
-								 id="court"
-								 :value="courtsNames[courtIndex]"
-								 @click="toggleCourtPicker" />
+					<input
+						type="button"
+						id="court"
+						:value="courtsNames[courtIndex]"
+						@click="toggleCourtPicker"
+					/>
 
 					<button class="right">
-						<SvgIcon class="icon court right"
-										 type="mdi"
-										 :path="mdiMenuRight"
-										 :size="iconSize"
-										 @click="courtNext">
+						<SvgIcon
+							class="icon court right"
+							type="mdi"
+							:path="mdiMenuRight"
+							:size="iconSize"
+							@click="courtNext"
+						>
 						</SvgIcon>
 					</button>
-
 				</div>
 
-				<DaysCourtPicker v-show="showCourtPicker"
-												 class="court-picker component"
-												 @toggle-picker="toggleCourtPicker"
-												 @select-court="selectCourt"
-												 :layout="courtLayout"
-												 :gym="gymSelected"
-												 :courts="courts"
-												 :current-court-index="courtIndex" />
-
+				<DaysCourtPicker
+					v-show="showCourtPicker"
+					class="court-picker component"
+					@toggle-picker="toggleCourtPicker"
+					@select-court="selectCourt"
+					:layout="courtLayout"
+					:gym="gymSelected"
+					:courts="courts"
+					:current-court-index="courtIndex"
+				/>
 			</div>
-
-
 		</form>
 
-		<div class="hint-wrapper"
-				 @click="toggleGymHint()">
+		<div class="hint-wrapper" @click="toggleGymHint()">
 			<h4 class="hint-content head">
-
 				<span v-show="!showGymHint">
-					<SvgIcon class="icon down"
-									 type="mdi"
-									 :path="mdiMenuDown"></SvgIcon>
+					<SvgIcon class="icon down" type="mdi" :path="mdiMenuDown"></SvgIcon>
 				</span>
 
 				<span v-show="showGymHint">
-					<SvgIcon class="icon up"
-									 type="mdi"
-									 :path="mdiMenuUp"></SvgIcon>
+					<SvgIcon class="icon up" type="mdi" :path="mdiMenuUp"></SvgIcon>
 				</span>
 
 				{{ gymSelected.place }}
 			</h4>
-			<p v-show="showGymHint"
-				 class="hint-content body">
-				Please select any court and slot and
-				register your total playing time.
+			<p v-show="showGymHint" class="hint-content body">
+				Please select any court and slot and register your total playing time.
 				<br /><br />You can switch freely while you play in the gym.
 			</p>
 		</div>
 
-		<Schedule v-if="days.length && gyms.length && gyms[0] && gyms[0].id && gymSelected?.id"
-							:current-day="daySelected"
-							:gym-id="gymSelected.id"
-							:court-id="courtSelected.id" />
-
+		<Schedule
+			v-if="
+				days.length && gyms.length && gyms[0] && gyms[0].id && gymSelected?.id
+			"
+			:current-day="daySelected"
+			:gym-id="gymSelected.id"
+			:court-id="courtSelected.id"
+		/>
 	</div>
 </template>
 
 <style lang="scss">
-:root {
-	--dp-button-icon-height: 40px;
-	--dp-input-padding: 0;
-}
+	:root {
+		--dp-button-icon-height: 40px;
+		--dp-input-padding: 0;
+	}
 
-.dp__theme_dark,
-.dp__theme_light {
-	--dp-primary-color: var(--highlight-color);
-}
+	.dp__theme_dark,
+	.dp__theme_light {
+		--dp-primary-color: var(--highlight-color);
+	}
 
-.dp__theme_dark {
-	--dp-background-color: hsl(240, 10%, 35%);
-	--dp-secondary-color: hsl(240, 10%, 45%);
-}
+	.dp__theme_dark {
+		--dp-background-color: hsl(240, 10%, 35%);
+		--dp-secondary-color: hsl(240, 10%, 45%);
+	}
 
-.dp__theme_light {
-	--dp-background-color: hsl(240, 10%, 93%);
-	--dp-secondary-color: hsl(240, 10%, 80%);
-}
+	.dp__theme_light {
+		--dp-background-color: hsl(240, 10%, 93%);
+		--dp-secondary-color: hsl(240, 10%, 80%);
+	}
 
-.dp-custom-input {
-	@include inputHeight();
-	width: 8rem;
-	border: 0;
-	border-top: 1px solid var(--font-color);
-	border-bottom: 1px solid var(--font-color);
-
-	border-radius: 0;
-
-	color: var(--font-color);
-
-	&:hover,
-	&:focus {
+	.dp-custom-input {
+		@include inputHeight();
+		width: 8rem;
+		border: 0;
 		border-top: 1px solid var(--font-color);
 		border-bottom: 1px solid var(--font-color);
+
+		border-radius: 0;
+
+		color: var(--font-color);
+
+		&:hover,
+		&:focus {
+			border-top: 1px solid var(--font-color);
+			border-bottom: 1px solid var(--font-color);
+		}
 	}
-}
 </style>
 
 <style scoped lang="scss">
-.wrapper.day-page {
-	@include cardStyle();
-	@include appWidth();
-	padding: 1rem;
+	.wrapper.day-page {
+		@include cardStyle();
+		@include appWidth();
+		padding: 1rem;
 
-	form.wrapper.selectors {
-		width: 100%;
+		form.wrapper.selectors {
+			width: 100%;
 
-		display: flex;
-		align-items: center;
-		justify-content: space-evenly;
-		flex-wrap: wrap;
-		row-gap: 1rem;
-
-		button {
-			cursor: pointer;
-			background: none;
-			@include inputHeight();
-
-			color: var(--font-color);
-			border: none;
-			border: 1px solid var(--font-color);
-
-			&.left {
-				border-radius: 15px 0 0 15px;
-			}
-
-			&.right {
-				border-radius: 0 15px 15px 0;
-			}
-		}
-
-		.selector {
-			padding: 0.4rem;
-		}
-
-		label {
-			margin-bottom: 0.5rem;
-		}
-
-		.selector.date-picker {
 			display: flex;
-			align-items: flex-start;
-			justify-content: center;
-			flex-flow: column;
+			align-items: center;
+			justify-content: space-evenly;
+			flex-wrap: wrap;
+			row-gap: 1rem;
 
-			.wrapper.buttons {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				flex-flow: row;
-			}
-		}
-
-		.selector.gym-picker {
-			display: flex;
-			flex-flow: column;
-
-			select.gym-picker {
-				width: auto;
-				@include inputHeight;
+			button {
 				cursor: pointer;
+				background: none;
+				@include inputHeight();
 
+				color: var(--font-color);
+				border: none;
+				border: 1px solid var(--font-color);
+
+				&.left {
+					border-radius: 15px 0 0 15px;
+				}
+
+				&.right {
+					border-radius: 0 15px 15px 0;
+				}
 			}
-		}
 
-		.selector.court-picker {
-			position: relative;
-			display: flex;
-			align-items: flex-start;
-			justify-content: center;
-			flex-flow: column;
+			.selector {
+				padding: 0.4rem;
+			}
 
-			.wrapper.buttons {
+			label {
+				margin-bottom: 0.5rem;
+			}
+
+			.selector.date-picker {
 				display: flex;
-				align-items: center;
+				align-items: flex-start;
 				justify-content: center;
+				flex-flow: column;
 
-				input {
-					padding: 0 0.6rem;
-					border-radius: 0;
-					border: none;
-					border-top: 1px solid var(--font-color);
-					border-bottom: 1px solid var(--font-color);
-					@include inputHeight();
-					width: 2.5rem;
+				.wrapper.buttons {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					flex-flow: row;
+				}
+			}
+
+			.selector.gym-picker {
+				display: flex;
+				flex-flow: column;
+
+				select.gym-picker {
+					width: auto;
+					@include inputHeight;
 					cursor: pointer;
 				}
 			}
 
-			.court-picker.component {
-				position: fixed;
-				top: 0;
-				left: 0;
-				height: 100%;
-				width: 100%;
-
-				display: grid;
-				align-items: center;
+			.selector.court-picker {
+				position: relative;
+				display: flex;
+				align-items: flex-start;
 				justify-content: center;
+				flex-flow: column;
 
-				z-index: 10;
-			}
-		}
-	}
+				.wrapper.buttons {
+					display: flex;
+					align-items: center;
+					justify-content: center;
 
-	div.hint-wrapper {
-		cursor: pointer;
-		padding: .8rem;
+					input {
+						padding: 0 0.6rem;
+						border-radius: 0;
+						border: none;
+						border-top: 1px solid var(--font-color);
+						border-bottom: 1px solid var(--font-color);
+						@include inputHeight();
+						width: 2.5rem;
+						cursor: pointer;
+					}
+				}
 
-		width: 100%;
-		border: .2rem solid var(--font-color);
-		border-radius: .3rem;
+				.court-picker.component {
+					position: fixed;
+					top: 0;
+					left: 0;
+					height: 100%;
+					width: 100%;
 
-		@include unselectable();
+					display: grid;
+					align-items: center;
+					justify-content: center;
 
-		.hint-content {
-			margin: 0;
-			line-height: normal;
-
-			&.head {
-				.icon {
-					transform: translate(0, .3rem);
+					z-index: 10;
 				}
 			}
+		}
 
-			&.body {
-				padding: .4rem;
-				margin: .3rem 0;
+		div.hint-wrapper {
+			cursor: pointer;
+			padding: 0.8rem;
+
+			width: 100%;
+			border: 0.2rem solid var(--font-color);
+			border-radius: 0.3rem;
+
+			@include unselectable();
+
+			.hint-content {
+				margin: 0;
+				line-height: normal;
+
+				&.head {
+					.icon {
+						transform: translate(0, 0.3rem);
+					}
+				}
+
+				&.body {
+					padding: 0.4rem;
+					margin: 0.3rem 0;
+				}
 			}
 		}
 	}
-}
 </style>
