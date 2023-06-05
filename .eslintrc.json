@@ -1,5 +1,10 @@
 {
 	"root": true,
 	"parser": "vue-eslint-parser",
-	"extends": ["eslint:recommended", "plugin:nuxt/recommended", "prettier"]
+	"extends": [
+		"eslint:recommended",
+		"plugin:nuxt/recommended",
+		"@vue/typescript/recommended@10",
+		"prettier"
+	]
 }
