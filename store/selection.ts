@@ -12,9 +12,19 @@ export const useSelection = defineStore('selection', () => {
 
 	// getters (computed())
 	const day = computed(() => {
-		return days.value.find(day => {
-			return day.id === dayID.value
-		})
+		return days.value.find(({ id }) => id === dayID.value)
+	})
+
+	const gym = computed(() => {
+		return day.value?.gyms.find(({ id }) => id === gymID.value)
+	})
+
+	const court = computed(() => {
+		return gym.value?.courts.find(({ id }) => id === courtID.value)
+	})
+
+	const courtIndex = computed(() => {
+		return gym.value?.courts?.findIndex(({ id }) => id === courtID.value)
 	})
 
 	// actions
@@ -27,9 +37,11 @@ export const useSelection = defineStore('selection', () => {
 		gymID.value = initialGym.id
 		courtID.value = initialCourt.id
 	}
+
 	const setDayIDByID = (id: string) => {
 		dayID.value = id
 	}
+
 	const setDayIDByDate = (inputDate: Date) => {
 		const [year, month, date] = [
 			inputDate.getUTCFullYear(),
@@ -51,28 +63,60 @@ export const useSelection = defineStore('selection', () => {
 			return isSameDay
 		})
 	}
-	const setGymId = (id: string) => {
+
+	const setGymID = (id: string) => {
 		gymID.value = id
 	}
-	const setCourtId = (id: string) => {
+
+	const setCourtID = (id: string) => {
 		courtID.value = id
 	}
+
+	const setCourtNext = () => {
+		if (courtIndex.value + 1 < gym.value.courts.length) {
+			courtID.value = gym.value?.courts[courtIndex.value + 1].id
+		}
+	}
+
+	const setCourtPrevious = () => {
+		if (courtIndex.value > 0) {
+			courtID.value = gym.value?.courts[courtIndex.value - 1].id
+		}
+	}
+
 	const setStart = (inputStart: number) => {
 		hourStart.value = inputStart
 	}
+
 	const setEnd = (inputEnd: number) => {
 		hourEnd.value = inputEnd
 	}
 
+	/*********************************
+	 * 					Watchers
+	 ********************************/
+	// new day selection resets court selection
+	watch(dayID, (newID, oldID) => {
+		if (newID !== oldID) {
+			courtID.value = '1'
+		}
+	})
+	// new gym selection resets court selection
+	watch(gymID, (newID, oldID) => {
+		if (newID !== oldID) {
+			courtID.value = '1'
+		}
+	})
+
 	return {
-		dayID,
-		gymID,
-		courtID,
-		hourStart,
-		hourEnd,
 		day,
+		gym,
+		court,
 		setDayIDByDate,
-		setGymId,
+		setGymID,
+		setCourtID,
+		setCourtNext,
+		setCourtPrevious,
 		initializeStoreValues,
 	}
 })

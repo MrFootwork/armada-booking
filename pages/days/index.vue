@@ -39,34 +39,48 @@
 
 	// selection
 	const selectionStore = useSelection()
-	const { dayID, gymID, courtID, hourStart, hourEnd, day } =
-		storeToRefs(selectionStore)
-	const { initializeStoreValues, setDayIDByDate } = selectionStore
+	const { day, gym, court } = storeToRefs(selectionStore)
+	const {
+		initializeStoreValues,
+		setDayIDByDate,
+		setGymID,
+		setCourtID,
+		setCourtNext,
+		setCourtPrevious,
+	} = selectionStore
 
 	// TODO why don't load via lifecycle hook?
-	try {
-		const fetchingDays = await fetchDays(new Date())
-		const fetchingGyms = await fetchGyms()
-		Promise.all([fetchingDays, fetchingGyms]).then(() => {
-			daySelected.value = new Date()
-			gymSelected.value = gyms.value[0]
-			selectCourt(0)
-			// set selection values
-			initializeStoreValues()
-			console.log(
-				'store values in page: ',
-				dayID.value,
-				gymID.value,
-				courtID.value
-			)
-		})
-	} catch (e) {
-		alert("Couldn't fetch database. Please ask for support!")
-	}
+	// try {
+	// 	const fetchingDays = await fetchDays(new Date())
+	// 	const fetchingGyms = await fetchGyms()
+	// 	Promise.all([fetchingDays, fetchingGyms]).then(() => {
+	// 		daySelected.value = new Date()
+	// 		gymSelected.value = gyms.value[0]
+	// 		selectCourt(0)
+	// 		// set selection values
+	// 		initializeStoreValues()
+	// 	})
+	// } catch (e) {
+	// 	alert("Couldn't fetch database. Please ask for support!")
+	// }
 
-	onBeforeMount(() => {
+	onBeforeMount(async () => {
 		if (languageStore.wasSet) return
 		setLanguage(navigator.language)
+
+		try {
+			const fetchingDays = await fetchDays(new Date())
+			const fetchingGyms = await fetchGyms()
+			Promise.all([fetchingDays, fetchingGyms]).then(() => {
+				daySelected.value = new Date()
+				gymSelected.value = gyms.value[0]
+				selectCourt(0)
+				// set selection values
+				initializeStoreValues()
+			})
+		} catch (e) {
+			alert("Couldn't fetch database. Please ask for support!")
+		}
 	})
 
 	/*******************************
@@ -79,13 +93,11 @@
 	const todayMonth = today.getMonth()
 	const todayDay = today.getDate()
 
-	// TODO use selection store for this instead
 	const daySelected = ref(new Date(todayYear, todayMonth, todayDay))
 	// reset court, if new day is selected
 	watch(daySelected, (newDay, oldDay) => {
 		if (newDay.getDay() !== oldDay.getDay()) {
 			selectCourt(0)
-			setDayIDByDate(daySelected.value)
 		}
 	})
 
@@ -148,6 +160,12 @@
 		if (newGym.id !== oldGym.id) selectCourt(0)
 	})
 
+	// FIXME gymIDSelected needs an initial value
+	const gymIDSelected = ref('')
+	function onSelectChange() {
+		setGymID(gymIDSelected.value)
+	}
+
 	/*******************************
 	 *
 	 *        court picker
@@ -172,10 +190,6 @@
 	})
 
 	const courtSelected = ref(courts?.value[0])
-	// initialization after Pinia store useDaysStore is loaded
-	// onBeforeMount(() => {
-	// 	courtSelected.value = courts?.value[0]
-	// })
 
 	// BUG this is set wrong on Today!
 	const courtIndex = computed(() => {
@@ -193,6 +207,8 @@
 		if (currentCourt > 0) {
 			courtSelected.value = courts.value[previousCourt]
 		}
+
+		setCourtPrevious()
 	}
 
 	function courtNext() {
@@ -202,10 +218,13 @@
 		if (nextCourt < courts.value.length) {
 			courtSelected.value = courts.value[nextCourt]
 		}
+
+		setCourtNext()
 	}
 
 	function selectCourt(index: number) {
 		courtSelected.value = courts.value[index]
+		setCourtID(`${index + 1}`)
 	}
 
 	// gym hint, e.g. any announcements for players
@@ -259,11 +278,22 @@
 			<!-- TODO change background color on theme change -->
 			<div class="selector gym-picker">
 				<label for="gyms">Gym</label>
-				<select class="gym-picker" name="gyms" id="gyms" v-model="gymSelected">
-					<option v-for="(gym, i) in gyms" :value="gyms[i]" :key="gym.id">
+				<select
+					class="gym-picker"
+					name="gyms"
+					id="gyms"
+					v-model="gymIDSelected"
+					@change="onSelectChange"
+				>
+					<option v-for="gym in gyms" :value="gym.id" :key="gym.id">
 						{{ gym.nameShort }}
 					</option>
 				</select>
+				<!-- <select class="gym-picker" name="gyms" id="gyms" v-model="gymSelected">
+					<option v-for="(gym, i) in gyms" :value="gyms[i]" :key="gym.id">
+						{{ gym.nameShort }}
+					</option>
+				</select> -->
 			</div>
 
 			<div class="selector court-picker">
