@@ -1,10 +1,12 @@
 import { useDaysStore } from './bookingDays'
 
+const COURT_ID_DEFAULT = '1'
+
 export const useSelection = defineStore('selection', () => {
 	// state
 	const dayID = ref('🍍')
-	const gymID = ref('🍎')
-	const courtID = ref('🍌')
+	const gymID = ref('63dfe7d99d49df953437b274')
+	const courtID = ref('1')
 	const hourStart = ref(0)
 	const hourEnd = ref(0)
 	// day store
@@ -73,9 +75,10 @@ export const useSelection = defineStore('selection', () => {
 	}
 
 	const setCourtNext = () => {
-		if (courtIndex.value + 1 < gym.value.courts.length) {
-			courtID.value = gym.value?.courts[courtIndex.value + 1].id
-		}
+		const isLast = courtIndex.value === gym.value.courts.length
+		if (isLast) return
+
+		courtID.value = gym.value?.courts[courtIndex.value + 1].id
 	}
 
 	const setCourtPrevious = () => {
@@ -95,16 +98,19 @@ export const useSelection = defineStore('selection', () => {
 	/*********************************
 	 * 					Watchers
 	 ********************************/
-	// new day selection resets court selection
+	// new day selection
 	watch(dayID, (newID, oldID) => {
 		if (newID !== oldID) {
-			courtID.value = '1'
+			// gym selection can be preserved
+			// reset court selection
+			courtID.value = gym.value?.courts[0].id || COURT_ID_DEFAULT
 		}
 	})
-	// new gym selection resets court selection
+	// new gym selection
 	watch(gymID, (newID, oldID) => {
 		if (newID !== oldID) {
-			courtID.value = '1'
+			// reset court selection
+			courtID.value = gym.value?.courts[0].id || COURT_ID_DEFAULT
 		}
 	})
 

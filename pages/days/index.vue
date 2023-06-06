@@ -39,7 +39,13 @@
 
 	// selection
 	const selectionStore = useSelection()
-	const { day, gym, court } = storeToRefs(selectionStore)
+
+	const {
+		day: selectedDay,
+		gym: selectedGym,
+		court: selectedCourt,
+	} = storeToRefs(selectionStore)
+
 	const {
 		initializeStoreValues,
 		setDayIDByDate,
@@ -48,21 +54,6 @@
 		setCourtNext,
 		setCourtPrevious,
 	} = selectionStore
-
-	// TODO why don't load via lifecycle hook?
-	// try {
-	// 	const fetchingDays = await fetchDays(new Date())
-	// 	const fetchingGyms = await fetchGyms()
-	// 	Promise.all([fetchingDays, fetchingGyms]).then(() => {
-	// 		daySelected.value = new Date()
-	// 		gymSelected.value = gyms.value[0]
-	// 		selectCourt(0)
-	// 		// set selection values
-	// 		initializeStoreValues()
-	// 	})
-	// } catch (e) {
-	// 	alert("Couldn't fetch database. Please ask for support!")
-	// }
 
 	onBeforeMount(async () => {
 		if (languageStore.wasSet) return
@@ -73,7 +64,6 @@
 			const fetchingGyms = await fetchGyms()
 			Promise.all([fetchingDays, fetchingGyms]).then(() => {
 				daySelected.value = new Date()
-				gymSelected.value = gyms.value[0]
 				selectCourt(0)
 				// set selection values
 				initializeStoreValues()
@@ -94,12 +84,6 @@
 	const todayDay = today.getDate()
 
 	const daySelected = ref(new Date(todayYear, todayMonth, todayDay))
-	// reset court, if new day is selected
-	watch(daySelected, (newDay, oldDay) => {
-		if (newDay.getDay() !== oldDay.getDay()) {
-			selectCourt(0)
-		}
-	})
 
 	// TODO today, lowerLimit and upperLimit should adjust at 24:00
 	const lowerLimit: Date = new Date(todayYear, todayMonth, todayDay)
@@ -154,17 +138,13 @@
 	 *        gym picker
 	 *
 	 *******************************/
-	const gymSelected = ref(gyms?.value[0])
+	const gymIDSelected = ref('63dfe7d99d49df953437b274')
 
-	watch(gymSelected, (newGym, oldGym) => {
-		if (newGym.id !== oldGym.id) selectCourt(0)
-	})
-
-	// FIXME gymIDSelected needs an initial value
-	const gymIDSelected = ref('')
 	function onSelectChange() {
 		setGymID(gymIDSelected.value)
 	}
+
+	// FIXME external change of gym must also change input display
 
 	/*******************************
 	 *
@@ -176,24 +156,15 @@
 	const courtLayout = ''
 
 	const courts = computed(() => {
-		const courts = days?.value
-			?.find(day => day?.date?.getDate() === daySelected?.value?.getDate())
-			?.gyms?.find(gym => gym?.id === gymSelected?.value?.id)?.courts || [
-			{ id: 'initial court', courtName: '❌ no data', slots: [] },
-		]
-
-		return courts
-	})
-
-	const courtsNames = computed(() => {
-		return courts.value.map(court => court.courtName)
-	})
-
-	const courtSelected = ref(courts?.value[0])
-
-	// BUG this is set wrong on Today!
-	const courtIndex = computed(() => {
-		return courtsNames.value.indexOf(courtSelected?.value?.courtName) || 0
+		return (
+			selectedGym.value?.courts || [
+				{
+					id: 'initial court',
+					courtName: '❌ no data',
+					slots: [],
+				},
+			]
+		)
 	})
 
 	function toggleCourtPicker() {
@@ -201,29 +172,14 @@
 	}
 
 	function courtPrevious() {
-		const currentCourt = courtIndex.value
-		const previousCourt = currentCourt - 1
-
-		if (currentCourt > 0) {
-			courtSelected.value = courts.value[previousCourt]
-		}
-
 		setCourtPrevious()
 	}
 
 	function courtNext() {
-		const currentCourt = courtIndex.value
-		const nextCourt = currentCourt + 1
-
-		if (nextCourt < courts.value.length) {
-			courtSelected.value = courts.value[nextCourt]
-		}
-
 		setCourtNext()
 	}
 
 	function selectCourt(index: number) {
-		courtSelected.value = courts.value[index]
 		setCourtID(`${index + 1}`)
 	}
 
@@ -231,6 +187,13 @@
 	// TODO use @formkit/auto-animate for expand/collapse
 	// https://auto-animate.formkit.com/#usage-vue
 	const [showGymHint, toggleGymHint] = useToggle()
+
+	onBeforeMount(() => {
+		console.log(
+			'Rendering Slots in local Timezone: ',
+			Intl.DateTimeFormat().resolvedOptions().timeZone
+		)
+	})
 </script>
 
 <template>
@@ -285,15 +248,11 @@
 					v-model="gymIDSelected"
 					@change="onSelectChange"
 				>
+					<!-- TODO cursor: pointer for options-->
 					<option v-for="gym in gyms" :value="gym.id" :key="gym.id">
 						{{ gym.nameShort }}
 					</option>
 				</select>
-				<!-- <select class="gym-picker" name="gyms" id="gyms" v-model="gymSelected">
-					<option v-for="(gym, i) in gyms" :value="gyms[i]" :key="gym.id">
-						{{ gym.nameShort }}
-					</option>
-				</select> -->
 			</div>
 
 			<div class="selector court-picker">
@@ -314,7 +273,7 @@
 					<input
 						type="button"
 						id="court"
-						:value="courtsNames[courtIndex]"
+						:value="selectedCourt?.courtName"
 						@click="toggleCourtPicker"
 					/>
 
@@ -336,9 +295,9 @@
 					@toggle-picker="toggleCourtPicker"
 					@select-court="selectCourt"
 					:layout="courtLayout"
-					:gym="gymSelected"
+					:gym="selectedGym"
 					:courts="courts"
-					:current-court-index="courtIndex"
+					:current-court-index="Number(selectedCourt?.id)"
 				/>
 			</div>
 		</form>
@@ -353,7 +312,7 @@
 					<SvgIcon class="icon up" type="mdi" :path="mdiMenuUp"></SvgIcon>
 				</span>
 
-				{{ gymSelected.place }}
+				{{ selectedGym?.place }}
 			</h4>
 			<p v-show="showGymHint" class="hint-content body">
 				Please select any court and slot and register your total playing time.
@@ -362,12 +321,12 @@
 		</div>
 
 		<Schedule
-			v-if="
-				days.length && gyms.length && gyms[0] && gyms[0].id && gymSelected?.id
+			v-show="
+				days.length && selectedDay?.gyms.length && selectedGym && selectedGym.id
 			"
 			:current-day="daySelected"
-			:gym-id="gymSelected.id"
-			:court-id="courtSelected.id"
+			:gym-id="selectedGym?.id"
+			:court-id="selectedCourt?.id"
 		/>
 	</div>
 </template>

@@ -3,6 +3,7 @@
 
 	import { useDaysStore } from '@/store/bookingDays'
 	import { useLanguage } from '@/store/language'
+	import { useSelection } from '@/store/selection'
 
 	import { Day } from '@/model/TDay.model'
 	import { Gym } from '@/model/TGym.model'
@@ -10,9 +11,9 @@
 	import { Slot } from '@/model/TSlot.model'
 
 	const props = defineProps<{
-		currentDay: Day['date']
-		gymId: Gym['id']
-		courtId: Court['id']
+		currentDay?: Day['date']
+		gymId?: Gym['id']
+		courtId?: Court['id']
 	}>()
 
 	/*******************************
@@ -27,28 +28,12 @@
 	const { days } = storeToRefs(dayStore)
 	const { fetchDays, addSlot } = dayStore
 
-	// gym
-	const currentGym = computed(() => {
-		return days.value
-			.find(day => day.date.getDate() === props.currentDay.getDate())
-			?.gyms.find(gym => gym.id === props.gymId)
-	})
-
-	// court
-	const currentCourt = computed<Court>(() => {
-		const fallbackCourt = {
-			id: 'fallback court',
-			courtName: 'fallback court',
-			slots: [],
-		}
-
-		return (
-			days.value
-				.find(day => day.date.getDate() === props.currentDay.getDate())
-				?.gyms.find(gym => gym.id === props.gymId)
-				?.courts?.find(court => court.id === props.courtId) || fallbackCourt
-		)
-	})
+	// selection
+	const {
+		day: selectedDay,
+		gym: currentGym,
+		court: currentCourt,
+	} = storeToRefs(useSelection())
 
 	// slots
 	const currentSlots = computed(() => {
@@ -184,7 +169,7 @@
 				// The modal then calls DaysStore.addSlot() and .fetchDays()
 
 				const currentDay = days.value.find(
-					day => day.date.getDate() === props.currentDay.getDate()
+					day => day.date.getDate() === selectedDay.value?.date.getDate()
 				)
 				const dayId = currentDay!.id
 				const gymId = props.gymId
@@ -228,11 +213,6 @@
 				) {
 					const currentSlot = currentSlots.value[slot]
 
-					console.log(
-						'Rendering Slots in local Timezone: ',
-						Intl.DateTimeFormat().resolvedOptions().timeZone
-					)
-
 					const startDate = new Date(currentSlot.start)
 					const endDate = new Date(currentSlot.end)
 
@@ -271,7 +251,7 @@
 				}
 			}
 		} else {
-			alert('no slots available')
+			console.warn('no slots available')
 		}
 	}
 
@@ -281,13 +261,23 @@
 		})
 	}
 
-	onMounted(() => {
+	onBeforeMount(() => {
+		if (!currentSlots.value) {
+			console.warn('Before Mount: No slots available')
+			return
+		}
+
 		slotsBookedCreate()
 		slotsFreeCreate()
 		slotsAppend()
 	})
 
 	onUpdated(() => {
+		if (!currentSlots.value) {
+			console.warn('Update: No slots available')
+			return
+		}
+
 		slotsDelete()
 		slotsBookedCreate()
 		slotsFreeCreate()
