@@ -10,7 +10,7 @@
 		gymEnd: Gym['end']
 	}>()
 
-	const { dayId } = storeToRefs(useSelection())
+	const { dayID } = storeToRefs(useSelection())
 
 	const emit = defineEmits(['toggle-modal', 'confirm-duration'])
 
@@ -49,7 +49,7 @@
 
 				<span>{{ `${slotStart} - ${gymEnd}` }}</span>
 
-				<p>test: {{ dayId }}</p>
+				<p>test: {{ dayID }}</p>
 
 				<div class="wrapper modal body">
 					<div class="wrapper input element">

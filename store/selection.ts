@@ -18,6 +18,15 @@ export const useSelection = defineStore('selection', () => {
 	})
 
 	// actions
+	const initializeStoreValues = () => {
+		const initialDay = days.value[0]
+		const initialGym = initialDay.gyms[0]
+		const initialCourt = initialGym.courts[0]
+
+		dayID.value = initialDay.id
+		gymID.value = initialGym.id
+		courtID.value = initialCourt.id
+	}
 	const setDayIDByID = (id: string) => {
 		dayID.value = id
 	}
@@ -61,6 +70,9 @@ export const useSelection = defineStore('selection', () => {
 		courtID,
 		hourStart,
 		hourEnd,
+		day,
 		setDayIDByDate,
+		setGymId,
+		initializeStoreValues,
 	}
 })

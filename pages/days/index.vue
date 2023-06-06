@@ -39,10 +39,11 @@
 
 	// selection
 	const selectionStore = useSelection()
-	const { dayID, gymID, courtID, hourStart, hourEnd } =
+	const { dayID, gymID, courtID, hourStart, hourEnd, day } =
 		storeToRefs(selectionStore)
-	const { setDayIDByDate } = selectionStore
+	const { initializeStoreValues, setDayIDByDate } = selectionStore
 
+	// TODO why don't load via lifecycle hook?
 	try {
 		const fetchingDays = await fetchDays(new Date())
 		const fetchingGyms = await fetchGyms()
@@ -50,6 +51,14 @@
 			daySelected.value = new Date()
 			gymSelected.value = gyms.value[0]
 			selectCourt(0)
+			// set selection values
+			initializeStoreValues()
+			console.log(
+				'store values in page: ',
+				dayID.value,
+				gymID.value,
+				courtID.value
+			)
 		})
 	} catch (e) {
 		alert("Couldn't fetch database. Please ask for support!")
@@ -66,12 +75,12 @@
 	 *
 	 *******************************/
 	const today = new Date()
-	const year = today.getFullYear()
-	const month = today.getMonth()
-	const day = today.getDate()
+	const todayYear = today.getFullYear()
+	const todayMonth = today.getMonth()
+	const todayDay = today.getDate()
 
 	// TODO use selection store for this instead
-	const daySelected = ref(new Date(year, month, day))
+	const daySelected = ref(new Date(todayYear, todayMonth, todayDay))
 	// reset court, if new day is selected
 	watch(daySelected, (newDay, oldDay) => {
 		if (newDay.getDay() !== oldDay.getDay()) {
@@ -81,7 +90,7 @@
 	})
 
 	// TODO today, lowerLimit and upperLimit should adjust at 24:00
-	const lowerLimit: Date = new Date(year, month, day)
+	const lowerLimit: Date = new Date(todayYear, todayMonth, todayDay)
 	const upperLimit = useDate(new Date()).addDays()
 
 	function increaseDay() {
@@ -394,7 +403,6 @@
 				@include inputHeight();
 
 				color: var(--font-color);
-				border: none;
 				border: 1px solid var(--font-color);
 
 				&.left {
