@@ -1,12 +1,13 @@
 import { useDaysStore } from './bookingDays'
 
 const COURT_ID_DEFAULT = '1'
+const GYM_ID_DEFAULT = '63dfe7d99d49df953437b274'
 
 export const useSelection = defineStore('selection', () => {
 	// state
 	const dayID = ref('🍍')
-	const gymID = ref('63dfe7d99d49df953437b274')
-	const courtID = ref('1')
+	const gymID = ref(GYM_ID_DEFAULT)
+	const courtID = ref(COURT_ID_DEFAULT)
 	const hourStart = ref(0)
 	const hourEnd = ref(0)
 	// day store
@@ -29,7 +30,9 @@ export const useSelection = defineStore('selection', () => {
 		return gym.value?.courts?.findIndex(({ id }) => id === courtID.value)
 	})
 
-	// actions
+	/*****************************
+	 * 			Actions
+	 ****************************/
 	const initializeStoreValues = () => {
 		const initialDay = days.value[0]
 		const initialGym = initialDay.gyms[0]
@@ -40,18 +43,26 @@ export const useSelection = defineStore('selection', () => {
 		courtID.value = initialCourt.id
 	}
 
-	const setDayIDByID = (id: string) => {
-		dayID.value = id
-	}
+	// change state by ID
+	const setDayIDByID = (id: string) => (dayID.value = id)
+	const setGymID = (id: string) => (gymID.value = id)
+	const setCourtID = (id: string) => (courtID.value = id)
+	// set start and end
+	const setStart = (inputStart: number) => (hourStart.value = inputStart)
+	const setEnd = (inputEnd: number) => (hourEnd.value = inputEnd)
 
 	const setDayIDByDate = (inputDate: Date) => {
+		console.log('************************')
+		console.log('*    setDayIDByDate    *')
+		console.log('************************')
+
 		const [year, month, date] = [
-			inputDate.getUTCFullYear(),
-			inputDate.getUTCMonth(),
-			inputDate.getUTCDate(),
+			inputDate.getFullYear(),
+			inputDate.getMonth(),
+			inputDate.getDate(),
 		]
 
-		days.value.find(({ id: currentId, date: currentDate }) => {
+		days.value.find(({ id: currentId, date: currentDate }, i) => {
 			const [currentYear, currentMonth, currentDay] = [
 				currentDate.getFullYear(),
 				currentDate.getMonth(),
@@ -61,38 +72,65 @@ export const useSelection = defineStore('selection', () => {
 			const isSameDay =
 				currentYear === year && currentMonth === month && currentDay === date
 
+			console.log(
+				`Looping days round ${i}: `,
+				`${currentMonth}/${currentDay}`,
+				`${month}/${date}`,
+				isSameDay
+			)
+
 			if (isSameDay) dayID.value = currentId
 			return isSameDay
 		})
 	}
 
-	const setGymID = (id: string) => {
-		gymID.value = id
+	// FIXME implement guard for first and last dates
+	const setDayNext = () => {
+		const currentDayIndex = days.value.findIndex(({ date }) => {
+			return (
+				date.getMonth() === day.value.date.getMonth() &&
+				date.getDate() === day.value.date.getDate()
+			)
+		})
+
+		const nextDayIndex = days.value[currentDayIndex + 1].id
+
+		if (!nextDayIndex)
+			console.warn(`setDayNext: nextDayIndex doesn't exist. ${nextDayIndex}`)
+
+		dayID.value = nextDayIndex
 	}
 
-	const setCourtID = (id: string) => {
-		courtID.value = id
+	const setDayPrevious = () => {
+		const currentDayIndex = days.value.findIndex(({ date }) => {
+			return (
+				date.getMonth() === day.value.date.getMonth() &&
+				date.getDate() === day.value.date.getDate()
+			)
+		})
+
+		const previousDayIndex = days.value[currentDayIndex - 1].id
+
+		if (!previousDayIndex)
+			console.warn(
+				`setDayPrevious: previousDayIndex doesn't exist. ${previousDayIndex}`
+			)
+
+		dayID.value = previousDayIndex
 	}
 
 	const setCourtNext = () => {
-		const isLast = courtIndex.value === gym.value.courts.length
+		const isLast = courtIndex.value === gym.value.courts.length - 1
 		if (isLast) return
 
 		courtID.value = gym.value?.courts[courtIndex.value + 1].id
 	}
 
 	const setCourtPrevious = () => {
-		if (courtIndex.value > 0) {
-			courtID.value = gym.value?.courts[courtIndex.value - 1].id
-		}
-	}
+		const isFirst = courtIndex.value === 0
+		if (isFirst) return
 
-	const setStart = (inputStart: number) => {
-		hourStart.value = inputStart
-	}
-
-	const setEnd = (inputEnd: number) => {
-		hourEnd.value = inputEnd
+		courtID.value = gym.value?.courts[courtIndex.value - 1].id
 	}
 
 	/*********************************
@@ -121,6 +159,8 @@ export const useSelection = defineStore('selection', () => {
 		setDayIDByDate,
 		setGymID,
 		setCourtID,
+		setDayNext,
+		setDayPrevious,
 		setCourtNext,
 		setCourtPrevious,
 		initializeStoreValues,

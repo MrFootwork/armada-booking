@@ -49,8 +49,9 @@
 	const {
 		initializeStoreValues,
 		setDayIDByDate,
+		setDayNext,
+		setDayPrevious,
 		setGymID,
-		setCourtID,
 		setCourtNext,
 		setCourtPrevious,
 	} = selectionStore
@@ -63,8 +64,7 @@
 			const fetchingDays = await fetchDays(new Date())
 			const fetchingGyms = await fetchGyms()
 			Promise.all([fetchingDays, fetchingGyms]).then(() => {
-				daySelected.value = new Date()
-				selectCourt(0)
+				// daySelected.value = new Date()
 				// set selection values
 				initializeStoreValues()
 			})
@@ -83,31 +83,27 @@
 	const todayMonth = today.getMonth()
 	const todayDay = today.getDate()
 
-	const daySelected = ref(new Date(todayYear, todayMonth, todayDay))
+	const inputDay = ref(new Date())
+
+	const onDatePick = (modelData: Date) => {
+		console.log(
+			'date picked: ',
+			inputDay.value.toISOString(),
+			modelData.toISOString()
+		)
+		inputDay.value = new Date(modelData)
+		setDayIDByDate(inputDay.value)
+	}
+
+	// date picker value can be changed by arrow buttons (via store actions)
+	watch(
+		() => selectedDay.value?.date,
+		date => (inputDay.value = new Date(date!.toISOString()))
+	)
 
 	// TODO today, lowerLimit and upperLimit should adjust at 24:00
 	const lowerLimit: Date = new Date(todayYear, todayMonth, todayDay)
 	const upperLimit = useDate(new Date()).addDays()
-
-	function increaseDay() {
-		if (daySelected.value.getDate() === upperLimit.getDate()) return
-
-		selectCourt(0)
-
-		daySelected.value.setDate(daySelected.value.getDate() + 1)
-		daySelected.value = new Date(daySelected.value)
-		setDayIDByDate(daySelected.value)
-	}
-
-	function decreaseDay() {
-		if (daySelected.value.getDate() === lowerLimit.getDate()) return
-
-		selectCourt(0)
-
-		daySelected.value.setDate(daySelected.value.getDate() - 1)
-		daySelected.value = new Date(daySelected.value)
-		setDayIDByDate(daySelected.value)
-	}
 
 	// datepicker functions
 	// For demo purposes disables the next 2 days from the current date
@@ -118,7 +114,7 @@
 	// BUG tomorrow: 1 === 31 + 1 = 32
 	// if tomorrow is 1st of month, it won't be recognized
 	// date format for datepicker display
-	const format = (date: Date) => {
+	const inputDateFormat = (date: Date) => {
 		// if today is Saturday = 6, Sa + 1 would be 7
 		// Sunday can only be 0
 		let tomorrowDay = today.getDay() + 1 >= 7 ? 0 : today.getDay() + 1
@@ -171,18 +167,6 @@
 		showCourtPicker.value = !showCourtPicker.value
 	}
 
-	function courtPrevious() {
-		setCourtPrevious()
-	}
-
-	function courtNext() {
-		setCourtNext()
-	}
-
-	function selectCourt(index: number) {
-		setCourtID(`${index + 1}`)
-	}
-
 	// gym hint, e.g. any announcements for players
 	// TODO use @formkit/auto-animate for expand/collapse
 	// https://auto-animate.formkit.com/#usage-vue
@@ -209,17 +193,18 @@
 							type="mdi"
 							:path="mdiMenuLeft"
 							:size="iconSize"
-							@click="decreaseDay"
+							@click="setDayPrevious"
 						></SvgIcon>
 					</button>
 
 					<VueDatePicker
-						v-model="daySelected"
+						:model-value="inputDay"
+						@update:model-value="onDatePick"
 						:disabled-dates="disabledDates"
 						week-numbers="iso"
 						auto-apply
 						:locale="languageStore.preferred"
-						:format="format"
+						:format="inputDateFormat"
 						:dark="isDark"
 						:clearable="false"
 						:enable-time-picker="false"
@@ -232,7 +217,7 @@
 							type="mdi"
 							:path="mdiMenuRight"
 							:size="iconSize"
-							@click="increaseDay"
+							@click="setDayNext"
 						></SvgIcon>
 					</button>
 				</div>
@@ -265,7 +250,7 @@
 							type="mdi"
 							:path="mdiMenuLeft"
 							:size="iconSize"
-							@click="courtPrevious"
+							@click="setCourtPrevious"
 						>
 						</SvgIcon>
 					</button>
@@ -283,7 +268,7 @@
 							type="mdi"
 							:path="mdiMenuRight"
 							:size="iconSize"
-							@click="courtNext"
+							@click="setCourtNext"
 						>
 						</SvgIcon>
 					</button>
@@ -293,7 +278,6 @@
 					v-show="showCourtPicker"
 					class="court-picker component"
 					@toggle-picker="toggleCourtPicker"
-					@select-court="selectCourt"
 					:layout="courtLayout"
 					:gym="selectedGym"
 					:courts="courts"
@@ -324,9 +308,6 @@
 			v-show="
 				days.length && selectedDay?.gyms.length && selectedGym && selectedGym.id
 			"
-			:current-day="daySelected"
-			:gym-id="selectedGym?.id"
-			:court-id="selectedCourt?.id"
 		/>
 	</div>
 </template>

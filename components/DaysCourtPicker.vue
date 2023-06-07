@@ -1,5 +1,6 @@
 <script setup lang="ts">
 	import { Day } from '@/model/TDay.model'
+	import { useSelection } from '@/store/selection'
 
 	defineProps<{
 		gym?: Day['gyms'][number]
@@ -8,10 +9,13 @@
 		layout: string
 	}>()
 
-	const emit = defineEmits(['toggle-picker', 'select-court'])
+	const emit = defineEmits(['toggle-picker'])
 
-	function selectCourtAndClose(indexOfSelectedCourt: number) {
-		emit('select-court', indexOfSelectedCourt)
+	// selection store
+	const { setCourtID } = useSelection()
+
+	function selectCourtAndClose(courtID: string) {
+		setCourtID(courtID)
 		emit('toggle-picker')
 	}
 </script>
@@ -36,7 +40,7 @@
 					:class="`court-${court.id}`"
 					v-for="(court, i) in courts"
 					:key="court.id"
-					@click="selectCourtAndClose(i)"
+					@click="selectCourtAndClose(court.id)"
 				>
 					<img
 						class="court"

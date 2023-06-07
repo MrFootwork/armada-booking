@@ -5,16 +5,7 @@
 	import { useLanguage } from '@/store/language'
 	import { useSelection } from '@/store/selection'
 
-	import { Day } from '@/model/TDay.model'
-	import { Gym } from '@/model/TGym.model'
-	import { Court } from '@/model/TCourt.model'
 	import { Slot } from '@/model/TSlot.model'
-
-	const props = defineProps<{
-		currentDay?: Day['date']
-		gymId?: Gym['id']
-		courtId?: Court['id']
-	}>()
 
 	/*******************************
 	 *        booking data
@@ -25,12 +16,11 @@
 
 	// days
 	const dayStore = useDaysStore()
-	const { days } = storeToRefs(dayStore)
-	const { fetchDays, addSlot } = dayStore
+	const { fetchDays } = dayStore
 
 	// selection
 	const {
-		day: selectedDay,
+		day: currentDay,
 		gym: currentGym,
 		court: currentCourt,
 	} = storeToRefs(useSelection())
@@ -168,12 +158,12 @@
 				// FIXME this should only call the modal
 				// The modal then calls DaysStore.addSlot() and .fetchDays()
 
-				const currentDay = days.value.find(
-					day => day.date.getDate() === selectedDay.value?.date.getDate()
-				)
-				const dayId = currentDay!.id
-				const gymId = props.gymId
-				const courtId = props.courtId
+				// const currentDay = days.value.find(
+				// 	day => day.date.getDate() === currentDay.value?.date.getDate()
+				// )
+				const dayId = currentDay.value?.id
+				const gymId = currentGym.value?.id
+				const courtId = currentCourt.value?.id
 				const start = hour
 
 				selectedHour.value = hour
