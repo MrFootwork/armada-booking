@@ -67,13 +67,6 @@
 
 	type DialogResult = 'ok' | 'cancel'
 
-	const TemplatePromise = createTemplatePromise<DialogResult, [string]>({
-		transition: {
-			name: 'fade',
-			appear: true,
-		},
-	})
-
 	// grid coordinates columns: wrapper slots
 	const columnFirstPlayer = 2
 	const wrapperSlots = ref<HTMLElement | null>(null)
@@ -168,7 +161,6 @@
 
 				selectedHour.value = hour
 				showDurationModal.value = true
-				const result = await TemplatePromise.start(`Hello Test`)
 
 				// FIXME await for input? see link above
 				const end = hour + 1
@@ -277,8 +269,6 @@
 
 <template>
 	<div class="wrapper schedule">
-		<button @click="showDurationModal = true">Toggle Duration Modal</button>
-
 		<ScheduleModalDuration
 			v-show="showDurationModal"
 			:show-modal="showDurationModal"

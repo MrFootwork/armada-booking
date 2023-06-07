@@ -142,6 +142,17 @@
 						}
 					}
 				}
+				&.sun-plaza {
+					grid-template: 1fr / repeat(4, 1fr);
+					gap: 0.2rem;
+					grid-template-areas: 'court-1 court-2 court-3 court-4';
+
+					@for $i from 1 through 4 {
+						button.court.wrapper.court-#{$i} {
+							grid-area: court-#{$i};
+						}
+					}
+				}
 
 				button.court.wrapper {
 					position: relative;
