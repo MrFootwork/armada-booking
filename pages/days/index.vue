@@ -47,7 +47,7 @@
 	} = storeToRefs(selectionStore)
 
 	const {
-		initializeStoreValues,
+		initializeStoreValues: initializeSelectionStore,
 		setDayIDByDate,
 		setDayNext,
 		setDayPrevious,
@@ -64,9 +64,7 @@
 			const fetchingDays = await fetchDays(new Date())
 			const fetchingGyms = await fetchGyms()
 			Promise.all([fetchingDays, fetchingGyms]).then(() => {
-				// daySelected.value = new Date()
-				// set selection values
-				initializeStoreValues()
+				initializeSelectionStore()
 			})
 		} catch (e) {
 			alert("Couldn't fetch database. Please ask for support!")
@@ -85,13 +83,13 @@
 
 	const inputDay = ref(new Date())
 
-	const onDatePick = (modelData: Date) => {
+	const onDatePick = (pickerDate: Date) => {
 		console.log(
 			'date picked: ',
 			inputDay.value.toISOString(),
-			modelData.toISOString()
+			pickerDate.toISOString()
 		)
-		inputDay.value = new Date(modelData)
+		inputDay.value = new Date(pickerDate)
 		setDayIDByDate(inputDay.value)
 	}
 

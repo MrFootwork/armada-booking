@@ -13,7 +13,7 @@ export const useSelection = defineStore('selection', () => {
 	// day store
 	const { days } = storeToRefs(useDaysStore())
 
-	// getters (computed())
+	// getters public
 	const day = computed(() => {
 		return days.value.find(({ id }) => id === dayID.value)
 	})
@@ -26,8 +26,16 @@ export const useSelection = defineStore('selection', () => {
 		return gym.value?.courts.find(({ id }) => id === courtID.value)
 	})
 
+	// getters private
 	const courtIndex = computed(() => {
 		return gym.value?.courts?.findIndex(({ id }) => id === courtID.value)
+	})
+
+	const boundary = computed(() => {
+		return {
+			top: days.value.length - 1,
+			bottom: 0,
+		}
 	})
 
 	/*****************************
@@ -52,10 +60,6 @@ export const useSelection = defineStore('selection', () => {
 	const setEnd = (inputEnd: number) => (hourEnd.value = inputEnd)
 
 	const setDayIDByDate = (inputDate: Date) => {
-		console.log('************************')
-		console.log('*    setDayIDByDate    *')
-		console.log('************************')
-
 		const [year, month, date] = [
 			inputDate.getFullYear(),
 			inputDate.getMonth(),
@@ -72,19 +76,12 @@ export const useSelection = defineStore('selection', () => {
 			const isSameDay =
 				currentYear === year && currentMonth === month && currentDay === date
 
-			console.log(
-				`Looping days round ${i}: `,
-				`${currentMonth}/${currentDay}`,
-				`${month}/${date}`,
-				isSameDay
-			)
-
 			if (isSameDay) dayID.value = currentId
 			return isSameDay
 		})
 	}
 
-	// FIXME implement guard for first and last dates
+	// TODO reuse code, stay DRY
 	const setDayNext = () => {
 		const currentDayIndex = days.value.findIndex(({ date }) => {
 			return (
@@ -92,6 +89,8 @@ export const useSelection = defineStore('selection', () => {
 				date.getDate() === day.value.date.getDate()
 			)
 		})
+
+		if (currentDayIndex === boundary.value.top) return
 
 		const nextDayIndex = days.value[currentDayIndex + 1].id
 
@@ -108,6 +107,8 @@ export const useSelection = defineStore('selection', () => {
 				date.getDate() === day.value.date.getDate()
 			)
 		})
+
+		if (currentDayIndex === boundary.value.bottom) return
 
 		const previousDayIndex = days.value[currentDayIndex - 1].id
 

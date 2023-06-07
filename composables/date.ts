@@ -12,18 +12,22 @@ export default function useDate(objDate: Date = new Date()) {
 	const weekday = objDate.toLocaleDateString(languageStore.preferred, {
 		weekday: 'short',
 	})
+
 	// 'en-US': May 1, 2023
 	const date = objDate.toLocaleDateString(languageStore.preferred, {
 		dateStyle: 'long',
 	})
+
 	// 2023-04-30
 	const dateISO = objDate.toISOString().substring(0, 10)
+
 	// routing to slot page requires normal time
 	// 22:53
 	const time = objDate.toLocaleTimeString('ro-ro', {
 		hour: 'numeric',
 		minute: '2-digit',
 	})
+
 	/**
 	 * Returns a date object given to useDate()
 	 * with the time set to 0 since midnight.
