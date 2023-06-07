@@ -81,57 +81,41 @@ export const useSelection = defineStore('selection', () => {
 		})
 	}
 
-	// TODO reuse code, stay DRY
-	const setDayNext = () => {
-		const currentDayIndex = days.value.findIndex(({ date }) => {
-			return (
-				date.getMonth() === day.value.date.getMonth() &&
-				date.getDate() === day.value.date.getDate()
-			)
-		})
+	// change court selection
+	const setCourtNext = () => changeCourtIDByCourts(1)
+	const setCourtPrevious = () => changeCourtIDByCourts(-1)
 
-		if (currentDayIndex === boundary.value.top) return
+	// change day selection
+	const setDayNext = () => changeDayIDByDays(1)
+	const setDayPrevious = () => changeDayIDByDays(-1)
 
-		const nextDayIndex = days.value[currentDayIndex + 1].id
-
-		if (!nextDayIndex)
-			console.warn(`setDayNext: nextDayIndex doesn't exist. ${nextDayIndex}`)
-
-		dayID.value = nextDayIndex
-	}
-
-	const setDayPrevious = () => {
-		const currentDayIndex = days.value.findIndex(({ date }) => {
-			return (
-				date.getMonth() === day.value.date.getMonth() &&
-				date.getDate() === day.value.date.getDate()
-			)
-		})
-
-		if (currentDayIndex === boundary.value.bottom) return
-
-		const previousDayIndex = days.value[currentDayIndex - 1].id
-
-		if (!previousDayIndex)
-			console.warn(
-				`setDayPrevious: previousDayIndex doesn't exist. ${previousDayIndex}`
-			)
-
-		dayID.value = previousDayIndex
-	}
-
-	const setCourtNext = () => {
-		const isLast = courtIndex.value === gym.value.courts.length - 1
-		if (isLast) return
-
-		courtID.value = gym.value?.courts[courtIndex.value + 1].id
-	}
-
-	const setCourtPrevious = () => {
+	// private methods
+	const changeCourtIDByCourts = (courtDifference: number = 0) => {
 		const isFirst = courtIndex.value === 0
-		if (isFirst) return
+		const isLast = courtIndex.value === gym.value.courts.length - 1
+		const changeDownwards = courtDifference < 0
+		const changeUpwards = courtDifference > 0
 
-		courtID.value = gym.value?.courts[courtIndex.value - 1].id
+		if ((isFirst && changeDownwards) || (isLast && changeUpwards)) return
+
+		courtID.value = gym.value?.courts[courtIndex.value + courtDifference].id
+	}
+
+	const changeDayIDByDays = (dayDifference: number = 0) => {
+		if (!dayDifference) return
+
+		const currentDayIndex = days.value.findIndex(
+			({ date }) =>
+				date.getMonth() === day.value.date.getMonth() &&
+				date.getDate() === day.value.date.getDate()
+		)
+
+		const topOrBottomIndex =
+			dayDifference > 0 ? boundary.value.top : boundary.value.bottom
+		// check if current index is already at the boundary
+		if (currentDayIndex === topOrBottomIndex) return
+
+		dayID.value = days.value[currentDayIndex + dayDifference].id
 	}
 
 	/*********************************

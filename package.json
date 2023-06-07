@@ -30,7 +30,7 @@
 	"dependencies": {
 		"@jamescoyle/vue-icon": "^0.1.2",
 		"@mdi/js": "^7.1.96",
-		"@vuepic/vue-datepicker": "^4.5.0",
+		"@vuepic/vue-datepicker": "^5.2.0",
 		"next-auth": "4.21.1",
 		"normalize.css": "^8.0.1"
 	}

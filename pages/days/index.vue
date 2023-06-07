@@ -1,9 +1,4 @@
 <script setup lang="ts">
-	// FIXME store data doesn't load on middleware
-	// definePageMeta({
-	//   middleware: 'fetch-before-entering-days'
-	// });
-
 	import VueDatePicker from '@vuepic/vue-datepicker'
 	import '@vuepic/vue-datepicker/dist/main.css'
 
@@ -71,10 +66,10 @@
 		}
 	})
 
+	// FIXME refactor: extract components!
+
 	/*******************************
-	 *
 	 *        date picker
-	 *
 	 *******************************/
 	const today = new Date()
 	const todayYear = today.getFullYear()
@@ -128,22 +123,12 @@
 	}
 
 	/*******************************
-	 *
 	 *        gym picker
-	 *
 	 *******************************/
 	const gymIDSelected = ref('63dfe7d99d49df953437b274')
 
-	function onSelectChange() {
-		setGymID(gymIDSelected.value)
-	}
-
-	// FIXME external change of gym must also change input display
-
 	/*******************************
-	 *
 	 *        court picker
-	 *
 	 *******************************/
 	const showCourtPicker = ref(false)
 
@@ -229,7 +214,7 @@
 					name="gyms"
 					id="gyms"
 					v-model="gymIDSelected"
-					@change="onSelectChange"
+					@change="setGymID(gymIDSelected)"
 				>
 					<!-- TODO cursor: pointer for options-->
 					<option v-for="gym in gyms" :value="gym.id" :key="gym.id">
