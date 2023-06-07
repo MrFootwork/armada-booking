@@ -1,20 +1,25 @@
 <script setup lang="ts">
-	import { Gym } from '@/model/TGym.model'
-	import { useSelection } from '~/store/selection'
+	import { useSelection } from '@/store/selection'
+	import { useDaysStore } from '@/store/bookingDays'
 
-	const defaultEndHour = 20
+	const HOUR_END_DEFAULT = 20
 
 	const props = defineProps<{
 		showModal: boolean
 		slotStart: number
-		gymEnd: Gym['end']
 	}>()
 
-	const { dayID } = storeToRefs(useSelection())
+	// selection store
+	const selectionStore = useSelection()
+	const { day, gym, court, hourStart, hourEnd } = storeToRefs(selectionStore)
 
-	const emit = defineEmits(['toggle-modal', 'confirm-duration'])
+	// days
+	const dayStore = useDaysStore()
+	const { fetchDays } = dayStore
 
-	const latestHour = ref(defaultEndHour)
+	const emit = defineEmits(['toggle-modal'])
+
+	const latestHour = ref(HOUR_END_DEFAULT)
 	const duration = ref(1)
 
 	// FIXME restrict to minimal value 1
@@ -23,12 +28,37 @@
 	})
 
 	onUpdated(() => {
-		if (props.gymEnd) return (latestHour.value = props.gymEnd)
-		latestHour.value = defaultEndHour
+		if (gym.value?.end) return (latestHour.value = gym.value.end)
+		latestHour.value = HOUR_END_DEFAULT
 	})
 
-	function confirmDuration() {
-		emit('confirm-duration', duration)
+	const confirmReservation = async () => {
+		const dayId = day.value?.id
+		const gymId = gym.value?.id
+		const courtId = court.value?.id
+		const start = hourStart.value
+
+		const end = 12
+
+		const queryObject = {
+			dayId,
+			gymId,
+			courtId,
+			start,
+			end,
+			// ...(hourHasReservation && { slotId: currentSlotId }),
+		}
+		console.log('query from component: ', queryObject)
+
+		// FIXME this modal  calls DaysStore.addSlot() and .fetchDays()
+
+		// const response = await addSlot(queryObject)
+		// console.log('addSlot response: ', response);
+
+		// TODO fetch only the one updated day and replace days with it
+		// await fetchDays(new Date())
+		console.log('updated days fetched')
+		emit('toggle-modal')
 	}
 </script>
 
@@ -47,9 +77,9 @@
 					<div class="closer icon descending"></div>
 				</button>
 
-				<span>{{ `${slotStart} - ${gymEnd}` }}</span>
+				<span>{{ `${slotStart} - ${gym}` }}</span>
 
-				<p>test: {{ dayID }}</p>
+				<p>test: {{ day?.id }}</p>
 
 				<div class="wrapper modal body">
 					<div class="wrapper input element">
@@ -63,7 +93,7 @@
 						/>
 					</div>
 
-					<button class="confirm booking" @click="confirmDuration">
+					<button class="confirm booking" @click="confirmReservation">
 						Confirm Duration
 					</button>
 				</div>
@@ -101,7 +131,7 @@
 				}
 
 				button.confirm.booking {
-					@include buttonStlye();
+					@include buttonStyle();
 					@include buttonShadow();
 
 					&:hover,

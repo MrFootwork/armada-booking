@@ -19,11 +19,14 @@
 	const { fetchDays } = dayStore
 
 	// selection
+	const selectionStore = useSelection()
 	const {
 		day: currentDay,
 		gym: currentGym,
 		court: currentCourt,
-	} = storeToRefs(useSelection())
+		hourStart,
+	} = storeToRefs(selectionStore)
+	const { setSlotID, setStart, setEnd } = selectionStore
 
 	// slots
 	const currentSlots = computed(() => {
@@ -34,9 +37,9 @@
 
 	// duration dialog
 	const showDurationModal = ref(false)
+
 	function toggleDurationModal() {
 		showDurationModal.value = !showDurationModal.value
-		console.log('toggling duration modal to ', showDurationModal.value)
 	}
 
 	/*******************************
@@ -64,8 +67,6 @@
 		selectedDuration.value = inputDuration
 		console.log('duration set to ', selectedDuration.value)
 	}
-
-	type DialogResult = 'ok' | 'cancel'
 
 	// grid coordinates columns: wrapper slots
 	const columnFirstPlayer = 2
@@ -133,7 +134,7 @@
 				slotElement.setAttribute('class', 'slot free')
 				slotElement.textContent = `➕`
 				// add click listener
-				slotElement.addEventListener('click', bookSlotOnClick)
+				slotElement.addEventListener('click', openDurationModal)
 				// slot placement
 				slotElement.style.gridColumn = `${gridColumn} / span ${
 					4 - playersAtThisHour
@@ -143,44 +144,26 @@
 				currentSlotsElements.push(slotElement)
 			}
 
-			// FIXME open modal to ask for duration
-			async function bookSlotOnClick() {
+			async function openDurationModal() {
 				// reset modal values
 				selectedDuration.value = 1
+				setStart(hour)
+				showDurationModal.value = true
 
-				// FIXME this should only call the modal
-				// The modal then calls DaysStore.addSlot() and .fetchDays()
+				if (hourHasReservation && currentSlotId) setSlotID(currentSlotId)
 
-				// const currentDay = days.value.find(
-				// 	day => day.date.getDate() === currentDay.value?.date.getDate()
-				// )
-				const dayId = currentDay.value?.id
-				const gymId = currentGym.value?.id
-				const courtId = currentCourt.value?.id
-				const start = hour
+				// FIXME duration modal
+				// save additional data and update selection store on click
+				// hourStart
+				// hourEnd: if hasReservation, then ask for confirmation
+				// => show only explanation with confirmation button
+				// hourEnd: if !hasReservation, then ask for duration
+				// => open duration modal
 
 				selectedHour.value = hour
-				showDurationModal.value = true
 
 				// FIXME await for input? see link above
 				const end = hour + 1
-
-				const queryObject = {
-					dayId,
-					gymId,
-					courtId,
-					start,
-					end,
-					...(hourHasReservation && { slotId: currentSlotId }),
-				}
-				console.log('query from component: ', queryObject)
-
-				// const response = await addSlot(queryObject)
-				// console.log('addSlot response: ', response);
-
-				// TODO fetch only the one updated day and replace days with it
-				await fetchDays(new Date())
-				console.log('updated days fetched')
 			}
 		}
 	}
@@ -273,7 +256,6 @@
 			v-show="showDurationModal"
 			:show-modal="showDurationModal"
 			:slot-start="selectedHour"
-			:gym-end="currentGym?.end"
 			@toggle-modal="toggleDurationModal"
 			@confirm-duration="setDuration"
 		/>
