@@ -2,35 +2,44 @@
 	import { useSelection } from '@/store/selection'
 	import { useDaysStore } from '@/store/bookingDays'
 
+	// FIXME default end: missing implementation of global settings
 	const HOUR_END_DEFAULT = 20
 
 	const props = defineProps<{
 		showModal: boolean
-		slotStart: number
 	}>()
+
+	const emit = defineEmits(['toggle-modal'])
 
 	// selection store
 	const selectionStore = useSelection()
 	const { day, gym, court, slot, hourStart, hourEnd } =
 		storeToRefs(selectionStore)
+	const { setEndByDuration } = selectionStore
 
 	// days
 	const dayStore = useDaysStore()
 	const { fetchDays, addSlot } = dayStore
 
-	const emit = defineEmits(['toggle-modal'])
-
-	const latestHour = ref(HOUR_END_DEFAULT)
+	// local state
 	const duration = ref(1)
 
-	// FIXME restrict to minimal value 1
-	const longestDuration = computed(() => {
-		return latestHour.value - props.slotStart
-	})
+	// set input to maximum duration, if it exceeds the maximum
+	watch(
+		() => props.showModal,
+		(newValue, _) => {
+			const showModal = Boolean(newValue)
+			const lastDurationExceedsMaximum = duration.value > longestDuration.value
+			if (showModal && lastDurationExceedsMaximum)
+				duration.value = longestDuration.value
+		}
+	)
 
-	onUpdated(() => {
-		if (gym.value?.end) return (latestHour.value = gym.value.end)
-		latestHour.value = HOUR_END_DEFAULT
+	// FIXME determine startToNextSlot
+	const longestDuration = computed(() => {
+		const startToGymEnd = (gym.value?.end || HOUR_END_DEFAULT) - hourStart.value
+		const startToNextSlot = 1
+		return Math.max(startToGymEnd, startToNextSlot)
 	})
 
 	const confirmReservation = async () => {
@@ -39,10 +48,8 @@
 		const courtId = court.value!.id
 		const start = hourStart.value
 
-		// FIXME
-		const end = start + 1
+		const end = setEndByDuration(duration.value)
 
-		// BUG follow queryobject dates and debug the whole 💩
 		const queryObject = {
 			dayId,
 			gymId,
@@ -53,12 +60,11 @@
 		}
 		console.log('query from component: ', queryObject)
 
-		// FIXME this modal  calls DaysStore.addSlot() and .fetchDays()
 		const response = await addSlot(queryObject)
 		console.log('addSlot response: ', response)
 
 		// TODO fetch only the one updated day and replace days with it
-		// await fetchDays(new Date())
+		await fetchDays(new Date())
 		console.log('updated days fetched')
 		emit('toggle-modal')
 	}
@@ -79,12 +85,9 @@
 					<div class="closer icon descending"></div>
 				</button>
 
-				<span>{{ `${slotStart} - ${gym}` }}</span>
-
-				<p>test: {{ day?.id }}</p>
-
 				<div class="wrapper modal body">
 					<div class="wrapper input element">
+						<!-- FIXME show alternative text if slotID exists -->
 						<label for="duration-input">Duration</label>
 						<input
 							id="duration-input"

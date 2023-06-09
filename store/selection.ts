@@ -148,6 +148,9 @@ export const useSelection = defineStore('selection', () => {
 	}
 	const setStart = (inputStart: number) => (hourStart.value = inputStart)
 	const setEnd = (inputEnd: number) => (hourEnd.value = inputEnd)
+	const setEndByDuration = (duration: number) => {
+		return (hourEnd.value = hourStart.value + duration)
+	}
 
 	/*****************************
 	 * 			Actions
@@ -161,10 +164,6 @@ export const useSelection = defineStore('selection', () => {
 		gymID.value = initialGym.id
 		courtID.value = initialCourt.id
 	}
-
-	/*********************************
-	 * 					Watchers
-	 ********************************/
 
 	return {
 		day,
@@ -183,6 +182,7 @@ export const useSelection = defineStore('selection', () => {
 		setSlotID,
 		setStart,
 		setEnd,
+		setEndByDuration,
 		initializeStoreValues,
 	}
 })

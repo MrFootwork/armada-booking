@@ -62,13 +62,7 @@
 	})
 
 	// duration modal
-	const selectedHour = ref(0)
 	const selectedDuration = ref(1)
-
-	function setDuration(inputDuration: number) {
-		selectedDuration.value = inputDuration
-		console.log('duration set to ', selectedDuration.value)
-	}
 
 	// grid coordinates columns: wrapper slots
 	const columnFirstPlayer = 2
@@ -147,29 +141,13 @@
 			}
 
 			async function openDurationModal() {
-				// reset modal values
-				selectedDuration.value = 1
+				// set hourStart of selection store
 				setStart(hour)
-
-				selectedHour.value = hour
-
-				// FIXME await for input? see link above
-				const end = hour + 1
-
-				// add slot to existing reservation
+				// slotID pushed to api adds player, no slotID creates new slot
 				if (hourHasReservation && currentSlotId) setSlotID(currentSlotId)
 				if (!hourHasReservation || !currentSlotId) setSlotID(null)
-
 				// open modal
 				showDurationModal.value = true
-
-				// FIXME duration modal
-				// save additional data and update selection store on click
-				// hourStart
-				// hourEnd: if hasReservation, then ask for confirmation
-				// => show only explanation with confirmation button
-				// hourEnd: if !hasReservation, then ask for duration
-				// => open duration modal
 			}
 		}
 	}
@@ -194,6 +172,9 @@
 					const slotElement = document.createElement('div')
 					slotElement.setAttribute('class', 'slot booked')
 					slotElement.textContent = `${currentSlot.player[player].name}`
+					slotElement.setAttribute('data-slot-id', currentSlot.id)
+
+					// testing content
 					slotElement.title = `
 	       slot hourIndex: ${currentSlot.hourIndex}
 	       slot start local: ${startDate.toLocaleTimeString(preferred.value, {
@@ -261,9 +242,7 @@
 		<ScheduleModalDuration
 			v-show="showDurationModal"
 			:show-modal="showDurationModal"
-			:slot-start="selectedHour"
 			@toggle-modal="toggleDurationModal"
-			@confirm-duration="setDuration"
 		/>
 
 		<div class="wrapper hour-grid">
