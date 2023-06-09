@@ -11,11 +11,12 @@
 
 	// selection store
 	const selectionStore = useSelection()
-	const { day, gym, court, hourStart, hourEnd } = storeToRefs(selectionStore)
+	const { day, gym, court, slot, hourStart, hourEnd } =
+		storeToRefs(selectionStore)
 
 	// days
 	const dayStore = useDaysStore()
-	const { fetchDays } = dayStore
+	const { fetchDays, addSlot } = dayStore
 
 	const emit = defineEmits(['toggle-modal'])
 
@@ -33,27 +34,28 @@
 	})
 
 	const confirmReservation = async () => {
-		const dayId = day.value?.id
-		const gymId = gym.value?.id
-		const courtId = court.value?.id
+		const dayId = day.value!.id
+		const gymId = gym.value!.id
+		const courtId = court.value!.id
 		const start = hourStart.value
 
-		const end = 12
+		// FIXME
+		const end = start + 1
 
+		// BUG follow queryobject dates and debug the whole 💩
 		const queryObject = {
 			dayId,
 			gymId,
 			courtId,
 			start,
 			end,
-			// ...(hourHasReservation && { slotId: currentSlotId }),
+			...(Boolean(slot.value) && { slotId: slot.value?.id }),
 		}
 		console.log('query from component: ', queryObject)
 
 		// FIXME this modal  calls DaysStore.addSlot() and .fetchDays()
-
-		// const response = await addSlot(queryObject)
-		// console.log('addSlot response: ', response);
+		const response = await addSlot(queryObject)
+		console.log('addSlot response: ', response)
 
 		// TODO fetch only the one updated day and replace days with it
 		// await fetchDays(new Date())

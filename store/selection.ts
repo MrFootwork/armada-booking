@@ -129,16 +129,23 @@ export const useSelection = defineStore('selection', () => {
 	 * 			Slot
 	 ****************************/
 	// store
-	const slotID = ref('🍊')
+	const slotID = ref<Slot['id'] | null>(null)
 	const hourStart = ref(0)
 	const hourEnd = ref(0)
 	// getters public
 	const slot = computed(() => {
-		return court.value?.slots.find(({ id }) => id === slotID.value)
+		return court.value?.slots.find(({ id }) => id === slotID.value) || null
 	})
 
 	// set store values
-	const setSlotID = (id: string) => (slotID.value = id)
+	const setSlotID = (id: string | null) => {
+		if (!slotID) {
+			slotID.value = null
+			return
+		}
+		slotID.value = id
+		return
+	}
 	const setStart = (inputStart: number) => (hourStart.value = inputStart)
 	const setEnd = (inputEnd: number) => (hourEnd.value = inputEnd)
 

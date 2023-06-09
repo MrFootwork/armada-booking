@@ -16,7 +16,7 @@
 
 	// days
 	const dayStore = useDaysStore()
-	const { fetchDays } = dayStore
+	const { fetchDays, addSlot } = dayStore
 
 	// selection
 	const selectionStore = useSelection()
@@ -24,7 +24,9 @@
 		day: currentDay,
 		gym: currentGym,
 		court: currentCourt,
+		slot: currentSlot,
 		hourStart,
+		hourEnd,
 	} = storeToRefs(selectionStore)
 	const { setSlotID, setStart, setEnd } = selectionStore
 
@@ -148,9 +150,18 @@
 				// reset modal values
 				selectedDuration.value = 1
 				setStart(hour)
-				showDurationModal.value = true
 
+				selectedHour.value = hour
+
+				// FIXME await for input? see link above
+				const end = hour + 1
+
+				// add slot to existing reservation
 				if (hourHasReservation && currentSlotId) setSlotID(currentSlotId)
+				if (!hourHasReservation || !currentSlotId) setSlotID(null)
+
+				// open modal
+				showDurationModal.value = true
 
 				// FIXME duration modal
 				// save additional data and update selection store on click
@@ -159,11 +170,6 @@
 				// => show only explanation with confirmation button
 				// hourEnd: if !hasReservation, then ask for duration
 				// => open duration modal
-
-				selectedHour.value = hour
-
-				// FIXME await for input? see link above
-				const end = hour + 1
 			}
 		}
 	}

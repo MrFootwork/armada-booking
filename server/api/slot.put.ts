@@ -1,5 +1,5 @@
 // FIXME api endpoint for posting a single specific slot
-import { MongoClient, ObjectId } from 'mongodb'
+import { MongoClient, ObjectId, DayUpdated } from 'mongodb'
 // import replaceId from '@/server/utils/mongo/replaceId'
 import { Day } from '@/model/TDay.model'
 import { Slot } from '@/model/TSlot.model'
@@ -22,38 +22,53 @@ export default defineEventHandler(async event => {
 	console.log('user: ', userLoggedIn)
 
 	const queryObject = getQuery(event)
-	const slotInserted = await putSlot(queryObject)
+
+	const { mongoURI } = useRuntimeConfig()
+	const mongoClient = new MongoClient(mongoURI)
+	let slotPut: DayUpdated
+
+	try {
+		await mongoClient.connect()
+		const slotExists = await searchExistingSlots(queryObject)
+		slotPut = await putSlot(queryObject)
+	} catch (e) {
+		console.error('⚠ Could not put slot on database. ', '\n', e)
+		throw new Error(e)
+	} finally {
+		await mongoClient.close()
+	}
 
 	return {
 		api: 'slot.put',
 		in: queryObject,
-		out: slotInserted,
+		out: slotPut,
 	}
-})
 
-async function putSlot(query: {
-	dayId: Day['id']
-	gymId: Day['gyms'][number]['id']
-	courtId: Day['gyms'][number]['courts'][number]['id']
-	day: Date
-	start: number
-	end: number
-	timeZone: 'Europe/Bucharest'
-	slotId?: Slot['id']
-}) {
-	const { mongoURI } = useRuntimeConfig()
-	const mongoClient = new MongoClient(mongoURI)
-	const targetDate = new Date(query.day)
-	const playerJoinsSlot = new Boolean(query.slotId).valueOf()
+	async function searchExistingSlots(queryObject: any) {
+		// check for slot
+	}
 
-	console.log('***************************')
-	console.log('*         putSlot         *')
-	console.log('***************************')
-	console.log('playerJoinsSlot ', playerJoinsSlot, query.slotId)
-	console.log('query in api: ', query)
+	async function putSlot(query: {
+		dayId: Day['id']
+		gymId: Day['gyms'][number]['id']
+		courtId: Day['gyms'][number]['courts'][number]['id']
+		day: Date
+		start: number
+		end: number
+		timeZone: 'Europe/Bucharest'
+		slotId?: Slot['id']
+	}) {
+		console.log('query from api: ', query)
 
-	try {
-		await mongoClient.connect()
+		const targetDate = new Date(query.day)
+		const playerJoinsSlot = new Boolean(query.slotId).valueOf()
+
+		console.log('***************************')
+		console.log('*   putSlot methods       *')
+		console.log('***************************')
+		console.log('playerJoinsSlot ', playerJoinsSlot, query.slotId)
+		console.log('query in api: ', query)
+
 		const db = mongoClient.db('bookings')
 
 		// build slot element
@@ -122,10 +137,12 @@ async function putSlot(query: {
 			'_id': new ObjectId(query.dayId),
 			'gyms.id': new ObjectId(query.gymId),
 		}
+
 		//build the path property for slot/player navigation
 		const pathProperty =
 			`gyms.$.courts.${courtIndex}.slots` +
 			(playerJoinsSlot ? `.${slotIndex}.player` : '')
+
 		// putting them together for mongo's push command
 		let keyValueObject: Slot | Slot['player'][number] = {}
 		keyValueObject[pathProperty] = slotValue || playerValue
@@ -139,10 +156,5 @@ async function putSlot(query: {
 		console.log('Added new slot/player to database.')
 
 		return dayUpdated
-	} catch (e) {
-		console.error('Could not update day on database. ', '\n', e)
-		throw new Error(e)
-	} finally {
-		await mongoClient.close()
 	}
-}
+})

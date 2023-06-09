@@ -38,6 +38,8 @@ export const useDaysStore = defineStore('days', () => {
 			to: lastDate.toISOString(),
 		}
 
+		console.log('query from store: ', queryObject)
+
 		const { data, error } = await useFetch(
 			`/api/days?${new URLSearchParams(queryObject).toString()}`,
 			{ method: 'GET' }
@@ -90,7 +92,8 @@ export const useDaysStore = defineStore('days', () => {
 		// when I book from Germany I will always
 		// only consider Romanian local times
 		const timeZone = 'Europe/Bucharest'
-		const day = days.value.find(day => day.id === dayId)?.date
+		// querying as date object led to queryObject.day = '"2023-06-08T21:00:00.000Z"'
+		const day = days.value.find(day => day.id === dayId)?.date.toISOString()
 
 		const queryObject = {
 			dayId,
@@ -103,7 +106,7 @@ export const useDaysStore = defineStore('days', () => {
 			slotId,
 		}
 
-		console.log('query: ', queryObject)
+		console.log('query: from store to api', queryObject)
 
 		const { data, error } = await useFetch(`/api/slot`, {
 			query: queryObject,
