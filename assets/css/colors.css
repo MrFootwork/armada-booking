@@ -4,7 +4,8 @@
 :root.light {
   --background-color: hsl(240, 10%, 92%);
   --font-color      : black;
-  --highlight-color : #732937;
+  --font-color-light: hsl(169, 47%, 90%);
+  --highlight-color : hsl(349, 47%, 31%);
 
   --card-color-primary  : hsl(240, 10%, 86%);
   --card-color-secondary: hsl(240, 10%, 80%);
@@ -29,8 +30,9 @@
 /* dark mode */
 :root.dark {
   --background-color: hsl(240, 10%, 13%);
-  --font-color      : white;
-  --highlight-color : #732937;
+  --font-color      : hsl(169, 47%, 90%);
+  --font-color-light: hsl(169, 47%, 90%);
+  --highlight-color : hsl(349, 47%, 31%);
 
   --card-color-primary  : hsl(240, 10%, 20%);
   --card-color-secondary: hsl(240, 10%, 26%);

@@ -13,18 +13,17 @@
 
 	// selection store
 	const selectionStore = useSelection()
-	const { day, gym, court, slot, hourStart, hourEnd } =
-		storeToRefs(selectionStore)
+	const { day, gym, court, slot, hourStart } = storeToRefs(selectionStore)
 	const { setEndByDuration } = selectionStore
 
 	// days
 	const dayStore = useDaysStore()
-	const { fetchDays, addSlot } = dayStore
 
 	// local state
 	const duration = ref(1)
 
-	// set input to maximum duration, if it exceeds the maximum
+	// set input to maximal allowed duration,
+	// if it exceeds the maximum
 	watch(
 		() => props.showModal,
 		(newValue, _) => {
@@ -37,8 +36,19 @@
 
 	// FIXME determine startToNextSlot
 	const longestDuration = computed(() => {
-		const startToGymEnd = (gym.value?.end || HOUR_END_DEFAULT) - hourStart.value
-		const startToNextSlot = 1
+		const startToGymEnd = (gym.value?.end ?? HOUR_END_DEFAULT) - hourStart.value
+		const startToNextSlot = (() => {
+			if (court.value?.slots.length) {
+				// start of next slot - start of this slot
+				console.log('sibling slots: ', court.value?.slots)
+				// console.log(
+				// 	'start of first sibling slot: ',
+				// 	court.value?.slots[0].start?.getHours() ?? 0
+				// )
+				return 1
+			}
+			return 1
+		})()
 		return Math.max(startToGymEnd, startToNextSlot)
 	})
 
@@ -58,15 +68,13 @@
 			end,
 			...(Boolean(slot.value) && { slotId: slot.value?.id }),
 		}
-		console.log('query from component: ', queryObject)
 
-		const response = await addSlot(queryObject)
-		console.log('addSlot response: ', response)
+		const response = await dayStore.addSlot(queryObject)
+
+		emit('toggle-modal')
 
 		// TODO fetch only the one updated day and replace days with it
-		await fetchDays(new Date())
-		console.log('updated days fetched')
-		emit('toggle-modal')
+		await dayStore.fetchDays(new Date())
 	}
 </script>
 

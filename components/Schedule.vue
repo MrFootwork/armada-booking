@@ -272,7 +272,7 @@
 
 <style lang="scss">
 	.slot {
-		color: white;
+		color: var(--font-color-light);
 		background-color: var(--highlight-color);
 
 		margin: 1px 0;
