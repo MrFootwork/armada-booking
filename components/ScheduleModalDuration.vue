@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	import { useSelection } from '@/store/selection'
 	import { useDaysStore } from '@/store/bookingDays'
+	import { Slot } from '~/model/TSlot.model'
 
 	// FIXME default end: missing implementation of global settings
 	const HOUR_END_DEFAULT = 20
@@ -38,14 +39,26 @@
 	const longestDuration = computed(() => {
 		const startToGymEnd = (gym.value?.end ?? HOUR_END_DEFAULT) - hourStart.value
 		const startToNextSlot = (() => {
-			if (court.value?.slots.length) {
+			console.log('slot count: ', court.value?.slots.length)
+			if (court.value?.slots.length ?? 0 > 0) {
 				// start of next slot - start of this slot
 				console.log('sibling slots: ', court.value?.slots)
-				// console.log(
-				// 	'start of first sibling slot: ',
-				// 	court.value?.slots[0].start?.getHours() ?? 0
-				// )
-				return 1
+				console.log('hourStart.value: ', hourStart.value)
+
+				// BUG create minimal repro of bug
+				// similar questions
+				// https://stackoverflow.com/questions/74155795/unhandled-error-during-execution-of-render-function-in-vue-js
+				// https://stackoverflow.com/questions/70283134/vue-warn-unhandled-error-during-execution-of-render-function-of-scheduler-flush
+
+				// const slotCopy = [...court.value?.slots]
+				const slotCopy = court.value?.slots ?? []
+				console.log('slot copy: ', slotCopy)
+				// FIXME try sorting the original slot object instead
+				// if that doesn't work => ask stackoverflow community
+				const nextSlot = slotCopy.sort((slotA: Slot, slotB: Slot) => {
+					return slotA.start.getHours() - slotB.start.getHours()
+				})
+				console.log('next slot: ', nextSlot)
 			}
 			return 1
 		})()
