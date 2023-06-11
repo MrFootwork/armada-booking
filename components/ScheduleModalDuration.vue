@@ -1,7 +1,6 @@
 <script setup lang="ts">
 	import { useSelection } from '@/store/selection'
 	import { useDaysStore } from '@/store/bookingDays'
-	import { Slot } from '~/model/TSlot.model'
 
 	// FIXME default end: missing implementation of global settings
 	const HOUR_END_DEFAULT = 20
@@ -24,61 +23,58 @@
 	} = storeToRefs(selectionStore)
 	const { setEndByDuration } = selectionStore
 
-	// days
+	// day store
 	const dayStore = useDaysStore()
 
-	// local state
+	/*****************************
+	 * 		input handling
+	 ****************************/
 	const duration = ref(1)
 
-	// FIXME determine startToNextSlot
 	const longestDuration = computed(() => {
+		const NO_RESTRICTION = 99
+
 		const startToGymEnd = (gym.value?.end ?? HOUR_END_DEFAULT) - hourStart.value
+
 		const startToNextSlot = (() => {
-			const currentCourtHasSlots = court.value?.slots.length ?? 0 > 0
 			const modalIsOpened = props.showModal
+			const currentCourtHasSlots = court.value?.slots.length ?? 0 > 0
 
-			if (modalIsOpened && currentCourtHasSlots) {
-				// start of next slot - start of this slot
-				console.log('sibling slots: ', court.value?.slots)
-				console.log('hourStart.value: ', hourStart.value)
-				console.log('slot sorted: ', slotSorted.value)
+			if (!(modalIsOpened || currentCourtHasSlots)) return NO_RESTRICTION
 
-				const nextSlot = slotSorted.value?.find(slot => {
-					return new Date(slot.start).getHours() > hourStart.value
-				})
+			const nextSlot = slotSorted.value?.find(
+				slot => new Date(slot.start).getHours() > hourStart.value
+			)
 
-				const nextSlotStartHour = (() => {
-					if (nextSlot) {
-						return new Date(nextSlot.start).getHours()
-					}
-					return hourStart.value + 1
-				})()
+			if (!nextSlot) return NO_RESTRICTION
 
-				console.log('next slot: ', nextSlot)
-				console.log('next slot start hour: ', nextSlotStartHour)
+			const nextSlotStartHour = new Date(nextSlot.start).getHours()
+			const maximalDurationToNextSlot = nextSlotStartHour - hourStart.value
 
-				return nextSlotStartHour - hourStart.value || 1
-			}
-
-			return 1
+			return maximalDurationToNextSlot
 		})()
 
-		console.log('longestDuration: ', Math.min(startToGymEnd, startToNextSlot))
+		// startToNextSlot is 99 if not restricted
+		// startToGymEnd is the only restriction in these cases
 		return Math.min(startToGymEnd, startToNextSlot)
 	})
 
-	// set input to maximal allowed duration,
-	// if it exceeds the maximum
+	// set duration input down to maximal allowed,
+	// if maximum is lower
 	watch(
 		() => props.showModal,
 		(newValue, _) => {
 			const showModal = Boolean(newValue)
 			const lastDurationExceedsMaximum = duration.value > longestDuration.value
+
 			if (showModal && lastDurationExceedsMaximum)
 				duration.value = longestDuration.value
 		}
 	)
 
+	/*****************************
+	 * 	request slot addition
+	 ****************************/
 	const confirmReservation = async () => {
 		const dayId = day.value!.id
 		const gymId = gym.value!.id
