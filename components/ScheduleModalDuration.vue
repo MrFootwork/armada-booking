@@ -3,6 +3,7 @@
 	import { useDaysStore } from '@/store/bookingDays'
 
 	// FIXME default end: missing implementation of global settings
+	const MINIMAL_DURATION = 1
 	const HOUR_END_DEFAULT = 20
 
 	const props = defineProps<{
@@ -33,7 +34,7 @@
 		return Boolean(slotSelected.value)
 	})
 
-	const duration = ref(1)
+	const duration = ref(MINIMAL_DURATION)
 
 	const longestDuration = computed(() => {
 		const NO_RESTRICTION = 99
@@ -85,7 +86,13 @@
 		const courtId = court.value!.id
 		const start = hourStart.value
 
-		const end = setEndByDuration(duration.value)
+		// input must be between MINIMAL_DURATION and longestDuration
+		const durationValidated = (() => {
+			if (duration.value < MINIMAL_DURATION) return MINIMAL_DURATION
+			return Math.min(duration.value, longestDuration.value)
+		})()
+
+		const end = setEndByDuration(durationValidated)
 
 		const queryObject = {
 			dayId,
@@ -128,21 +135,26 @@
 						<input
 							id="duration-input"
 							type="number"
-							min="1"
+							:min="MINIMAL_DURATION"
 							:max="longestDuration"
 							v-model="duration"
 						/>
+						<label for="duration-input">Max: {{ longestDuration }}</label>
 					</div>
-					<div v-else>
+
+					<div v-else class="wrapper input element">
 						<p>
 							You wish to play within an existing slot. Do you want to add
 							yourself to this slot created by
-							<span>{{ slotSelected?.player[0].bookedBy }}</span> ?
+							<span class="organizer">{{
+								slotSelected?.player[0].bookedBy
+							}}</span>
+							?
 						</p>
 					</div>
 
 					<button class="confirm booking" @click="confirmReservation">
-						Confirm Duration
+						Confirm
 					</button>
 				</div>
 			</div>
@@ -169,6 +181,7 @@
 			padding: 1.2rem;
 			padding-top: 2.4rem;
 			z-index: 2;
+			width: 80%;
 
 			background-color: var(--card-color-secondary);
 			border-radius: 0.8rem;
@@ -176,6 +189,13 @@
 
 			.wrapper.modal.body {
 				.wrapper.input.element {
+					p {
+						// margin: auto;
+						span.organizer {
+							color: var(--highlight-color);
+							font-weight: 1200;
+						}
+					}
 				}
 
 				button.confirm.booking {
