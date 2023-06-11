@@ -132,12 +132,13 @@ export const useSelection = defineStore('selection', () => {
 	const slotID = ref<Slot['id'] | null>(null)
 	const hourStart = ref(0)
 	const hourEnd = ref(0)
+
 	// getters public
 	const slot = computed(() => {
 		return court.value?.slots.find(({ id }) => id === slotID.value) || null
 	})
 	const slotSorted = computed(() => {
-		return court.value?.slots.toSorted((slotA, slotB) => {
+		return court.value?.slots.sort((slotA, slotB) => {
 			const dateA = new Date(slotA.start)
 			const dateB = new Date(slotB.start)
 			return dateA.getHours() - dateB.getHours()
@@ -146,12 +147,8 @@ export const useSelection = defineStore('selection', () => {
 
 	// set store values
 	const setSlotID = (id: string | null) => {
-		if (!slotID) {
-			slotID.value = null
-			return
-		}
-		slotID.value = id
-		return
+		if (!slotID) return (slotID.value = null)
+		return (slotID.value = id)
 	}
 	const setStart = (inputStart: number) => (hourStart.value = inputStart)
 	const setEnd = (inputEnd: number) => (hourEnd.value = inputEnd)

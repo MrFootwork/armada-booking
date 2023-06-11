@@ -47,22 +47,25 @@
 	/*******************************
 	 *        calendar view
 	 *******************************/
-	const hourFirstDefault = 8
-	const hourLastDefault = 22
+	const FIRST_HOUR_DEFAULT = 8
+	const LAST_HOUR_DEFAULT = 22
 
-	const hourFirst = computed(() => currentGym.value?.start || hourFirstDefault)
-	const hourLast = computed(() => currentGym.value?.end || hourLastDefault)
+	const hourFirst = computed(
+		() => currentGym.value?.start ?? FIRST_HOUR_DEFAULT
+	)
+	const hourLast = computed(() => currentGym.value?.end ?? LAST_HOUR_DEFAULT)
 	const hourCount = computed(() => hourLast.value - hourFirst.value)
 
 	const hours = computed(() => {
 		return Array.from(
-			{ length: hourCount.value + 1 }, // +1 for additional border
+			{ length: hourCount.value }, // +1 for additional border
 			(_, i) => i + hourFirst.value // values are mapped to the hour values
 		)
 	})
 
-	// duration modal
-	const selectedDuration = ref(1)
+	const gridHours = computed(() => {
+		return [...hours.value, hours.value.length + hourFirst.value]
+	})
 
 	// grid coordinates columns: wrapper slots
 	const columnFirstPlayer = 2
@@ -175,8 +178,7 @@
 					slotElement.setAttribute('data-slot-id', currentSlot.id)
 
 					// testing content
-					slotElement.title = `
-	       slot hourIndex: ${currentSlot.hourIndex}
+					slotElement.title = `slot hourIndex: ${currentSlot.hourIndex}
 	       slot start local: ${startDate.toLocaleTimeString(preferred.value, {
 						hour: 'numeric',
 						timeZone: 'Europe/Bucharest',
@@ -248,7 +250,7 @@
 		<div class="wrapper hour-grid">
 			<div
 				class="hour-grid hour"
-				v-for="hour in hours"
+				v-for="hour in gridHours"
 				:key="hour.toString()"
 				:id="hour.toString()"
 			>
@@ -316,11 +318,13 @@
 		gap: 0.2rem;
 		grid-template-areas: 'hour-grid schedule';
 
+		$hour-height: 2rem;
+
 		.wrapper.hour-grid {
 			grid-area: hour-grid;
 
 			.hour-grid.hour {
-				height: 2rem;
+				height: $hour-height;
 				position: relative;
 
 				display: grid;
@@ -340,8 +344,6 @@
 			position: relative;
 			grid-area: schedule;
 
-			$hour-height: 2rem;
-
 			display: grid;
 			gap: 0;
 			grid-template-columns: 1fr;
@@ -349,8 +351,14 @@
 			padding: 0;
 
 			.schedule.hour {
-				height: 2rem;
+				height: $hour-height;
 				border-top: 1px solid grey;
+
+				// grid .schedule-content fills up one more element
+				// => last hour row is actually 2nd last row
+				&:nth-last-child(2) {
+					border-bottom: 1px solid grey;
+				}
 
 				&:hover,
 				&:focus {

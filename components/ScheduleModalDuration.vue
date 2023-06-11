@@ -4,7 +4,7 @@
 
 	// FIXME default end: missing implementation of global settings
 	const MINIMAL_DURATION = 1
-	const HOUR_END_DEFAULT = 20
+	const HOUR_END_DEFAULT = 22
 
 	const props = defineProps<{
 		showModal: boolean
@@ -39,8 +39,10 @@
 	const longestDuration = computed(() => {
 		const NO_RESTRICTION = 99
 
+		// duration of this slot's start to the gym's end
 		const startToGymEnd = (gym.value?.end ?? HOUR_END_DEFAULT) - hourStart.value
 
+		// duration of this slot's start to the beginning of the next slot's start
 		const startToNextSlot = (() => {
 			const modalIsOpened = props.showModal
 			const currentCourtHasSlots = court.value?.slots.length ?? 0 > 0
@@ -129,8 +131,7 @@
 
 				<div class="wrapper modal body">
 					<div v-if="!slotOverlaps" class="wrapper input element">
-						<!-- TODO show alternative text if slotID exists -->
-
+						<!-- FIXME better styling -->
 						<label for="duration-input">Duration</label>
 						<input
 							id="duration-input"
