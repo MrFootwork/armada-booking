@@ -136,6 +136,13 @@ export const useSelection = defineStore('selection', () => {
 	const slot = computed(() => {
 		return court.value?.slots.find(({ id }) => id === slotID.value) || null
 	})
+	const slotSorted = computed(() => {
+		return court.value?.slots.toSorted((slotA, slotB) => {
+			const dateA = new Date(slotA.start)
+			const dateB = new Date(slotB.start)
+			return dateA.getHours() - dateB.getHours()
+		})
+	})
 
 	// set store values
 	const setSlotID = (id: string | null) => {
@@ -170,6 +177,7 @@ export const useSelection = defineStore('selection', () => {
 		gym,
 		court,
 		slot,
+		slotSorted,
 		hourStart,
 		hourEnd,
 		setDayIDByDate,

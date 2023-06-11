@@ -14,7 +14,14 @@
 
 	// selection store
 	const selectionStore = useSelection()
-	const { day, gym, court, slot, hourStart } = storeToRefs(selectionStore)
+	const {
+		day,
+		gym,
+		court,
+		slot: slotSelected,
+		slotSorted,
+		hourStart,
+	} = storeToRefs(selectionStore)
 	const { setEndByDuration } = selectionStore
 
 	// days
@@ -22,6 +29,43 @@
 
 	// local state
 	const duration = ref(1)
+
+	// FIXME determine startToNextSlot
+	const longestDuration = computed(() => {
+		const startToGymEnd = (gym.value?.end ?? HOUR_END_DEFAULT) - hourStart.value
+		const startToNextSlot = (() => {
+			const currentCourtHasSlots = court.value?.slots.length ?? 0 > 0
+			const modalIsOpened = props.showModal
+
+			if (modalIsOpened && currentCourtHasSlots) {
+				// start of next slot - start of this slot
+				console.log('sibling slots: ', court.value?.slots)
+				console.log('hourStart.value: ', hourStart.value)
+				console.log('slot sorted: ', slotSorted.value)
+
+				const nextSlot = slotSorted.value?.find(slot => {
+					return new Date(slot.start).getHours() > hourStart.value
+				})
+
+				const nextSlotStartHour = (() => {
+					if (nextSlot) {
+						return new Date(nextSlot.start).getHours()
+					}
+					return hourStart.value + 1
+				})()
+
+				console.log('next slot: ', nextSlot)
+				console.log('next slot start hour: ', nextSlotStartHour)
+
+				return nextSlotStartHour - hourStart.value || 1
+			}
+
+			return 1
+		})()
+
+		console.log('longestDuration: ', Math.min(startToGymEnd, startToNextSlot))
+		return Math.min(startToGymEnd, startToNextSlot)
+	})
 
 	// set input to maximal allowed duration,
 	// if it exceeds the maximum
@@ -34,36 +78,6 @@
 				duration.value = longestDuration.value
 		}
 	)
-
-	// FIXME determine startToNextSlot
-	const longestDuration = computed(() => {
-		const startToGymEnd = (gym.value?.end ?? HOUR_END_DEFAULT) - hourStart.value
-		const startToNextSlot = (() => {
-			console.log('slot count: ', court.value?.slots.length)
-			if (court.value?.slots.length ?? 0 > 0) {
-				// start of next slot - start of this slot
-				console.log('sibling slots: ', court.value?.slots)
-				console.log('hourStart.value: ', hourStart.value)
-
-				// BUG create minimal repro of bug
-				// similar questions
-				// https://stackoverflow.com/questions/74155795/unhandled-error-during-execution-of-render-function-in-vue-js
-				// https://stackoverflow.com/questions/70283134/vue-warn-unhandled-error-during-execution-of-render-function-of-scheduler-flush
-
-				// const slotCopy = [...court.value?.slots]
-				const slotCopy = court.value?.slots ?? []
-				console.log('slot copy: ', slotCopy)
-				// FIXME try sorting the original slot object instead
-				// if that doesn't work => ask stackoverflow community
-				const nextSlot = slotCopy.sort((slotA: Slot, slotB: Slot) => {
-					return slotA.start.getHours() - slotB.start.getHours()
-				})
-				console.log('next slot: ', nextSlot)
-			}
-			return 1
-		})()
-		return Math.max(startToGymEnd, startToNextSlot)
-	})
 
 	const confirmReservation = async () => {
 		const dayId = day.value!.id
@@ -79,7 +93,7 @@
 			courtId,
 			start,
 			end,
-			...(Boolean(slot.value) && { slotId: slot.value?.id }),
+			...(Boolean(slotSelected.value) && { slotId: slotSelected.value?.id }),
 		}
 
 		const response = await dayStore.addSlot(queryObject)
