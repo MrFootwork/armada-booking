@@ -132,7 +132,7 @@
 				<div class="wrapper modal body">
 					<div v-if="!slotOverlaps" class="wrapper input element">
 						<!-- FIXME better styling -->
-						<label for="duration-input">Duration</label>
+						<label for="duration-input" class="description">Duration</label>
 						<input
 							id="duration-input"
 							type="number"
@@ -140,7 +140,9 @@
 							:max="longestDuration"
 							v-model="duration"
 						/>
-						<label for="duration-input">Max: {{ longestDuration }}</label>
+						<label for="duration-input" class="sub-description"
+							>Max: {{ longestDuration }}</label
+						>
 					</div>
 
 					<div v-else class="wrapper input element">
@@ -190,12 +192,27 @@
 
 			.wrapper.modal.body {
 				.wrapper.input.element {
+					border: 1px solid green;
+
 					p {
 						// margin: auto;
 						span.organizer {
 							color: var(--highlight-color);
 							font-weight: 1200;
 						}
+					}
+
+					// FIXME improve styling
+					label.description {
+						border: 1px solid red;
+					}
+					input {
+						border: 1px solid red;
+					}
+					label.sub-description {
+						// margin-bottom: 15rem;
+						text-align: right;
+						border: 1px solid red;
 					}
 				}
 
