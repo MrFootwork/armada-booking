@@ -29,6 +29,10 @@
 	/*****************************
 	 * 		input handling
 	 ****************************/
+	const slotOverlaps = computed(() => {
+		return Boolean(slotSelected.value)
+	})
+
 	const duration = ref(1)
 
 	const longestDuration = computed(() => {
@@ -89,7 +93,7 @@
 			courtId,
 			start,
 			end,
-			...(Boolean(slotSelected.value) && { slotId: slotSelected.value?.id }),
+			...(slotOverlaps.value && { slotId: slotSelected.value?.id }),
 		}
 
 		const response = await dayStore.addSlot(queryObject)
@@ -117,8 +121,9 @@
 				</button>
 
 				<div class="wrapper modal body">
-					<div class="wrapper input element">
-						<!-- FIXME show alternative text if slotID exists -->
+					<div v-if="!slotOverlaps" class="wrapper input element">
+						<!-- TODO show alternative text if slotID exists -->
+
 						<label for="duration-input">Duration</label>
 						<input
 							id="duration-input"
@@ -127,6 +132,13 @@
 							:max="longestDuration"
 							v-model="duration"
 						/>
+					</div>
+					<div v-else>
+						<p>
+							You wish to play within an existing slot. Do you want to add
+							yourself to this slot created by
+							<span>{{ slotSelected?.player[0].bookedBy }}</span> ?
+						</p>
 					</div>
 
 					<button class="confirm booking" @click="confirmReservation">
