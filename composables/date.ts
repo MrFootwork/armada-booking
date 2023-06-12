@@ -28,6 +28,12 @@ export default function useDate(objDate: Date = new Date()) {
 		minute: '2-digit',
 	})
 
+	const romanian = new Date(
+		objDate.toLocaleString('en-US', {
+			timeZone: 'Europe/Bucharest',
+		})
+	)
+
 	/**
 	 * Returns a date object given to useDate()
 	 * with the time set to 0 since midnight.
@@ -85,5 +91,14 @@ export default function useDate(objDate: Date = new Date()) {
 
 		return datePlusDays
 	}
-	return { weekday, date, time, dateISO, resetTime, addDays, dateISOToFullISO }
+	return {
+		weekday,
+		date,
+		time,
+		dateISO,
+		romanian,
+		resetTime,
+		addDays,
+		dateISOToFullISO,
+	}
 }
