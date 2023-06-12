@@ -30,7 +30,7 @@
 	// days
 	const dayStore = useDaysStore()
 	const { days } = storeToRefs(dayStore)
-	const { fetchDays, addSlot } = dayStore
+	const { fetchDays } = dayStore
 
 	// selection
 	const selectionStore = useSelection()
@@ -169,6 +169,7 @@
 			<div class="selector date-picker">
 				<label for="date">Date</label>
 
+				<!-- FIXME🎨 inactive button style  -->
 				<div class="wrapper buttons">
 					<button class="left">
 						<SvgIcon
@@ -227,6 +228,7 @@
 				<label for="court">Court</label>
 
 				<div class="wrapper buttons">
+					<!-- FIXME🎨 inactive button style  -->
 					<button class="left">
 						<SvgIcon
 							class="icon court left"

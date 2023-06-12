@@ -29,10 +29,9 @@ export default defineEventHandler(async event => {
 
 	try {
 		await mongoClient.connect()
-		const slotExists = await searchExistingSlots(queryObject)
 		slotPut = await putSlot(queryObject)
 	} catch (e) {
-		console.error('⚠ Could not put slot on database. ', '\n', e)
+		console.error('⚠ Could not put slot on database. \n', e)
 		throw new Error(e)
 	} finally {
 		await mongoClient.close()
@@ -44,10 +43,6 @@ export default defineEventHandler(async event => {
 		out: slotPut,
 	}
 
-	async function searchExistingSlots(queryObject: any) {
-		// check for slot
-	}
-
 	async function putSlot(query: {
 		dayId: Day['id']
 		gymId: Day['gyms'][number]['id']
@@ -55,7 +50,7 @@ export default defineEventHandler(async event => {
 		day: Date
 		start: number
 		end: number
-		timeZone: 'Europe/Bucharest'
+		timeZone: string
 		slotId?: Slot['id']
 	}) {
 		console.log('query from api: ', query)

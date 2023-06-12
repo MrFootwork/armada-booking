@@ -2,7 +2,7 @@
 	import { useSelection } from '@/store/selection'
 	import { useDaysStore } from '@/store/bookingDays'
 
-	// FIXME default end: missing implementation of global settings
+	// FIXME global settings: settings store?
 	const MINIMAL_DURATION = 1
 	const HOUR_END_DEFAULT = 22
 
@@ -131,7 +131,7 @@
 
 				<div class="wrapper modal body">
 					<div v-if="!slotOverlaps" class="wrapper input element">
-						<!-- FIXME better styling -->
+						<!-- FIXME🎨 spacing and font sizes -->
 						<label for="duration-input" class="description">Duration</label>
 						<input
 							id="duration-input"
@@ -202,7 +202,7 @@
 						}
 					}
 
-					// FIXME improve styling
+					// FIXME🎨
 					label.description {
 						border: 1px solid red;
 					}

@@ -68,7 +68,7 @@
 	})
 
 	// grid coordinates columns: wrapper slots
-	const columnFirstPlayer = 2
+	const COLUMN_FIRST_PLAYER = 2
 	const wrapperSlots = ref<HTMLElement | null>(null)
 
 	let currentSlotsElements: HTMLDivElement[] = []
@@ -103,7 +103,7 @@
 			let currentSlotId: Slot['id'] | undefined = undefined
 
 			// determine column to add free slot
-			let gridColumn: number | null = columnFirstPlayer
+			let gridColumn: number | null = COLUMN_FIRST_PLAYER
 			let playersAtThisHour = 0
 
 			// there are at least one reservation at this hour
@@ -112,36 +112,36 @@
 
 				const hourOverlapsSlot = start <= hour && hour < end
 
-				if (hourOverlapsSlot) {
-					playersAtThisHour = players.length
-					currentSlotId = slotId
-				}
+				if (!hourOverlapsSlot) return false
 
-				return hourOverlapsSlot
+				playersAtThisHour = players.length
+				currentSlotId = slotId
+				return true
 			})
 
 			// less than 4 reservations are already made at this hour
 			const hourHasFreeSlots = playersAtThisHour < 4
 
-			// determine next free column
-			if (hourHasReservation && hourHasFreeSlots)
-				gridColumn += playersAtThisHour
+			// don't enter (free) slot creation, if slot is full
+			if (!hourHasFreeSlots) continue
 
-			if (hourHasFreeSlots) {
-				// create slot and its content
-				const slotElement = document.createElement('div')
-				slotElement.setAttribute('class', 'slot free')
-				slotElement.textContent = `➕`
-				// add click listener
-				slotElement.addEventListener('click', openDurationModal)
-				// slot placement
-				slotElement.style.gridColumn = `${gridColumn} / span ${
-					4 - playersAtThisHour
-				}`
-				slotElement.style.gridRow = `${gridRow} / span 1`
-				// add slot to slot array
-				currentSlotsElements.push(slotElement)
-			}
+			/*****************************
+			 * 			Slot Creation
+			 ****************************/
+			// slot and content
+			const slotElement = document.createElement('div')
+			slotElement.setAttribute('class', 'slot free')
+			slotElement.textContent = `➕`
+			// add click listener
+			slotElement.addEventListener('click', openDurationModal)
+			// slot placement
+			gridColumn += playersAtThisHour
+			slotElement.style.gridRow = `${gridRow} / span 1`
+			slotElement.style.gridColumn = `${gridColumn} / span ${
+				4 - playersAtThisHour
+			}`
+			// add slot to slot array
+			currentSlotsElements.push(slotElement)
 
 			async function openDurationModal() {
 				// set hourStart of selection store
@@ -197,7 +197,7 @@
 					// FIXME add click listener for editing and deletion
 
 					// slot placement
-					slotElement.style.gridColumn = `${player + columnFirstPlayer}`
+					slotElement.style.gridColumn = `${player + COLUMN_FIRST_PLAYER}`
 					slotElement.style.gridRow = `${start} / span ${duration}`
 
 					// add slot to slot array
