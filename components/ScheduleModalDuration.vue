@@ -180,6 +180,7 @@
 		}
 
 		.wrapper.modal.input {
+			// FIXME make this wrapper like background
 			position: relative;
 			padding: 1.2rem;
 			padding-top: 2.4rem;
@@ -191,6 +192,7 @@
 			@include buttonShadow();
 
 			.wrapper.modal.body {
+				// FIXME center the body
 				.wrapper.input.element {
 					border: 1px solid green;
 

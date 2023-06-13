@@ -96,10 +96,6 @@
 			)
 		})()
 
-		console.log('***************************')
-		console.log('*       free slots        *')
-		console.log('***************************')
-
 		// loop through rows (= each hour)
 		for (let i = 0; i < hours.value.length; i++) {
 			const hour = hours.value[i]
@@ -181,17 +177,12 @@
 
 					const startDate = new Date(currentSlot.start)
 					const endDate = new Date(currentSlot.end)
-					// console.log('dates: ', startDate.toISOString(), endDate.toISOString())
 
-					// grid starts at 1, not 0 => +1
+					// pretend browser is in romanian timezone
 					const startDateInRomania = useDate(startDate).romanian
 					const endDateInRomania = useDate(endDate).romanian
-					// console.log(
-					// 	'Romanian: ',
-					// 	startDateInRomania.toISOString(),
-					// 	endDateInRomania.toISOString()
-					// )
 
+					// grid starts at 1, not 0 => +1
 					const start = startDateInRomania.getHours() - hourFirst.value + 1
 					const duration =
 						endDateInRomania.getHours() - startDateInRomania.getHours()
@@ -204,27 +195,20 @@
 
 					// testing content
 					slotElement.title = `slot hourIndex: ${currentSlot.hourIndex}
-	       slot start local: ${startDateInRomania.toLocaleTimeString(
-						preferred.value,
-						{
-							hour: 'numeric',
-							timeZone: 'Europe/Bucharest',
-						}
-					)}
-	       slot start ISO: ${useDate(
-						new Date(currentSlot.start)
-					).romanian.toISOString()}
-	       slot end local: ${endDateInRomania.toLocaleTimeString(preferred.value, {
+slot start local: ${startDate.toLocaleTimeString(preferred.value, {
 						hour: 'numeric',
 						timeZone: 'Europe/Bucharest',
 					})}
-	       slot end ISO: ${useDate(
-						new Date(currentSlot.end)
-					).romanian.toISOString()}
-	       slot id: ${currentSlot.id}
-	       player id: ${currentSlot.player[player].id}
-	       player name: ${currentSlot.player[player].name}
-	       player organizer: ${currentSlot.player[player].bookedBy}`
+slot start ISO: ${startDate.toISOString()}
+slot end local: ${endDate.toLocaleTimeString(preferred.value, {
+						hour: 'numeric',
+						timeZone: 'Europe/Bucharest',
+					})}
+slot end ISO: ${endDate.toISOString()}
+slot id: ${currentSlot.id}
+player id: ${currentSlot.player[player].id}
+player name: ${currentSlot.player[player].name}
+player organizer: ${currentSlot.player[player].bookedBy}`
 
 					// FIXME add click listener for editing and deletion
 

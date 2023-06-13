@@ -7,6 +7,7 @@ const languageStore = useLanguage()
 const VALUE_OF_ONE_DAY = 24 * 60 * 60 * 1000
 const DAYS_VISIBLE_RANGE = 6
 
+// TODO check references for useDate() and clean up unnecessary functions
 export default function useDate(objDate: Date = new Date()) {
 	// 'en-US': Mon, Tues, ...
 	const weekday = objDate.toLocaleDateString(languageStore.preferred, {

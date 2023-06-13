@@ -87,8 +87,8 @@ export const useDaysStore = defineStore('days', () => {
 		end: number
 		slotId?: Slot['id']
 	}) {
-		// api needs the browser timezone to calculate the correct offset for the date
-		const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+		// browser always displays Romanian time and api must
+		const timeZone = 'Europe/Bucharest'
 
 		// querying as date object led to queryObject.day = '"2023-06-08T21:00:00.000Z"'
 		const day = days.value.find(day => day.id === dayId)?.date.toISOString()
