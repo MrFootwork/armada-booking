@@ -143,21 +143,15 @@
 				4 - playersAtThisHour
 			}`
 
-			// console.log('free slot: ', i, hour, gridRow)
-
 			// add slot to slot array
 			currentSlotsElements.push(slotElement)
 
-			// FIXME in Berlin: new slot is created one hour after
-			// FIXME in Berlin: max duration ist wrong
 			async function openDurationModal() {
 				// set hourStart of selection store
 				setStart(hour)
 				// slotID pushed to api adds player, no slotID creates new slot
 				if (hourHasReservation && currentSlotId) setSlotID(currentSlotId)
 				if (!hourHasReservation || !currentSlotId) setSlotID(null)
-
-				console.log('slot: ', currentSlot.value)
 
 				// open modal
 				showDurationModal.value = true

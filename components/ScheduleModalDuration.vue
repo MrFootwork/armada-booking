@@ -1,6 +1,7 @@
 <script setup lang="ts">
 	import { useSelection } from '@/store/selection'
 	import { useDaysStore } from '@/store/bookingDays'
+	import useDate from '@/composables/date'
 
 	// FIXME global settings: settings store?
 	const MINIMAL_DURATION = 1
@@ -49,13 +50,17 @@
 
 			if (!(modalIsOpened || currentCourtHasSlots)) return NO_RESTRICTION
 
-			const nextSlot = slotSorted.value?.find(
-				slot => new Date(slot.start).getHours() > hourStart.value
-			)
+			const nextSlot = slotSorted.value?.find(slot => {
+				return (
+					useDate(new Date(slot.start)).romanian.getHours() > hourStart.value
+				)
+			})
 
 			if (!nextSlot) return NO_RESTRICTION
 
-			const nextSlotStartHour = new Date(nextSlot.start).getHours()
+			const nextSlotStartHour = useDate(
+				new Date(nextSlot.start)
+			).romanian.getHours()
 			const maximalDurationToNextSlot = nextSlotStartHour - hourStart.value
 
 			return maximalDurationToNextSlot
