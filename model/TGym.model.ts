@@ -3,7 +3,7 @@ import { Court } from '@/model/TCourt.model'
 
 export type GymInput = Pick<
 	Gym,
-	'nameCode' | 'nameShort' | 'place' | 'start' | 'end'
+	'nameCode' | 'nameShort' | 'place' | 'start' | 'end' | 'courtCount' | 'courts'
 >
 
 export type Gym = {

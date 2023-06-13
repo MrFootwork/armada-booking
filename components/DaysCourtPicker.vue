@@ -143,13 +143,41 @@
 					}
 				}
 				&.sun-plaza {
-					grid-template: 1fr / repeat(4, 1fr);
+					grid-template: repeat(3, 1fr) / repeat(3, 1fr);
 					gap: 0.2rem;
-					grid-template-areas: 'court-1 court-2 court-3 court-4';
+					grid-template-areas:
+						'court-6 court-7 court-8'
+						'court-4 ....... court-5'
+						'court-1 court-2 court-3';
 
-					@for $i from 1 through 4 {
+					@for $i from 1 through 8 {
 						button.court.wrapper.court-#{$i} {
 							grid-area: court-#{$i};
+						}
+					}
+				}
+
+				$court-width: calc(min($dynamic-width, $max-width) / 5);
+
+				&.tonitza {
+					grid-template: repeat(2, 1fr) / repeat(2, 1fr);
+					gap: 0.2rem;
+					grid-template-areas:
+						'court-1 court-1'
+						'court-2 court-3';
+
+					@for $i from 1 through 3 {
+						button.court.wrapper.court-#{$i} {
+							grid-area: court-#{$i};
+						}
+					}
+
+					button.court.wrapper.court-1 {
+						& > img.court {
+							transform: rotate(180deg);
+						}
+						& > label {
+							width: calc(2 * #{$court-width});
 						}
 					}
 				}
@@ -169,8 +197,6 @@
 						outline: 0.4rem solid var(--highlight-color);
 						border-radius: 0.4rem;
 					}
-
-					$court-width: calc(min($dynamic-width, $max-width) / 5);
 
 					img.court {
 						width: $court-width;

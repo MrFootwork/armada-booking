@@ -1,5 +1,13 @@
 {
-	"cSpell.words": ["Antilopa", "Cristi", "Julietta", "opsz", "Sala", "wght"],
+	"cSpell.words": [
+		"Antilopa",
+		"Cristi",
+		"Julietta",
+		"opsz",
+		"Sala",
+		"tonitza",
+		"wght"
+	],
 
 	"[typescript][javascript][json][jsonc][css][html][markdown]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
