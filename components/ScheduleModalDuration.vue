@@ -190,7 +190,7 @@
 			padding: 1.2rem;
 			padding-top: 2.4rem;
 			z-index: 2;
-			width: 80%;
+			width: 100%;
 
 			background-color: var(--card-color-secondary);
 			border-radius: 0.8rem;
@@ -198,8 +198,13 @@
 
 			.wrapper.modal.body {
 				// FIXME center the body
+				// width: max(15rem, 80vw);
 				.wrapper.input.element {
-					border: 1px solid green;
+					// border: 1px solid green;
+					// padding: 1rem;
+
+					display: flex;
+					flex-flow: column;
 
 					p {
 						// margin: auto;
@@ -211,15 +216,18 @@
 
 					// FIXME🎨
 					label.description {
-						border: 1px solid red;
+						// border: 1px solid red;
 					}
 					input {
-						border: 1px solid red;
+						// border: 1px solid red;
+						text-align: right;
+						margin: 0.4rem 0;
+						width: 12rem;
 					}
 					label.sub-description {
-						// margin-bottom: 15rem;
 						text-align: right;
-						border: 1px solid red;
+						font-size: small;
+						// border: 1px solid red;
 					}
 				}
 
