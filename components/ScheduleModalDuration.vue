@@ -136,7 +136,6 @@
 
 				<div class="wrapper modal body">
 					<div v-if="!slotOverlaps" class="wrapper input element">
-						<!-- FIXME🎨 spacing and font sizes -->
 						<label for="duration-input" class="description">Duration</label>
 						<input
 							id="duration-input"
@@ -151,7 +150,7 @@
 					</div>
 
 					<div v-else class="wrapper input element">
-						<p>
+						<p class="alternative-text">
 							You wish to play within an existing slot. Do you want to add
 							yourself to this slot created by
 							<span class="organizer">{{
@@ -173,32 +172,40 @@
 <style scoped lang="scss">
 	.wrapper.modal.component {
 		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100vh;
+		width: 100vw;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
 		.modal-duration.blurry-background {
 			position: fixed;
 			top: 0;
 			left: 0;
-			height: 100%;
-			width: 100%;
+			height: 100vh;
+			width: 100vw;
 			backdrop-filter: blur(1px);
-			z-index: 1;
+			z-index: 2;
 		}
 
 		.wrapper.modal.input {
-			// FIXME make this wrapper like background
 			position: relative;
 			padding: 1.2rem;
 			padding-top: 2.4rem;
 			z-index: 2;
-			width: 100%;
+			width: max(50%, 20rem);
 
 			background-color: var(--card-color-secondary);
 			border-radius: 0.8rem;
 			@include buttonShadow();
 
 			.wrapper.modal.body {
-				// FIXME center the body
-				// width: max(15rem, 80vw);
+				display: flex;
+				flex-flow: column;
+
 				.wrapper.input.element {
 					// border: 1px solid green;
 					// padding: 1rem;
@@ -206,34 +213,35 @@
 					display: flex;
 					flex-flow: column;
 
-					p {
-						// margin: auto;
+					p.alternative-text {
+						width: 100%;
 						span.organizer {
 							color: var(--highlight-color);
-							font-weight: 1200;
+							font-weight: 800;
 						}
 					}
 
-					// FIXME🎨
 					label.description {
-						// border: 1px solid red;
 					}
 					input {
-						// border: 1px solid red;
-						text-align: right;
 						margin: 0.4rem 0;
-						width: 12rem;
+						width: 100%;
+
+						text-align: right;
+						font-size: large;
 					}
 					label.sub-description {
 						text-align: right;
 						font-size: small;
-						// border: 1px solid red;
 					}
 				}
 
 				button.confirm.booking {
 					@include buttonStyle();
 					@include buttonShadow();
+
+					margin: 1rem 0;
+					margin-bottom: 0;
 
 					&:hover,
 					&:focus {
