@@ -101,6 +101,7 @@
 	// datepicker functions
 	// For demo purposes disables the next 2 days from the current date
 	const disabledDates = (date: Date) => {
+		// FIXME allow only days, which are actually available in days store
 		return date < lowerLimit || upperLimit < date
 	}
 
