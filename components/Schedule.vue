@@ -204,7 +204,7 @@ player id: ${currentSlot.player[player].id}
 player name: ${currentSlot.player[player].name}
 player organizer: ${currentSlot.player[player].bookedBy}`
 
-					// FIXME add click listener for editing and deletion
+					slotElement.addEventListener('click', editSlot)
 
 					// slot placement
 					slotElement.style.gridColumn = `${player + COLUMN_FIRST_PLAYER}`
@@ -212,6 +212,11 @@ player organizer: ${currentSlot.player[player].bookedBy}`
 
 					// add slot to slot array
 					currentSlotsElements.push(slotElement)
+
+					// FIXME implement click listener for editing and deletion
+					function editSlot() {
+						alert('editing')
+					}
 				}
 			}
 		} else {
@@ -298,6 +303,7 @@ player organizer: ${currentSlot.player[player].bookedBy}`
 
 		&.booked {
 			opacity: 95%;
+			cursor: pointer;
 		}
 
 		&.free {
@@ -368,11 +374,6 @@ player organizer: ${currentSlot.player[player].bookedBy}`
 				// => last hour row is actually 2nd last row
 				&:nth-last-child(2) {
 					border-bottom: 1px solid grey;
-				}
-
-				&:hover,
-				&:focus {
-					border: 1px solid red;
 				}
 			}
 
