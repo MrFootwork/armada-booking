@@ -259,7 +259,7 @@
 
 			.wrapper.closer {
 				position: absolute;
-				top: 1rem;
+				top: 1.5rem;
 				right: 2rem;
 				z-index: 10;
 
