@@ -10,6 +10,35 @@ export default NuxtAuthHandler({
 	},
 	// secret needed to run nuxt-auth in production mode (used to encrypt data)
 	secret: useRuntimeConfig().nuxtSecret,
+	useSecureCookies: false,
+	// cookies: {
+	// 	sessionToken: {
+	// 		name: `__Secure-next-auth.session-token`,
+	// 		options: {
+	// 			httpOnly: true,
+	// 			sameSite: 'none',
+	// 			path: '/',
+	// 			secure: true
+	// 		}
+	// 	},
+	// 	callbackUrl: {
+	// 		name: `__Secure-next-auth.callback-url`,
+	// 		options: {
+	// 			sameSite: 'none',
+	// 			path: '/',
+	// 			secure: true
+	// 		}
+	// 	},
+	// 	csrfToken: {
+	// 		name: `__Host-next-auth.csrf-token`,
+	// 		options: {
+	// 			httpOnly: true,
+	// 			sameSite: 'none',
+	// 			path: '/',
+	// 			secure: true
+	// 		}
+	// 	},
+	// }
 	providers: [
 		// @ts-ignore Import is exported on .default during SSR, so we need to call it this way. May be fixed via Vite at some point
 		// GithubProvider.default({
