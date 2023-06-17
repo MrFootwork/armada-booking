@@ -10,6 +10,10 @@ export default NuxtAuthHandler({
 	},
 	// secret needed to run nuxt-auth in production mode (used to encrypt data)
 	secret: useRuntimeConfig().nuxtSecret,
+	session: {
+		// 1 day
+		maxAge: 1 * 24 * 60 * 60,
+	},
 	useSecureCookies: false,
 	// cookies: {
 	// 	sessionToken: {
