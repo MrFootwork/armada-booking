@@ -1,21 +1,27 @@
 import { useScheduler } from '#scheduler'
-import say from '@/server/app/services/say'
+import todayInRomania from '../app/services/todayDateInRomania.ts'
 
-// https://github.com/jurassicjs/nuxt-scheduler
-// FIXME use cron() method to set timezone to Bukarest
 export default defineNitroPlugin(() => {
-	// startScheduler()
+	fillWeekWithDays()
 	console.log('scheduler is activeted ⏱')
 })
 
-function startScheduler() {
+function fillWeekWithDays() {
 	const scheduler = useScheduler()
 
 	scheduler
 		.run(() => {
-			say('cool beans! I run once a second! 😀')
+			const todayRomanianDate = todayInRomania()
+			console.log('today: ', todayRomanianDate)
+
+			// FIXME implement this scheduler
+
+			// get days
+			// determine missing days of the week
+			// call days.post for each missing day
 		})
-		.everySecond()
+		.everySeconds(5)
+	// .cron('3 0 * * *', 'Europe/Bucharest')
 
 	// create as many tasks as you want here
 }
