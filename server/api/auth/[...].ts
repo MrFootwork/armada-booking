@@ -14,61 +14,65 @@ export default NuxtAuthHandler({
 		// 1 day
 		maxAge: 1 * 24 * 60 * 60,
 	},
-	useSecureCookies: false,
-	cookies: {
-		sessionToken: {
-			name: `__Secure-next-auth.session-token`,
-			options: {
-				httpOnly: true,
-				sameSite: 'none',
-				path: '/',
-				secure: true,
+	// useSecureCookies: false,
+	// development doesn't use these cookie settings and auth would stop working
+	...(process.env.NODE_ENV !== 'development' && {
+		cookies: {
+			sessionToken: {
+				name: `__Secure-next-auth.session-token`,
+				options: {
+					httpOnly: true,
+					sameSite: 'none',
+					path: '/',
+					secure: true,
+				},
+			},
+			callbackUrl: {
+				name: `__Secure-next-auth.callback-url`,
+				options: {
+					httpOnly: true,
+					sameSite: 'none',
+					path: '/',
+					secure: true,
+				},
+			},
+			csrfToken: {
+				name: `__Host-next-auth.csrf-token`,
+				options: {
+					httpOnly: true,
+					sameSite: 'none',
+					path: '/',
+					secure: true,
+				},
 			},
 		},
-		callbackUrl: {
-			name: `__Secure-next-auth.callback-url`,
-			options: {
-				sameSite: 'none',
-				path: '/',
-				secure: true,
-			},
-		},
-		csrfToken: {
-			name: `__Host-next-auth.csrf-token`,
-			options: {
-				httpOnly: true,
-				sameSite: 'none',
-				path: '/',
-				secure: true,
-			},
-		},
-	},
+	}),
 	// BUG first load from sleeping server creates second token
 	// Workaround: user must wait 2 days => set token expiration to 2 days
 	// TODO doc says I need these callbacks for adding custom data to session data
 	// these callbacks are never called... find out why!
 	// currently, session is { user: { name, email }, expires }}
-	callbacks: {
-		// Callback when the JWT is created / updated, see https://next-auth.js.org/configuration/callbacks#jwt-callback
-		async jwt({ token, user }) {
-			console.log('jwt callback: ', user)
-			const isSignIn = user ? true : false
-			if (isSignIn) {
-				console.log('jwt callback: ', user)
-				token.id = user ? user.id || '' : ''
-				token.username = user ? (user as any).username || '' : ''
-			}
-			// return Promise.resolve(token)
-			return token
-		},
-		// Callback whenever session is checked, see https://next-auth.js.org/configuration/callbacks#session-callback
-		async session({ session, token }) {
-			;(session as any).username = token.username
-			;(session as any).uid = token.id
-			// return Promise.resolve(session)
-			return session
-		},
-	},
+	// callbacks: {
+	// 	// Callback when the JWT is created / updated, see https://next-auth.js.org/configuration/callbacks#jwt-callback
+	// 	async jwt({ token, user }) {
+	// 		console.log('jwt callback: ', user)
+	// 		const isSignIn = user ? true : false
+	// 		if (isSignIn) {
+	// 			console.log('jwt callback: ', user)
+	// 			token.id = user ? user.id || '' : ''
+	// 			token.username = user ? (user as any).username || '' : ''
+	// 		}
+	// 		// return Promise.resolve(token)
+	// 		return token
+	// 	},
+	// 	// Callback whenever session is checked, see https://next-auth.js.org/configuration/callbacks#session-callback
+	// 	async session({ session, token }) {
+	// 		;(session as any).username = token.username
+	// 		;(session as any).uid = token.id
+	// 		// return Promise.resolve(session)
+	// 		return session
+	// 	},
+	// },
 	providers: [
 		// @ts-ignore Import is exported on .default during SSR, so we need to call it this way. May be fixed via Vite at some point
 		// GithubProvider.default({
