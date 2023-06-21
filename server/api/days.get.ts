@@ -36,9 +36,9 @@ async function fetchDaysFromDB(query: {
 			})
 			.toArray()) as Day[]
 
+		// transform mongo's ObjectId to string
 		const daysIdTransformed = await replaceId(daysFetched)
 
-		// days holds date types
 		return daysIdTransformed
 	} catch (e) {
 		console.error('could not read from database. ', e)

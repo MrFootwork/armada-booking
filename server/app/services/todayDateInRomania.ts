@@ -1,4 +1,4 @@
-export default function todayInRomania() {
+export default function currentWeekInRomania() {
 	// today in Romania
 	const todayRomanianExactString = new Date(
 		new Date().toLocaleString('en-US', {
@@ -12,6 +12,11 @@ export default function todayInRomania() {
 		day: todayRomanianExactString.getDate(),
 	}
 
+	// BUG🐞 +6 for lastDay wouldn't work in last days of a month
+
 	// server side today in Romanian timezone
-	return new Date(year, month, day)
+	return {
+		today: new Date(year, month, day),
+		lastDay: new Date(year, month, day + 6),
+	}
 }
