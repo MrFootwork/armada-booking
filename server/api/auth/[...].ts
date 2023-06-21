@@ -16,7 +16,7 @@ export default NuxtAuthHandler({
 	},
 	// useSecureCookies: false,
 	// development doesn't use these cookie settings and auth would stop working
-	...(process.env.NODE_ENV !== 'development' && {
+	...(useRuntimeConfig().nodeEnvironment !== 'development' && {
 		cookies: {
 			sessionToken: {
 				name: `__Secure-next-auth.session-token`,

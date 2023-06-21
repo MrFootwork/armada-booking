@@ -3,6 +3,7 @@ export default defineNuxtConfig({
 	runtimeConfig: {
 		mongoURI: process.env.MONGODB_URI,
 		nuxtSecret: process.env.NUXT_SECRET,
+		nodeEnvironment: process.env.NODE_ENV,
 	},
 	app: {
 		head: {
