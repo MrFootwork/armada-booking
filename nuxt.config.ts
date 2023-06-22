@@ -5,6 +5,9 @@ export default defineNuxtConfig({
 		nuxtSecret: process.env.NUXT_SECRET,
 		nodeEnvironment: process.env.NODE_ENV,
 	},
+	typescript: {
+		strict: true,
+	},
 	app: {
 		head: {
 			charset: 'utf-8',

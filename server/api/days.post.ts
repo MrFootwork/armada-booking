@@ -42,6 +42,7 @@ async function insertDay(newDay: Date) {
 		const gymsWithCourts = gyms.map(gym => {
 			// create a gym copy with its courts
 			const gymWithCourts = gym
+
 			for (let i = 1; i <= gym.courtCount; i++) {
 				// create court boilerplate
 				const newCourt = {

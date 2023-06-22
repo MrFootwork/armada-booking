@@ -14,13 +14,13 @@ export default function getMissingDays(
 	const daysComplete = Array.from({ length: weekRange }, (_, i) => {
 		return new Date(firstDay.getTime() + i * DAY_IN_MILLISECONDS)
 	})
-	// console.log(
-	// '🚀 ~ file: getMissingDays.ts:17 ~ daysComplete ~ daysComplete:',
-	// daysComplete
-	// )
+	console.log(
+		'🚀 ~ file: getMissingDays.ts:17 ~ daysComplete ~ daysComplete:',
+		daysComplete
+	)
 
 	const missingDays: Day[] = []
-	// console.log('🚀 ~ file: getMissingDays.ts:23 ~ missingDays:', missingDays)
+	console.log('🚀 ~ file: getMissingDays.ts:23 ~ missingDays:', missingDays)
 
 	// loop through array
 	// if current day is not in daysOnServer => push day to missingDays
@@ -28,10 +28,10 @@ export default function getMissingDays(
 		const dayFound = daysOnDB.find(dbDay => {
 			return new Date(dbDay.date).getTime() === day.getTime()
 		})
-		// console.log(
-		// '🚀 ~ file: getMissingDays.ts:31 ~ dayFound ~ dayFound:',
-		// dayFound
-		// )
+		console.log(
+			'🚀 ~ file: getMissingDays.ts:31 ~ dayFound ~ dayFound:',
+			dayFound
+		)
 
 		if (dayFound) return
 		missingDays.push(day)
@@ -40,7 +40,7 @@ export default function getMissingDays(
 	// FIXME remove eslint-plugin-import
 	// I thought eslint needs this to show me mistyped function name errors
 
-	// console.log('🚀 ~ file: getMissingDays.ts:19 ~ missingDays:', missingDays)
+	console.log('🚀 ~ file: getMissingDays.ts:19 ~ missingDays:', missingDays)
 
 	return missingDays
 }

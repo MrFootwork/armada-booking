@@ -171,10 +171,12 @@
 
 <style scoped lang="scss">
 	.wrapper.modal.component {
+		// FIXME🎨 modal positioning must be more central for user
 		position: absolute;
 		top: 0;
 		left: 0;
 		height: 100vh;
+		// FIXME🎨 modal on desktop fullscreen is too wide
 		width: 100vw;
 
 		display: flex;
