@@ -53,7 +53,9 @@ export const useDaysStore = defineStore('days', () => {
 			return newDay
 		})
 
-		days.value = dataTransformed as Day[]
+		days.value = (dataTransformed as Day[]).sort(
+			(dayA, dayB) => dayA.date.getTime() - dayB.date.getTime()
+		)
 
 		return days.value
 	}

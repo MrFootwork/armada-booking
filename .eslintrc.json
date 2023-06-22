@@ -1,10 +1,13 @@
 {
 	"root": true,
 	"parser": "vue-eslint-parser",
+	"parserOptions": {
+		"sourceType": "module"
+	},
 	"extends": [
 		"eslint:recommended",
 		"plugin:nuxt/recommended",
-		"@vue/typescript/recommended@10",
-		"prettier"
+		"prettier",
+		"@nuxtjs/eslint-config-typescript"
 	]
 }

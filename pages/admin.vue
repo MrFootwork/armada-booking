@@ -137,7 +137,6 @@
 						timeStyle: 'short',
 					})
 				}}
-				<!-- <br> {{ day.date }} -->
 				<br />
 				{{ day.date.toISOString() }} <br />{{ day.id }} <br />
 				type: {{ typeof day.date }}
@@ -160,6 +159,7 @@
 			background-color: $card-color-secondary-light;
 			border-radius: 10px;
 			padding: 1rem;
+			color: black;
 		}
 	}
 
