@@ -1,10 +1,13 @@
+import { RuntimeConfig } from 'nuxt/schema'
 import { fetchGyms } from '@/server/utils/mongo/gyms'
 import { useScheduler } from '#scheduler'
 import currentWeekInRomania from '../app/services/todayDateInRomania.ts'
 import getMissingDays from '../app/services/getMissingDays.ts'
 
+const inDevelopment = useRuntimeConfig().nodeEnvironment === 'development'
+
 export default defineNitroPlugin(() => {
-	fillWeekWithDays()
+	if (!inDevelopment) fillWeekWithDays()
 	console.log('scheduler is activeted ⏱')
 })
 
@@ -47,7 +50,7 @@ function fillWeekWithDays() {
 				)
 			})
 		})
-		.everySeconds(10)
+		.everySeconds(15)
 	// .cron('* * * * *', 'Europe/Bucharest')
 	// .cron('1 0 * * *', 'Europe/Bucharest')
 }
