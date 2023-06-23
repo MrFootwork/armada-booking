@@ -14,10 +14,11 @@ export default function getMissingDays(
 	const daysComplete = Array.from({ length: weekRange }, (_, i) => {
 		return new Date(firstDay.getTime() + i * DAY_IN_MILLISECONDS)
 	})
+
 	const missingDays: Date[] = []
 
 	// loop through array
-	// if current day is not in daysOnServer => push day to missingDays
+	// if current day is not in daysOnDB => push day to missingDays
 	daysComplete.forEach(day => {
 		const dayFound = daysOnDB.find(dbDay => {
 			return new Date(dbDay.date).getTime() === day.getTime()

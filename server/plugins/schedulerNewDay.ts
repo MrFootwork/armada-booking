@@ -33,12 +33,10 @@ function fillWeekWithDays() {
 					'🚀 ~ file: schedulerNewDay.ts:30 ~ missingDays.forEach ~ missingDay.date:',
 					missingDay
 				)
+
 				const year = missingDay.getFullYear().toString()
 				const month = missingDay.getMonth().toString()
 				const day = missingDay.getDate().toString()
-				// const year = new Date(missingDay).getFullYear().toString()
-				// const month = new Date(missingDay).getMonth().toString()
-				// const day = new Date(missingDay).getDate().toString()
 
 				const dateComponents = { year, month, day }
 
@@ -48,8 +46,9 @@ function fillWeekWithDays() {
 				)
 			})
 		})
-		// .everySeconds(15)
-		.cron('1 0 * * *', 'Europe/Bucharest')
+		.cron('5 * * * *', 'Europe/Bucharest')
+	// .cron('1 0 * * *', 'Europe/Bucharest')
+	// .everySeconds(15)
 
 	// create as many tasks as you want here
 }
