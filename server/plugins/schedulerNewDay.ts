@@ -10,6 +10,7 @@ export default defineNitroPlugin(() => {
 
 function fillWeekWithDays() {
 	const scheduler = useScheduler()
+	const timer = useScheduler()
 
 	// FIXME implement this scheduler
 	scheduler
@@ -46,9 +47,22 @@ function fillWeekWithDays() {
 				)
 			})
 		})
-		.cron('5 * * * *', 'Europe/Bucharest')
+		// .everySeconds(10)
+		.cron('* * * * *', 'Europe/Bucharest')
 	// .cron('1 0 * * *', 'Europe/Bucharest')
-	// .everySeconds(15)
 
 	// create as many tasks as you want here
+	timer
+		.run(() => {
+			console.log('scheduler local: ', new Date())
+			console.log(
+				'scheduler Romania: ',
+				new Date(
+					new Date().toLocaleString('en-US', {
+						timeZone: 'Europe/Bucharest',
+					})
+				)
+			)
+		})
+		.everySeconds(2)
 }
