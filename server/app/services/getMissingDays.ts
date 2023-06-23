@@ -14,13 +14,26 @@ export default function getMissingDays(
 	const daysComplete = Array.from({ length: weekRange }, (_, i) => {
 		return new Date(firstDay.getTime() + i * DAY_IN_MILLISECONDS)
 	})
+	console.log(
+		'🚀 ~ file: getMissingDays.ts:17 ~ daysComplete ~ daysComplete:',
+		daysComplete
+	)
 
 	const missingDays: Date[] = []
 
 	// loop through array
 	// if current day is not in daysOnDB => push day to missingDays
 	daysComplete.forEach(day => {
+		console.log('🚀 ~ file: getMissingDays.ts:27 ~ day:', day)
+
 		const dayFound = daysOnDB.find(dbDay => {
+			console.log(
+				'🚀 ~ file: getMissingDays.ts:30 ~ dayFound ~ new Date(dbDay.date).getTime():',
+				new Date(dbDay.date).getTime(),
+				day.getTime(),
+				new Date(dbDay.date).getTime() === day.getTime()
+			)
+
 			return new Date(dbDay.date).getTime() === day.getTime()
 		})
 
