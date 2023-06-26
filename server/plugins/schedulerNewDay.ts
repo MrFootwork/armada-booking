@@ -3,6 +3,7 @@ import { fetchGyms } from '@/server/utils/mongo/gyms'
 import { useScheduler } from '#scheduler'
 import currentWeekInRomania from '../app/services/todayDateInRomania.ts'
 import getMissingDays from '../app/services/getMissingDays.ts'
+import { dateTime } from '@/server/utils/dateTime.ts'
 
 const inDevelopment = useRuntimeConfig().nodeEnvironment === 'development'
 const TIME_ZONE = 'Europe/Bucharest'
@@ -10,8 +11,19 @@ const TIME_ZONE = 'Europe/Bucharest'
 export default defineNitroPlugin(() => {
 	if (!inDevelopment) fillWeekWithDays()
 	// fillWeekWithDays()
+	testDateTime()
 	console.log('scheduler is activeted ⏱')
 })
+
+function testDateTime() {
+	const timer = useScheduler()
+
+	timer
+		.run(() => {
+			dateTime()
+		})
+		.everySeconds(5)
+}
 
 function fillWeekWithDays() {
 	const scheduler = useScheduler()
