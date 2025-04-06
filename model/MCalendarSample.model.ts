@@ -4,7 +4,7 @@ export default class CalendarSample {
 	days: Day[]
 
 	constructor() {
-		const year = 2023
+		const year = 2025
 		const month = new Date().getMonth()
 		const firstDay = new Date().getDate()
 
